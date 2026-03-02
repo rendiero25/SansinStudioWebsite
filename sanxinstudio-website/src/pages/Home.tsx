@@ -1,11 +1,19 @@
 import Header from "../components/public/Header";
 import HeroSection from "../components/public/HeroSection";
+import Section2 from "../components/public/Section2";
+import Section3 from "../components/public/Section3";
+import Section4 from "../components/public/Section4";
+import Section5 from "../components/public/Section5";
 
 const Home = () => {
   return (
     <div className="home-page">
       <Header />
       <HeroSection />
+      <Section2 />
+      <Section3 />
+      <Section4 />
+      <Section5 />
 
       {/* More sections will be added here */}
       <div

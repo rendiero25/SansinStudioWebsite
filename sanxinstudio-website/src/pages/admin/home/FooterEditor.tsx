@@ -10,9 +10,10 @@ const FooterEditor = () => {
       {({ content, updateContent }) => (
         <>
           {/* CTA Section */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">CTA Area</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">CTA Area</h3>
             <TextFieldEditor
+              className="mt-4 mb-4"
               label="CTA Heading"
               value={(content.ctaHeading as string) || ""}
               onChange={(val) => updateContent("ctaHeading", val)}
@@ -29,35 +30,40 @@ const FooterEditor = () => {
               }
               onChange={(val) => updateContent("ctaButton", val)}
             />
+            <div style={{ marginTop: '16px' }}>
+              <TextFieldEditor
+                className="mt-4"
+                label="Note"
+                value={(content.ctaNote as string) || ""}
+                onChange={(val) => updateContent("ctaNote", val)}
+                multiline
+                placeholder="Additional note text..."
+              />
+            </div>
           </div>
 
           {/* Contact Info */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Contact Info</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Contact Info</h3>
             <TextFieldEditor
+                className="mt-4"
+              label="Title"
+              value={(content.contactTitle as string) || ""}
+              onChange={(val) => updateContent("contactTitle", val)}
+              placeholder="Contact Us"
+            />
+            <TextFieldEditor
+                className="mt-4"
               label="Email"
               value={(content.email as string) || ""}
               onChange={(val) => updateContent("email", val)}
               placeholder="reach_us@sanxin.com"
             />
-            <TextFieldEditor
-              label="Phone"
-              value={(content.phone as string) || ""}
-              onChange={(val) => updateContent("phone", val)}
-              placeholder="+62 xxx xxxx xxxx"
-            />
-            <TextFieldEditor
-              label="Address"
-              value={(content.address as string) || ""}
-              onChange={(val) => updateContent("address", val)}
-              multiline
-              placeholder="Office address..."
-            />
           </div>
 
           {/* Footer Logo */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Footer Logo</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Footer Logo</h3>
             <ImageUploader
               label="Logo Image"
               value={content.logo as { url: string; publicId: string } | null}
@@ -66,39 +72,16 @@ const FooterEditor = () => {
             />
           </div>
 
-          {/* Footer Columns */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Footer Columns</h3>
-            <ItemListEditor
-              label="Column Links"
-              items={
-                (content.columns as Array<{
-                  id: string;
-                  title: string;
-                  links: string;
-                }>) || []
-              }
-              onChange={(items) => updateContent("columns", items)}
-              fields={[
-                {
-                  key: "title",
-                  label: "Column Title",
-                  type: "text",
-                  placeholder: "e.g. Works",
-                },
-                {
-                  key: "links",
-                  label: "Links (one per line: label|url)",
-                  type: "textarea",
-                  placeholder: "Services|/services\nProjects|/projects",
-                },
-              ]}
-            />
-          </div>
-
           {/* Social Links */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Social Links</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Social Links</h3>
+            <TextFieldEditor
+                className="mt-4 mb-4"
+              label="Title"
+              value={(content.socialTitle as string) || ""}
+              onChange={(val) => updateContent("socialTitle", val)}
+              placeholder="Follow Us"
+            />
             <ItemListEditor
               label="Social Media"
               items={
@@ -106,7 +89,7 @@ const FooterEditor = () => {
                   id: string;
                   platform: string;
                   url: string;
-                  icon: string;
+                  icon: { url: string; publicId: string } | null;
                 }>) || []
               }
               onChange={(items) => updateContent("socialLinks", items)}
@@ -119,9 +102,9 @@ const FooterEditor = () => {
                 },
                 {
                   key: "icon",
-                  label: "Icon/Emoji",
-                  type: "text",
-                  placeholder: "📸",
+                  label: "Icon",
+                  type: "image",
+                  folder: "sanxinstudio/footer/social",
                 },
                 {
                   key: "url",
@@ -134,9 +117,10 @@ const FooterEditor = () => {
           </div>
 
           {/* Copyright */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Copyright</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Copyright</h3>
             <TextFieldEditor
+                className="mt-4"
               label="Copyright Text"
               value={(content.copyright as string) || ""}
               onChange={(val) => updateContent("copyright", val)}

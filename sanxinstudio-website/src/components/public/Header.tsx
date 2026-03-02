@@ -41,18 +41,22 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-[1000] transition-all duration-300 ease bg-white ${scrolled ? "shadow-[0_2px_16px_rgba(0,0,0,0.08)]" : ""}`}
+      className={`fixed top-0 inset-x-0 z-[1000] transition-all duration-300 ease ${
+        scrolled
+          ? "bg-white/50 backdrop-blur-lg shadow-[0_2px_16px_rgba(0,0,0,0.08)]"
+          : "bg-white"
+      }`}
     >
       {/* Main Header Container */}
-      <div className="w-full px-6 max-md:px-4">
-        <div className="container mx-auto flex items-center justify-between h-[52px]">
+      <div className="w-full">
+        <div className="container mx-auto flex items-center justify-between h-[75px] px-[48px]">
           {/* Logo */}
           <a href="/" className="flex-shrink-0 flex items-center no-underline">
             {data.logo?.url ? (
               <img
                 src={data.logo.url}
                 alt="Sanxin Studio"
-                className="h-[26px] w-auto object-contain"
+                className="h-[35px] w-auto object-contain"
               />
             ) : (
               <svg
@@ -73,7 +77,7 @@ const Header = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-[#1a1a1a]/70 hover:text-[#1a1a1a] no-underline text-[13px] font-normal font-primary transition-colors tracking-tight"
+                className="text-black hover:text-[#1a1a1a] no-underline text-[17px] font-medium font-primary transition-colors tracking-tight"
               >
                 {link.label}
               </a>
@@ -84,7 +88,7 @@ const Header = () => {
           <div className="hidden md:block flex-shrink-0">
             <a
               href={ctaButton.link}
-              className="inline-flex items-center justify-center px-5 py-2 bg-[#1a1a1a] hover:bg-[#333] text-white no-underline text-[12.5px] font-medium font-primary rounded-full transition-all hover:-translate-y-[1px] tracking-tight"
+              className="inline-flex items-center justify-center px-8 py-2 bg-black hover:bg-[#333] text-white no-underline text-[17px] font-medium font-primary rounded-xl transition-all hover:-translate-y-[1px] tracking-tight"
             >
               {ctaButton.text}
             </a>
@@ -97,17 +101,17 @@ const Header = () => {
             aria-label="Toggle menu"
           >
             <span
-              className={`block w-5 h-[2px] bg-[#1a1a1a] rounded-sm transition-transform duration-300 ${
+              className={`block w-5 h-[2px] bg-black rounded-sm transition-transform duration-300 ${
                 mobileMenuOpen ? "rotate-45 translate-y-[7px]" : ""
               }`}
             />
             <span
-              className={`block w-5 h-[2px] bg-[#1a1a1a] rounded-sm transition-opacity duration-300 ${
+              className={`block w-5 h-[2px] bg-black rounded-sm transition-opacity duration-300 ${
                 mobileMenuOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`block w-5 h-[2px] bg-[#1a1a1a] rounded-sm transition-transform duration-300 ${
+              className={`block w-5 h-[2px] bg-black rounded-sm transition-transform duration-300 ${
                 mobileMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""
               }`}
             />
@@ -125,7 +129,7 @@ const Header = () => {
           <a
             key={link.label}
             href={link.href}
-            className="text-[#1a1a1a]/70 hover:text-[#1a1a1a] no-underline text-[14px] font-primary py-3 border-b border-black/5 transition-colors"
+            className="text-black/70 hover:text-black no-underline text-[14px] font-primary py-3 border-b border-black/5 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
             {link.label}
@@ -133,7 +137,7 @@ const Header = () => {
         ))}
         <a
           href={ctaButton.link}
-          className="inline-flex items-center justify-center w-full mt-3 px-5 py-3 bg-[#1a1a1a] hover:bg-[#333] text-white no-underline text-[12.5px] font-medium font-primary rounded-full transition-all tracking-tight"
+          className="inline-flex items-center justify-center w-full mt-3 px-5 py-3 bg-black hover:bg-[#333] text-white no-underline text-[12.5px] font-medium font-primary rounded-full transition-all tracking-tight"
         >
           {ctaButton.text}
         </a>

@@ -16,7 +16,6 @@ import Section5Editor from "./pages/admin/home/Section5Editor";
 import Section6Editor from "./pages/admin/home/Section6Editor";
 import Section7Editor from "./pages/admin/home/Section7Editor";
 import Section8Editor from "./pages/admin/home/Section8Editor";
-import Section9Editor from "./pages/admin/home/Section9Editor";
 import FooterEditor from "./pages/admin/home/FooterEditor";
 
 function App() {
@@ -51,7 +50,6 @@ function App() {
             <Route path="home/section6" element={<Section6Editor />} />
             <Route path="home/section7" element={<Section7Editor />} />
             <Route path="home/section8" element={<Section8Editor />} />
-            <Route path="home/section9" element={<Section9Editor />} />
             <Route path="home/footer" element={<FooterEditor />} />
           </Route>
         </Routes>

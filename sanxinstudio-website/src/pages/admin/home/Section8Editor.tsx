@@ -1,79 +1,41 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
 import TextFieldEditor from "../../../components/cms/TextFieldEditor";
-import ItemListEditor from "../../../components/cms/ItemListEditor";
+import ButtonEditor from "../../../components/cms/ButtonEditor";
 
 const Section8Editor = () => {
   return (
     <SectionWrapper
       page="home"
       sectionKey="section8"
-      title="Section 8 — Beautiful Burden (Slideshow)"
+      title="Section 8 — Beautiful Burden"
     >
       {({ content, updateContent }) => (
         <>
           {/* Title */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Text Content</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Text Content</h3>
             <TextFieldEditor
+                className="mt-4"
               label="Title"
               value={(content.title as string) || ""}
               onChange={(val) => updateContent("title", val)}
               multiline
               placeholder="The Beautiful Burden of Brilliance..."
             />
-            <TextFieldEditor
-              label="Subtitle"
-              value={(content.subtitle as string) || ""}
-              onChange={(val) => updateContent("subtitle", val)}
-              multiline
-              placeholder="Why Complexity is the Silent Killer of All Evaluations."
-            />
           </div>
 
-          {/* Slideshow Items */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Slideshow Items</h3>
-            <p
-              style={{
-                fontSize: "13px",
-                color: "rgba(255,255,255,0.4)",
-                margin: "0 0 16px",
-              }}
-            >
-              Use the arrow buttons to reorder slides. First item is shown
-              first.
-            </p>
-            <ItemListEditor
-              label="Slides"
-              items={
-                (content.slides as Array<{
-                  id: string;
-                  title: string;
-                  description: string;
-                  imageUrl: string;
-                }>) || []
+          {/* Button */}
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Button</h3>
+            <ButtonEditor
+              label="CTA Button"
+              value={
+                (content.ctaButton as { text: string; link: string }) || {
+                  text: "Get Started",
+                  link: "/contact",
+                }
               }
-              onChange={(items) => updateContent("slides", items)}
-              fields={[
-                {
-                  key: "imageUrl",
-                  label: "Image URL",
-                  type: "url",
-                  placeholder: "https://...",
-                },
-                {
-                  key: "title",
-                  label: "Title",
-                  type: "text",
-                  placeholder: "Slide title",
-                },
-                {
-                  key: "description",
-                  label: "Description",
-                  type: "textarea",
-                  placeholder: "Slide description...",
-                },
-              ]}
+              onChange={(val) => updateContent("ctaButton", val)}
             />
           </div>
         </>

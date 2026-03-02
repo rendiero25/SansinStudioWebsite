@@ -124,10 +124,10 @@ const HeroSection = () => {
       <div className="relative z-10 w-full container mx-auto px-5 md:px-[48px] pb-[40px] md:pb-[72px]">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-7 md:gap-12">
           {/* Left: headline area */}
-          <div className="md:max-w-[680px] shrink-0">
-            <p className="font-['Outfit'] text-[32px] md:text-[54px] font-medium text-white leading-[1.1] tracking-[-0.03em] m-0">
+          <div className="md:max-w-[680px] 2xl:max-w-[900px] shrink-0">
+            <p className="font-['Outfit'] text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white leading-[1.1] tracking-[-0.03em] m-0">
               {data.brandName && (
-                <span className="font-['Outfit'] text-[16px] md:text-[20px] font-semibold text-white tracking-[0.06em] lowercase align-middle mr-1.5">
+                <span className="font-['Outfit'] text-[16px] md:text-[20px] 2xl:text-[30px] font-semibold text-white tracking-[0.06em] lowercase align-middle mr-1.5">
                   {data.brandName}
                 </span>
               )}{" "}
@@ -141,13 +141,13 @@ const HeroSection = () => {
           {/* Right: subtitle + CTA */}
           <div className="flex flex-row md:flex-col items-center md:items-start gap-5 md:gap-6 md:pb-2 shrink-0 w-full md:w-auto md:max-w-[240px]">
             {data.subtitle && (
-              <p className="flex-1 md:flex-none font-primary text-[12px] font-normal text-white/45 leading-[1.65] m-0 tracking-[0.01em]">
+              <p className="flex-1 md:flex-none font-primary text-[14px] font-normal text-[#FEFEFE] leading-[1.65] m-0 tracking-[0.01em]">
                 {data.subtitle}
               </p>
             )}
             <a
               href={ctaButton.link}
-              className="inline-flex items-center justify-center min-w-[130px] md:min-w-[160px] px-6 md:px-8 py-3 md:py-[14px] bg-transparent hover:bg-white text-white hover:text-[#0a0a0a] font-primary text-[12px] md:text-[13px] font-medium border border-white/25 hover:border-white transition-all duration-300 tracking-[0.02em]"
+              className="inline-flex items-center justify-center min-w-[130px] md:min-w-[250px] px-6 md:px-8 py-3 md:py-[14px] bg-white hover:bg-white text-black rounded-xl hover:text-[#0a0a0a] font-primary text-[12px] md:text-[17px] font-bold border border-white/25 hover:border-white transition-all duration-300 tracking-[0.02em]"
             >
               {ctaButton.text}
             </a>

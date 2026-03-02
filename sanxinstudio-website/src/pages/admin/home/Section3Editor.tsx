@@ -13,9 +13,10 @@ const Section3Editor = () => {
       {({ content, updateContent }) => (
         <>
           {/* Title */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Title</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Title</h3>
             <TextFieldEditor
+                className="mt-4"
               label="Title"
               value={(content.title as string) || ""}
               onChange={(val) => updateContent("title", val)}
@@ -25,8 +26,8 @@ const Section3Editor = () => {
           </div>
 
           {/* Background */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Background</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Background</h3>
             <ImageUploader
               label="Background Image"
               value={
@@ -38,20 +39,27 @@ const Section3Editor = () => {
           </div>
 
           {/* Roadblock Cards */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Roadblock Cards</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Roadblock Cards</h3>
             <ItemListEditor
               label="Cards"
               items={
                 (content.cards as Array<{
                   id: string;
+                  category: string;
                   title: string;
                   description: string;
-                  imageUrl: string;
+                  image: { url: string; publicId: string } | null;
                 }>) || []
               }
               onChange={(items) => updateContent("cards", items)}
               fields={[
+                {
+                  key: "category",
+                  label: "Category",
+                  type: "text",
+                  placeholder: "e.g. Marketing",
+                },
                 {
                   key: "title",
                   label: "Title",
@@ -65,10 +73,10 @@ const Section3Editor = () => {
                   placeholder: "Description text...",
                 },
                 {
-                  key: "imageUrl",
-                  label: "Image URL (upload via Media)",
-                  type: "url",
-                  placeholder: "https://...",
+                  key: "image",
+                  label: "Image",
+                  type: "image",
+                  folder: "sanxinstudio/section3",
                 },
               ]}
             />

@@ -8,8 +8,8 @@ const HeaderEditor = () => {
       {({ content, updateContent }) => (
         <>
           {/* Logo */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Logo</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Logo</h3>
             <ImageUploader
               label="Logo Image"
               value={content.logo as { url: string; publicId: string } | null}
@@ -19,8 +19,8 @@ const HeaderEditor = () => {
           </div>
 
           {/* CTA Button */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">CTA Button</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">CTA Button</h3>
             <ButtonEditor
               label="Contact Button"
               value={

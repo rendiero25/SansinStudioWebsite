@@ -19,15 +19,17 @@ const HeroEditor = () => {
         return (
           <>
             {/* Headline */}
-            <div className="cms-card">
-              <h3 className="cms-card-title">Headline Text</h3>
+            <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Headline Text</h3>
               <TextFieldEditor
+                className="mt-4"
                 label="Brand Name"
                 value={(content.brandName as string) || ""}
                 onChange={(val) => updateContent("brandName", val)}
                 placeholder="sanxin."
               />
               <TextFieldEditor
+                className="mt-4"
                 label="Headline"
                 value={(content.headline as string) || ""}
                 onChange={(val) => updateContent("headline", val)}
@@ -35,6 +37,7 @@ const HeroEditor = () => {
                 placeholder="A branding agency with one objective: To make you profitable."
               />
               <TextFieldEditor
+                className="mt-4"
                 label="Subtitle (right side text)"
                 value={(content.subtitle as string) || ""}
                 onChange={(val) => updateContent("subtitle", val)}
@@ -44,14 +47,14 @@ const HeroEditor = () => {
             </div>
 
             {/* Background */}
-            <div className="cms-card">
-              <h3 className="cms-card-title">Background</h3>
-              <div className="cms-field">
-                <label className="cms-label">Background Type</label>
-                <div className="cms-toggle-group">
+            <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Background</h3>
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-semibold text-white/70 uppercase tracking-wider">Background Type</label>
+                <div className="flex gap-1 p-1 bg-white/[0.04] rounded-[10px] border border-white/[0.06] mb-4">
                   <button
                     type="button"
-                    className={`cms-toggle-btn ${bgType === "image" ? "active" : ""}`}
+                    className={`flex-1 py-2 px-4 border-none rounded-lg text-[13px] font-medium cursor-pointer transition-all duration-200 font-[IBM_Plex_Sans,sans-serif] ${bgType === "image" ? "bg-indigo-500/20 text-purple-400" : "bg-transparent text-white/50"}`}
                     onClick={() => {
                       setBgType("image");
                       updateContent("bgType", "image");
@@ -61,7 +64,7 @@ const HeroEditor = () => {
                   </button>
                   <button
                     type="button"
-                    className={`cms-toggle-btn ${bgType === "video" ? "active" : ""}`}
+                    className={`flex-1 py-2 px-4 border-none rounded-lg text-[13px] font-medium cursor-pointer transition-all duration-200 font-[IBM_Plex_Sans,sans-serif] ${bgType === "video" ? "bg-indigo-500/20 text-purple-400" : "bg-transparent text-white/50"}`}
                     onClick={() => {
                       setBgType("video");
                       updateContent("bgType", "video");
@@ -94,8 +97,8 @@ const HeroEditor = () => {
             </div>
 
             {/* CTA Button */}
-            <div className="cms-card">
-              <h3 className="cms-card-title">CTA Button</h3>
+            <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">CTA Button</h3>
               <ButtonEditor
                 label="Button"
                 value={

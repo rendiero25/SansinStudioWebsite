@@ -1,7 +1,6 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
 import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
-import ButtonEditor from "../../../components/cms/ButtonEditor";
 
 const Section4Editor = () => {
   return (
@@ -13,9 +12,10 @@ const Section4Editor = () => {
       {({ content, updateContent }) => (
         <>
           {/* Title */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Text Content</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Text Content</h3>
             <TextFieldEditor
+                className="mt-4"
               label="Title"
               value={(content.title as string) || ""}
               onChange={(val) => updateContent("title", val)}
@@ -23,6 +23,7 @@ const Section4Editor = () => {
               placeholder="Got similar problems? We'll help you to solve it."
             />
             <TextFieldEditor
+                className="mt-4"
               label="Description"
               value={(content.description as string) || ""}
               onChange={(val) => updateContent("description", val)}
@@ -32,8 +33,8 @@ const Section4Editor = () => {
           </div>
 
           {/* Background */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Background</h3>
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Background</h3>
             <ImageUploader
               label="Background Image"
               value={
@@ -41,21 +42,6 @@ const Section4Editor = () => {
               }
               onChange={(val) => updateContent("bgImage", val)}
               folder="sanxinstudio/section4"
-            />
-          </div>
-
-          {/* Button */}
-          <div className="cms-card">
-            <h3 className="cms-card-title">Button</h3>
-            <ButtonEditor
-              label="CTA Button"
-              value={
-                (content.ctaButton as { text: string; link: string }) || {
-                  text: "Contact Us",
-                  link: "/contact",
-                }
-              }
-              onChange={(val) => updateContent("ctaButton", val)}
             />
           </div>
         </>

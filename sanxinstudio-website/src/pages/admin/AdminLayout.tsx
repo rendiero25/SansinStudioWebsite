@@ -46,44 +46,39 @@ const AdminLayout = () => {
       subItems: [
         { label: "Hero", path: "/admin/home/hero", icon: "🎬" },
         {
-          label: "Section 2 - Breakthrough",
+          label: "Section 2",
           path: "/admin/home/section2",
           icon: "🚀",
         },
         {
-          label: "Section 3 - Roadblocks",
+          label: "Section 3",
           path: "/admin/home/section3",
           icon: "🧱",
         },
         {
-          label: "Section 4 - Problems",
+          label: "Section 4",
           path: "/admin/home/section4",
           icon: "❓",
         },
         {
-          label: "Section 5 - Solutions",
+          label: "Section 5",
           path: "/admin/home/section5",
           icon: "💡",
         },
         {
-          label: "Section 6 - Framework",
+          label: "Section 6",
           path: "/admin/home/section6",
           icon: "🎯",
         },
         {
-          label: "Section 7 - Methodology",
+          label: "Section 7",
           path: "/admin/home/section7",
           icon: "⚡",
         },
         {
-          label: "Section 8 - Slideshow",
+          label: "Section 8",
           path: "/admin/home/section8",
           icon: "🖼️",
-        },
-        {
-          label: "Section 9 - Insights",
-          path: "/admin/home/section9",
-          icon: "📰",
         },
         { label: "Footer", path: "/admin/home/footer", icon: "📋" },
       ],
