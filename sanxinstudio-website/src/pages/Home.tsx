@@ -4,6 +4,10 @@ import Section2 from "../components/public/Section2";
 import Section3 from "../components/public/Section3";
 import Section4 from "../components/public/Section4";
 import Section5 from "../components/public/Section5";
+import Section6 from "../components/public/Section6";
+import Section7 from "../components/public/Section7";
+import Section8 from "../components/public/Section8";
+import Footer from "../components/public/Footer";
 
 const Home = () => {
   return (
@@ -14,20 +18,12 @@ const Home = () => {
       <Section3 />
       <Section4 />
       <Section5 />
+      <Section6 />
+      <Section7 />
+      <Section8 />
 
-      {/* More sections will be added here */}
-      <div
-        style={{
-          padding: "120px 48px",
-          background: "#0a0a0a",
-          textAlign: "center" as const,
-          color: "rgba(255, 255, 255, 0.2)",
-          fontFamily: '"IBM Plex Sans", sans-serif',
-          fontSize: "14px",
-        }}
-      >
-        More sections coming soon...
-      </div>
+      {/* Footer */}
+      <Footer />
 
       <style>{`
         .home-page {

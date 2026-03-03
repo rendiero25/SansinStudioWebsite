@@ -3,6 +3,7 @@ import { getSection } from "../../services/sectionApi";
 
 interface HeroData {
   brandName?: string;
+  brandLogo?: { url: string; publicId: string };
   headline?: string;
   subtitle?: string;
   bgType?: "image" | "video";
@@ -124,10 +125,12 @@ const HeroSection = () => {
       <div className="relative z-10 w-full container mx-auto px-5 md:px-[48px] pb-[40px] md:pb-[72px]">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-7 md:gap-12">
           {/* Left: headline area */}
-          <div className="md:max-w-[680px] 2xl:max-w-[900px] shrink-0">
-            <p className="font-['Outfit'] text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white leading-[1.1] tracking-[-0.03em] m-0">
-              {data.brandName && (
-                <span className="font-['Outfit'] text-[16px] md:text-[20px] 2xl:text-[30px] font-semibold text-white tracking-[0.06em] lowercase align-middle mr-1.5">
+          <div className="md:max-w-[680px] 2xl:max-w-[950px] shrink-0">
+            <p className="font-primary text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white leading-[1.1] tracking-[-0.03em] m-0">
+              {data.brandLogo?.url ? (
+                <img src={data.brandLogo.url} alt="Brand" className="inline-block h-6 md:h-10 2xl:h-8 align-middle mr-2 object-contain" />
+              ) : data.brandName && (
+                <span className="font-primary text-[16px] md:text-[20px] 2xl:text-[30px] font-semibold text-white tracking-[0.06em] lowercase align-middle mr-1.5">
                   {data.brandName}
                 </span>
               )}{" "}

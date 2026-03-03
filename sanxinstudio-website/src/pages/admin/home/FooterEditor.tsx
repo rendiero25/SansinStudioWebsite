@@ -9,9 +9,26 @@ const FooterEditor = () => {
     <SectionWrapper page="home" sectionKey="footer" title="Footer">
       {({ content, updateContent }) => (
         <>
+          {/* Background Image */}
+          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Background Image</h3>
+            <ImageUploader
+              label="Background Image"
+              value={content.backgroundImage as { url: string; publicId: string } | null}
+              onChange={(val) => updateContent("backgroundImage", val)}
+              folder="sanxinstudio/footer/background"
+            />
+          </div>
+
           {/* CTA Section */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
             <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">CTA Area</h3>
+            <ImageUploader
+              label="CTA Image"
+              value={content.ctaImage as { url: string; publicId: string } | null}
+              onChange={(val) => updateContent("ctaImage", val)}
+              folder="sanxinstudio/footer/cta"
+            />
             <TextFieldEditor
               className="mt-4 mb-4"
               label="CTA Heading"

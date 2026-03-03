@@ -21,12 +21,11 @@ const HeroEditor = () => {
             {/* Headline */}
             <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
               <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Headline Text</h3>
-              <TextFieldEditor
-                className="mt-4"
-                label="Brand Name"
-                value={(content.brandName as string) || ""}
-                onChange={(val) => updateContent("brandName", val)}
-                placeholder="sanxin."
+              <ImageUploader
+                label="Brand Logo"
+                value={content.brandLogo as { url: string; publicId: string } | null}
+                onChange={(val) => updateContent("brandLogo", val)}
+                folder="sanxinstudio/hero"
               />
               <TextFieldEditor
                 className="mt-4"
