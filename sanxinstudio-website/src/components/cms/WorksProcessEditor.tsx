@@ -19,6 +19,7 @@ export interface ProcessDetail {
 export interface Process {
   id: string;
   processTitle: string;
+  processIcon: { url: string; publicId: string } | null;
   details: ProcessDetail[];
 }
 
@@ -37,6 +38,7 @@ const WorksProcessEditor = ({
     const newProcess: Process = {
       id: generateId(),
       processTitle: "",
+      processIcon: null,
       details: [],
     };
     onChange([...processes, newProcess]);
@@ -160,6 +162,20 @@ const WorksProcessEditor = ({
                         )
                       }
                       placeholder="e.g. Phase 1: Discovery"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-medium text-white/50">
+                      Process Icon
+                    </label>
+                    <ImageUploader
+                      label=""
+                      value={proc.processIcon || null}
+                      onChange={(val) =>
+                        handleUpdateProcess(proc.id, "processIcon", val)
+                      }
+                      folder="sanxinstudio/works/process-icons"
                     />
                   </div>
 

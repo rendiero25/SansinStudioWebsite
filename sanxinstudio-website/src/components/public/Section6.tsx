@@ -119,7 +119,7 @@ const Section6 = () => {
           <div className="md:max-w-[500px] shrink-0 w-full flex flex-col items-start text-left text-black">
             <h2 className="font-primary text-[36px] md:text-[42px] font-normal text-black leading-[1.15] tracking-[-0.03em] m-0 mb-8">
               {renderStyledText(
-                data.title
+                data.title || ""
               )}
             </h2>
             <a

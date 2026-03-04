@@ -79,7 +79,7 @@ const Section7 = () => {
           {/* Left: Main Statement (Title) */}
           <div className="md:w-3/5 lg:w-[50%]">
             <h2 className="font-primary text-[32px] md:text-[42px] lg:text-[42px] font-normal leading-tight tracking-[-0.01em] m-0 text-white/95">
-              {renderStyledText(title, true)}
+              {renderStyledText(title)}
             </h2>
           </div>
 

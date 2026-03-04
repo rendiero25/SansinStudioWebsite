@@ -29,6 +29,10 @@ import WorksSection1Editor from "./pages/admin/works/Section1Editor";
 import WorksSection2Editor from "./pages/admin/works/Section2Editor";
 import WorksSection3Editor from "./pages/admin/works/Section3Editor";
 
+// Projects Section Editors
+import ProjectsSection1Editor from "./pages/admin/projects/Section1Editor";
+import ProjectsSection2Editor from "./pages/admin/projects/Section2Editor";
+
 // FAQ Editor
 import FAQEditor from "./pages/admin/faq/FAQEditor";
 
@@ -91,6 +95,10 @@ function App() {
             <Route path="works/section1" element={<WorksSection1Editor />} />
             <Route path="works/section2" element={<WorksSection2Editor />} />
             <Route path="works/section3" element={<WorksSection3Editor />} />
+
+            {/* Projects Page Sections */}
+            <Route path="projects/section1" element={<ProjectsSection1Editor />} />
+            <Route path="projects/section2" element={<ProjectsSection2Editor />} />
           </Route>
         </Routes>
       </BrowserRouter>
