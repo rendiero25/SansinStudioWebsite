@@ -83,9 +83,28 @@ const AdminLayout = () => {
         { label: "Footer", path: "/admin/home/footer", icon: "📋" },
       ],
     },
-    { label: "Solution", icon: "🔧", path: "#" },
+    {
+      label: "Solution",
+      icon: "🔧",
+      subItems: [
+        { label: "Section 1", path: "/admin/solution/section1", icon: "🎬" },
+        { label: "Section 2", path: "/admin/solution/section2", icon: "🚀" },
+        { label: "Section 3", path: "/admin/solution/section3", icon: "⚡" },
+        { label: "Section 4", path: "/admin/solution/section4", icon: "🎯" },
+      ],
+    },
+    {
+      label: "Works",
+      icon: "🖼️",
+      subItems: [
+        { label: "Section 1", path: "/admin/works/section1", icon: "🎬" },
+        { label: "Section 2", path: "/admin/works/section2", icon: "🚀" },
+        { label: "Section 3", path: "/admin/works/section3", icon: "🎯" },
+      ],
+    },
     { label: "Projects", icon: "📁", path: "#" },
     { label: "Contacts", icon: "📞", path: "#" },
+    { label: "FAQ", icon: "❓", path: "/admin/faq" },
   ];
 
   const isSubItemActive = (item: MenuItem) => {

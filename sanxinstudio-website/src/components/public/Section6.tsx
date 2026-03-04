@@ -112,8 +112,8 @@ const Section6 = () => {
 
   return (
     <section className="relative w-full bg-white py-20 md:py-32 overflow-hidden">
-      <div className="relative z-10 container mx-auto px-5 md:px-12">
-        <div className="flex flex-col md:flex-row items-center gap-14 md:gap-20">
+      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
+        <div className="flex flex-col xl:flex-row items-start  xl:items-center gap-14 md:gap-20">
           
           {/* Left: Title + Button */}
           <div className="md:max-w-[500px] shrink-0 w-full flex flex-col items-start text-left text-black">

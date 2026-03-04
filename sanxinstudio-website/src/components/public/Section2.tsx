@@ -16,7 +16,10 @@ const renderStyledText = (text: string) => {
   return parts.map((part, i) => {
     if (part.startsWith("_") && part.endsWith("_")) {
       return (
-        <span key={i} className="italic underline underline-offset-4 decoration-1">
+        <span
+          key={i}
+          className="italic underline underline-offset-4 decoration-1"
+        >
           {part.slice(1, -1)}
         </span>
       );
@@ -54,20 +57,21 @@ const Section2 = () => {
 
   return (
     <section className="relative w-full bg-white py-20 md:py-28 overflow-hidden">
-      <div className="container mx-auto px-5 md:px-12">
+      <div className="container mx-auto px-10 md:px-12 xl:px-20">
         {/* Title */}
         <h2 className="font-primary text-[28px] md:text-[42px] font-normal text-black leading-[1.15] tracking-[-0.03em] m-0 max-w-[600px]">
           {renderStyledText(
-            data.title || "Turn your technical _breakthrough_ into a _high-growth asset._"
+            data.title ||
+              "Turn your technical _breakthrough_ into a _high-growth asset._",
           )}
         </h2>
 
         {/* Description label + Feature items */}
-        <div className="mt-14 md:mt-20 flex items-center gap-20">
+        <div className="mt-14 md:mt-20 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-20 -mx-5 px-5 md:mx-0 md:px-0">
           {/* Small label on the left */}
           {data.description && (
-            <div className="flex items-center pt-3 shrink-0">
-              <p className="text-[12px] font-semibold text-black uppercase m-0 max-w-[50px] font-primary">
+            <div className="flex items-center pt-0 md:pt-3 shrink-0">
+              <p className="text-[12px] md:text-[13px] font-semibold text-black/60 md:text-black uppercase m-0 md:max-w-[50px] font-primary tracking-wider">
                 {data.description}
               </p>
             </div>
@@ -75,11 +79,11 @@ const Section2 = () => {
 
           {/* Feature item cards - horizontal row */}
           {data.items && data.items.length > 0 && (
-            <div className="flex-1 flex gap-5 overflow-x-auto p-5 scrollbar-hide">
+            <div className="flex-1 w-full flex gap-4 md:gap-5 overflow-x-auto pb-8 md:p-5 scrollbar-hide snap-x">
               {data.items.map((item) => (
                 <div
                   key={item.id}
-                  className="min-w-[130px] flex-1 bg-white shadow-lg border-[1px] border-black/5 rounded-2xl px-10 py-12 flex items-center justify-center text-center text-[13px] md:text-[17px] font-bold text-[#0a0a0a] font-primary leading-[1.45] hover:bg-[#eaeaea] transition-colors duration-200"
+                  className="snap-start min-w-[200px] md:min-w-[180px] flex-1 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.06)] border-2 border-black/5 rounded-[20px] px-8 md:px-10 py-20 md:py-12 flex items-center justify-center text-center text-[18px] md:text-[17px] font-bold text-[#0a0a0a] font-primary leading-[1.4] hover:bg-[#eaeaea] transition-all duration-300 overflow-hidden"
                 >
                   {item.title}
                 </div>

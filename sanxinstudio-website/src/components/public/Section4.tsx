@@ -66,7 +66,7 @@ const Section4 = () => {
         </div>
       )}
 
-      <div className="relative z-10 container mx-auto px-5 md:px-12 py-20 md:py-28">
+      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 py-20 md:py-28">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-12">
           {/* Title */}
           <h2 className="font-primary text-[28px] md:text-[35px] font-normal text-white leading-[1.15] tracking-[-0.02em] m-0">
@@ -77,7 +77,7 @@ const Section4 = () => {
 
           {/* Description text on the right */}
           {data.description && (
-            <p className="font-primary text-[12px] md:text-[14px] text-white leading-[1.7] m-0 max-w-[330px]">
+            <p className="font-primary text-[14px] text-white leading-[1.7] m-0 max-w-[330px]">
               {data.description}
             </p>
           )}

@@ -41,7 +41,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-[1000] transition-all duration-300 ease ${
+      className={`fixed top-0 inset-x-0 z-1000 transition-all duration-300 ease ${
         scrolled
           ? "bg-white/50 backdrop-blur-lg shadow-[0_2px_16px_rgba(0,0,0,0.08)]"
           : "bg-white"
@@ -49,9 +49,9 @@ const Header = () => {
     >
       {/* Main Header Container */}
       <div className="w-full">
-        <div className="container mx-auto flex items-center justify-between h-[75px] px-[48px]">
+        <div className="container mx-auto flex items-center justify-between h-[75px] px-10 md:px-12 xl:px-20 3xl:px-50">
           {/* Logo */}
-          <a href="/" className="flex-shrink-0 flex items-center no-underline">
+          <a href="/" className="shrink-0 flex items-center no-underline">
             {data.logo?.url ? (
               <img
                 src={data.logo.url}
@@ -72,7 +72,7 @@ const Header = () => {
           </a>
 
           {/* Nav Links */}
-          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.label}
@@ -85,10 +85,10 @@ const Header = () => {
           </nav>
 
           {/* CTA Button */}
-          <div className="hidden md:block flex-shrink-0">
+          <div className="hidden lg:block shrink-0">
             <a
               href={ctaButton.link}
-              className="inline-flex items-center justify-center px-8 py-2 bg-black hover:bg-[#333] text-white no-underline text-[17px] font-medium font-primary rounded-xl transition-all hover:-translate-y-[1px] tracking-tight"
+              className="inline-flex items-center justify-center px-8 py-2 bg-black hover:bg-[#333] text-white no-underline text-[17px] font-medium font-primary rounded-xl transition-all hover:-translate-y-[px] tracking-tight"
             >
               {ctaButton.text}
             </a>
@@ -96,7 +96,7 @@ const Header = () => {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden flex flex-col gap-[5px] bg-transparent border-none cursor-pointer p-1"
+            className="lg:hidden flex flex-col gap-[5px] bg-transparent border-none cursor-pointer p-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -119,28 +119,87 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <div
-        className={`md:hidden flex-col w-full bg-white px-6 py-3 pb-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] ${
-          mobileMenuOpen ? "flex" : "hidden"
-        }`}
+        className={`lg:hidden fixed inset-0 z-1100 bg-white flex-col transition-all duration-400 ease-in-out ${
+          mobileMenuOpen
+            ? "opacity-100 pointer-events-auto translate-y-0"
+            : "opacity-0 pointer-events-none -translate-y-4"
+        } flex`}
       >
-        {NAV_LINKS.map((link) => (
+        {/* Top bar inside mobile menu (Logo + Close X) */}
+        <div className="w-full flex items-center justify-between h-[75px] px-5 border-b border-black/5">
+          {/* Logo */}
           <a
-            key={link.label}
-            href={link.href}
-            className="text-black/70 hover:text-black no-underline text-[14px] font-primary py-3 border-b border-black/5 transition-colors"
+            href="/"
+            className="shrink-0 flex items-center no-underline"
             onClick={() => setMobileMenuOpen(false)}
           >
-            {link.label}
+            {data.logo?.url ? (
+              <img
+                src={data.logo.url}
+                alt="Sanxin Studio"
+                className="h-[35px] w-auto object-contain"
+              />
+            ) : (
+              <svg
+                className="w-8 h-8"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M20 4L32 12V28L20 36L8 28V12L20 4Z" fill="#1a1a1a" />
+                <path d="M20 10L27 15V25L20 30L13 25V15L20 10Z" fill="#fff" />
+              </svg>
+            )}
           </a>
-        ))}
-        <a
-          href={ctaButton.link}
-          className="inline-flex items-center justify-center w-full mt-3 px-5 py-3 bg-black hover:bg-[#333] text-white no-underline text-[12.5px] font-medium font-primary rounded-full transition-all tracking-tight"
-        >
-          {ctaButton.text}
-        </a>
+
+          {/* Close Menu Button (X) */}
+          <button
+            className="bg-transparent border-none cursor-pointer p-2 -mr-2 flex items-center justify-center text-black"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
+          >
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        {/* Centered Navigation Links */}
+        <div className="flex-1 flex flex-col items-center justify-center gap-8 px-6">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="text-[#4D4D4D] hover:text-black no-underline text-[22px] font-medium font-primary transition-colors tracking-tight"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Contact Button at the bottom */}
+        <div className="px-6 pb-12 w-full max-w-[400px] mx-auto">
+          <a
+            href={ctaButton.link}
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-center w-full px-8 py-4 bg-[#0a0a0a] text-white no-underline text-[17px] font-medium font-primary rounded-xl transition-all"
+          >
+            {ctaButton.text}
+          </a>
+        </div>
       </div>
     </header>
   );

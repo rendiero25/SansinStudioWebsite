@@ -18,6 +18,20 @@ import Section7Editor from "./pages/admin/home/Section7Editor";
 import Section8Editor from "./pages/admin/home/Section8Editor";
 import FooterEditor from "./pages/admin/home/FooterEditor";
 
+// Solution Section Editors
+import SolutionSection1Editor from "./pages/admin/solution/Section1Editor";
+import SolutionSection2Editor from "./pages/admin/solution/Section2Editor";
+import SolutionSection3Editor from "./pages/admin/solution/Section3Editor";
+import SolutionSection4Editor from "./pages/admin/solution/Section4Editor";
+
+// Works Section Editors
+import WorksSection1Editor from "./pages/admin/works/Section1Editor";
+import WorksSection2Editor from "./pages/admin/works/Section2Editor";
+import WorksSection3Editor from "./pages/admin/works/Section3Editor";
+
+// FAQ Editor
+import FAQEditor from "./pages/admin/faq/FAQEditor";
+
 function App() {
   return (
     <AuthProvider>
@@ -51,6 +65,32 @@ function App() {
             <Route path="home/section7" element={<Section7Editor />} />
             <Route path="home/section8" element={<Section8Editor />} />
             <Route path="home/footer" element={<FooterEditor />} />
+
+            {/* Solution Page Sections */}
+            <Route
+              path="solution/section1"
+              element={<SolutionSection1Editor />}
+            />
+            <Route
+              path="solution/section2"
+              element={<SolutionSection2Editor />}
+            />
+            <Route
+              path="solution/section3"
+              element={<SolutionSection3Editor />}
+            />
+            <Route
+              path="solution/section4"
+              element={<SolutionSection4Editor />}
+            />
+
+            {/* FAQ Page */}
+            <Route path="faq" element={<FAQEditor />} />
+
+            {/* Works Page Sections */}
+            <Route path="works/section1" element={<WorksSection1Editor />} />
+            <Route path="works/section2" element={<WorksSection2Editor />} />
+            <Route path="works/section3" element={<WorksSection3Editor />} />
           </Route>
         </Routes>
       </BrowserRouter>

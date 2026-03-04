@@ -122,11 +122,11 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full container mx-auto px-5 md:px-[48px] pb-[40px] md:pb-[72px]">
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-7 md:gap-12">
+      <div className="relative z-10 w-full container mx-auto px-10 md:px-12 xl:px-20 pb-[40px] md:pb-[72px]">
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-7 lg:gap-0 xl:gap-12">
           {/* Left: headline area */}
           <div className="md:max-w-[680px] 2xl:max-w-[950px] shrink-0">
-            <p className="font-primary text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white leading-[1.1] tracking-[-0.03em] m-0">
+            <p className="font-primary leading-tight text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white 2xl:leading-[1.1] tracking-[-0.03em] m-0">
               {data.brandLogo?.url ? (
                 <img src={data.brandLogo.url} alt="Brand" className="inline-block h-6 md:h-10 2xl:h-8 align-middle mr-2 object-contain" />
               ) : data.brandName && (
@@ -144,7 +144,7 @@ const HeroSection = () => {
           {/* Right: subtitle + CTA */}
           <div className="flex flex-row md:flex-col items-center md:items-start gap-5 md:gap-6 md:pb-2 shrink-0 w-full md:w-auto md:max-w-[240px]">
             {data.subtitle && (
-              <p className="flex-1 md:flex-none font-primary text-[14px] font-normal text-[#FEFEFE] leading-[1.65] m-0 tracking-[0.01em]">
+              <p className="flex-1 md:flex-none font-primary md:text-[20px] 2xl:text-[14px] font-normal text-[#FEFEFE] leading-[1.65] m-0 tracking-[0.01em]">
                 {data.subtitle}
               </p>
             )}

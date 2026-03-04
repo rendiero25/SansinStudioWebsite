@@ -100,7 +100,7 @@ const Footer = () => {
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0" />
       )}
 
-      <div className="container relative mx-auto px-5 md:px-12 xl:px-32 2xl:px-0 max-w-[1440px] z-10">
+      <div className="container relative mx-auto px-10 md:px-12 xl:px-20 2xl:px-0 max-w-[1440px] z-10">
         
         {/* Top: CTA Card */}
         <div className="w-full flex flex-col rounded-3xl overflow-hidden drop-shadow-2xl mb-24 md:mb-32">
@@ -130,7 +130,7 @@ const Footer = () => {
         </div>
 
         {/* Middle: Links & Contact */}
-        <div className="w-full flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-8 border-b border-white/[0.08] pb-24 md:pb-32">
+        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-16 lg:gap-8 border-b border-white/0.08 pb-24 md:pb-32">
           
           {/* Left: Want to discover... */}
           <div className="flex flex-col gap-4">
@@ -152,7 +152,7 @@ const Footer = () => {
               <a href="#" className="font-primary text-[18px] md:text-[20px] text-white/60 hover:text-white transition-colors">Payments</a>
               <a href="#" className="font-primary text-[18px] md:text-[20px] text-white/60 hover:text-white transition-colors">Company</a>
             </div>
-            <div className="flex flex-col gap-5 hidden sm:flex">
+            <div className="flex flex-col gap-5 sm:flex">
               <a href="#" className="font-primary text-[18px] md:text-[20px] text-white/60 hover:text-white transition-colors">Insights</a>
               <a href="#" className="font-primary text-[18px] md:text-[20px] text-white/60 hover:text-white transition-colors">FAQs</a>
             </div>
@@ -160,7 +160,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom: Logo, Socials */}
-        <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-end gap-12 py-16">
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-12 py-16">
           <div className="w-full md:w-auto h-auto max-w-[300px] shrink-0">
              {/* Logo using text or image */}
              {data.logo?.url ? (
@@ -174,7 +174,7 @@ const Footer = () => {
             <p className="font-primary text-[14px] text-white/80 m-0 max-w-[150px] leading-[1.3]">
               Visit us on other<br/>platforms
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-6 2xl:gap-4 w-[70%]">
               {/* Fallback mock icons if no social links in CMS */}
               {(data.socialLinks || Array(5).fill(null)).map((item, i) => (
                 <a key={item?.id || i} href={item?.url || "#"} className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-colors">

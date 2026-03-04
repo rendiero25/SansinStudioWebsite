@@ -72,7 +72,7 @@ const Section8 = () => {
 
   return (
     <section className="w-full bg-white py-20">
-      <div className="container mx-auto px-5 md:px-12 xl:px-32 2xl:px-0 max-w-[1440px]">
+      <div className="container mx-auto px-10 md:px-12 xl:px-20 2xl:px-0 max-w-[1440px]">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 lg:gap-20">
           {/* Left: Title + Button */}
           <div className="flex-1 flex flex-col items-start gap-8">

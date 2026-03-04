@@ -67,11 +67,11 @@ const Section3 = () => {
             alt=""
             className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/40 to-[#0D0D0D]" />
+          <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#0a0a0a]/40 to-[#0D0D0D]" />
         </div>
       )}
 
-      <div className="relative z-10 container mx-auto px-5 md:px-12">
+      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
         {/* Title */}
         <h2 className="font-primary text-[28px] md:text-[42px] font-normal text-white leading-[1.15] tracking-[-0.03em] m-0 max-w-[600px] mb-12 md:mb-16">
           {renderStyledText(

@@ -26,7 +26,10 @@ const renderStyledText = (text: string) => {
   return parts.map((part, i) => {
     if (part.startsWith("_") && part.endsWith("_")) {
       return (
-        <span key={i} className="italic underline underline-offset-4 decoration-1">
+        <span
+          key={i}
+          className="italic underline underline-offset-4 decoration-1"
+        >
           {part.slice(1, -1)}
         </span>
       );
@@ -69,13 +72,14 @@ const Section5 = () => {
       {/* Subtle purple glow at top */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#7c3aed]/8 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-5 md:px-12">
-        <div className="flex flex-col justify-between md:flex-row gap-10 md:gap-10">
+      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
+        <div className="flex flex-col justify-between xl:flex-row gap-10 md:gap-10">
           {/* Left: Title + Label */}
           <div className="md:max-w-[450px] shrink-0">
             <h2 className="font-primary text-[28px] md:text-[42px] font-normal text-black leading-[1.15] tracking-[-0.03em] m-0 mb-12">
               {renderStyledText(
-                data.title || "Yes, we can make it happen for you, the _future leading company_"
+                data.title ||
+                  "Yes, we can make it happen for you, the _future leading company_",
               )}
             </h2>
             <a
@@ -92,7 +96,7 @@ const Section5 = () => {
               {data.solutions.map((solution) => (
                 <div
                   key={solution.id}
-                  className="snap-start min-w-[280px] w-[300px] flex-shrink-0 bg-white border border-[#E5E5E5] rounded-xl p-7 flex flex-col justify-between min-h-[420px]"
+                  className="snap-start min-w-[280px] w-[300px] shrink-0 bg-white border border-[#E5E5E5] rounded-xl p-7 flex flex-col justify-between min-h-[420px]"
                 >
                   <div className="h-full flex flex-col justify-between items-start">
                     {/* Icon + Title */}
@@ -115,7 +119,7 @@ const Section5 = () => {
                         {solution.subItems.map((sub) => (
                           <div
                             key={sub.id}
-                            className="w-full flex items-center gap-3 bg-[#EEEEEE] rounded-md px-4 py-2.5"
+                            className="w-full flex items-center gap-3 bg-[#EEEEEE] rounded-md px-4 py-2.5 overflow-hidden"
                           >
                             {sub.icon?.url ? (
                               <img

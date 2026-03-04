@@ -73,12 +73,12 @@ const Section7 = () => {
 
   return (
     <section className="relative w-full bg-black py-32 md:py-48 text-white overflow-hidden">
-      <div className="relative z-10 container mx-auto px-5 md:px-12 xl:px-32 2xl:px-0 max-w-[1440px]">
+      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 2xl:px-0 max-w-[1440px]">
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-20">
           
           {/* Left: Main Statement (Title) */}
           <div className="md:w-3/5 lg:w-[50%]">
-            <h2 className="font-primary text-[32px] md:text-[42px] lg:text-[42px] font-normal leading-[1.25] tracking-[-0.01em] m-0 text-white/95">
+            <h2 className="font-primary text-[32px] md:text-[42px] lg:text-[42px] font-normal leading-tight tracking-[-0.01em] m-0 text-white/95">
               {renderStyledText(title, true)}
             </h2>
           </div>
