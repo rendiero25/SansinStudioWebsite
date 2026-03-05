@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 
 interface HeaderData {
@@ -7,11 +8,11 @@ interface HeaderData {
 }
 
 const NAV_LINKS = [
-  { label: "Solutions", href: "#solutions" },
-  { label: "Works", href: "#works" },
-  { label: "Projects", href: "#projects" },
-  { label: "Insights", href: "#insights" },
-  { label: "Company", href: "#company" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Works", href: "/works" },
+  { label: "Projects", href: "/projects" },
+  { label: "Insights", href: "/insights" },
+  { label: "Company", href: "/company" },
 ];
 
 const Header = () => {
@@ -51,7 +52,7 @@ const Header = () => {
       <div className="w-full">
         <div className="container mx-auto flex items-center justify-between h-[75px] px-10 md:px-12 xl:px-20 3xl:px-50">
           {/* Logo */}
-          <a href="/" className="shrink-0 flex items-center no-underline">
+          <Link to="/" className="shrink-0 flex items-center no-underline">
             {data.logo?.url ? (
               <img
                 src={data.logo.url}
@@ -69,29 +70,29 @@ const Header = () => {
                 <path d="M20 10L27 15V25L20 30L13 25V15L20 10Z" fill="#fff" />
               </svg>
             )}
-          </a>
+          </Link>
 
           {/* Nav Links */}
           <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 className="text-black hover:text-[#1a1a1a] no-underline text-[17px] font-medium font-primary transition-colors tracking-tight"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           {/* CTA Button */}
           <div className="hidden lg:block shrink-0">
-            <a
-              href={ctaButton.link}
+            <Link
+              to={ctaButton.link}
               className="inline-flex items-center justify-center px-8 py-2 bg-black hover:bg-[#333] text-white no-underline text-[17px] font-medium font-primary rounded-xl transition-all hover:-translate-y-[px] tracking-tight"
             >
               {ctaButton.text}
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
@@ -130,8 +131,8 @@ const Header = () => {
         {/* Top bar inside mobile menu (Logo + Close X) */}
         <div className="w-full flex items-center justify-between h-[75px] px-5 border-b border-black/5">
           {/* Logo */}
-          <a
-            href="/"
+          <Link
+            to="/"
             className="shrink-0 flex items-center no-underline"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -152,7 +153,7 @@ const Header = () => {
                 <path d="M20 10L27 15V25L20 30L13 25V15L20 10Z" fill="#fff" />
               </svg>
             )}
-          </a>
+          </Link>
 
           {/* Close Menu Button (X) */}
           <button
@@ -179,26 +180,26 @@ const Header = () => {
         {/* Centered Navigation Links */}
         <div className="flex-1 flex flex-col items-center justify-center gap-8 px-6">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.label}
-              href={link.href}
+              to={link.href}
               className="text-[#4D4D4D] hover:text-black no-underline text-[22px] font-medium font-primary transition-colors tracking-tight"
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
         {/* Contact Button at the bottom */}
         <div className="px-6 pb-12 w-full max-w-[400px] mx-auto">
-          <a
-            href={ctaButton.link}
+          <Link
+            to={ctaButton.link}
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center justify-center w-full px-8 py-4 bg-[#0a0a0a] text-white no-underline text-[17px] font-medium font-primary rounded-xl transition-all"
           >
             {ctaButton.text}
-          </a>
+          </Link>
         </div>
       </div>
     </header>

@@ -6,7 +6,7 @@ const Section4Editor = () => {
     <SectionWrapper
       page="solution"
       sectionKey="section4"
-      title="Section 4 — CTA Button"
+      title="Section 3 — CTA Button"
     >
       {({ content, updateContent }) => (
         <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">

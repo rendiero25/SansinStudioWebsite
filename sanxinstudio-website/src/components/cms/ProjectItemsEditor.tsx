@@ -12,10 +12,12 @@ const TEXTAREA_CLASS = `${INPUT_CLASS} resize-y min-h-[80px] leading-relaxed`;
 export interface ProjectItem {
   id: string;
   projectName: string;
-  categoryId: string; // References ProjectCategory ID from Section 1
+  categoryIds?: string[]; // Made optional for backward compatibility map check
+  categoryId?: string; // Legacy string reference
   keywords: string;
-  
+
   // Section below
+  thumbnail: { url: string; publicId: string } | null;
   mainImage: { url: string; publicId: string } | null;
   description: string;
   image2: { url: string; publicId: string } | null;
@@ -40,8 +42,9 @@ const ProjectItemsEditor = ({
     const newProject: ProjectItem = {
       id: generateId(),
       projectName: "",
-      categoryId: "",
+      categoryIds: [],
       keywords: "",
+      thumbnail: null,
       mainImage: null,
       description: "",
       image2: null,
@@ -151,7 +154,6 @@ const ProjectItemsEditor = ({
 
               {editingProjectId === proj.id && (
                 <div className="px-4 pb-4 flex flex-col gap-6 border-t border-white/[0.04] pt-4">
-                  
                   {/* Part 1: Basic Info */}
                   <div className="flex flex-col gap-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -173,29 +175,70 @@ const ProjectItemsEditor = ({
                           placeholder="e.g. Acme Website Redesign"
                         />
                       </div>
-                      
+
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-medium text-white/50">
-                          Category <span className="text-[10px] text-white/30 ml-1">(Pulled from Section 1)</span>
+                          Categories{" "}
+                          <span className="text-[10px] text-white/30 ml-1">
+                            (Pulled from Section 1)
+                          </span>
                         </label>
-                        <select
-                          className={INPUT_CLASS}
-                          value={proj.categoryId}
-                          onChange={(e) =>
-                            handleUpdateProject(
-                              proj.id,
-                              "categoryId",
-                              e.target.value,
-                            )
-                          }
-                        >
-                          <option value="">-- Select Category --</option>
-                          {availableCategories.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
-                              {cat.categoryName}
-                            </option>
-                          ))}
-                        </select>
+                        <div className="flex flex-wrap gap-2">
+                          {availableCategories.map((cat) => {
+                            // Support legacy string categoryId as well for backward compatibility
+                            const isSelected =
+                              (proj.categoryIds || []).includes(cat.id) ||
+                              proj.categoryId === cat.id;
+
+                            return (
+                              <label
+                                key={cat.id}
+                                className={`cursor-pointer px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-2 ${
+                                  isSelected
+                                    ? "bg-indigo-500/20 border-indigo-500/50 text-indigo-300"
+                                    : "bg-white/[0.04] border-white/10 text-white/60 hover:bg-white/[0.08]"
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  className="hidden"
+                                  checked={isSelected}
+                                  onChange={(e) => {
+                                    const currentIds =
+                                      proj.categoryIds ||
+                                      (proj.categoryId
+                                        ? [proj.categoryId]
+                                        : []);
+                                    let newIds;
+                                    if (e.target.checked) {
+                                      newIds = [
+                                        ...new Set([...currentIds, cat.id]),
+                                      ];
+                                    } else {
+                                      newIds = currentIds.filter(
+                                        (id) => id !== cat.id,
+                                      );
+                                    }
+
+                                    // Update both fields simultaneously to avoid React state race conditions
+                                    onChange(
+                                      projects.map((p) =>
+                                        p.id === proj.id
+                                          ? {
+                                              ...p,
+                                              categoryIds: newIds,
+                                              categoryId: "",
+                                            }
+                                          : p,
+                                      ),
+                                    );
+                                  }}
+                                />
+                                {cat.categoryName}
+                              </label>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
 
@@ -223,8 +266,21 @@ const ProjectItemsEditor = ({
 
                   {/* Part 2: Media and Additional Project Details */}
                   <div className="flex flex-col gap-4">
-                     {/* Images Row */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Images Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-medium text-white/50">
+                          Thumbnail Image
+                        </label>
+                        <ImageUploader
+                          label=""
+                          value={proj.thumbnail}
+                          onChange={(val) =>
+                            handleUpdateProject(proj.id, "thumbnail", val)
+                          }
+                          folder="sanxinstudio/projects"
+                        />
+                      </div>
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-medium text-white/50">
                           Main Image
@@ -240,7 +296,7 @@ const ProjectItemsEditor = ({
                       </div>
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-medium text-white/50">
-                          Secondary Image (Image 2)
+                          Secondary Image
                         </label>
                         <ImageUploader
                           label=""
@@ -273,7 +329,7 @@ const ProjectItemsEditor = ({
 
                     {/* Button Details */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2">
                         <label className="text-xs font-medium text-white/50">
                           Button Text
                         </label>
@@ -311,7 +367,6 @@ const ProjectItemsEditor = ({
                       </div>
                     </div>
                   </div>
-
                 </div>
               )}
             </div>

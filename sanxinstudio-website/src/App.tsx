@@ -5,6 +5,8 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Home from "./pages/Home";
+import Solution from "./pages/Solution";
+import Works from "./pages/Works";
 
 // Home Section Editors
 import HeaderEditor from "./pages/admin/home/HeaderEditor";
@@ -21,7 +23,6 @@ import FooterEditor from "./pages/admin/home/FooterEditor";
 // Solution Section Editors
 import SolutionSection1Editor from "./pages/admin/solution/Section1Editor";
 import SolutionSection2Editor from "./pages/admin/solution/Section2Editor";
-import SolutionSection3Editor from "./pages/admin/solution/Section3Editor";
 import SolutionSection4Editor from "./pages/admin/solution/Section4Editor";
 
 // Works Section Editors
@@ -43,6 +44,8 @@ function App() {
         <Routes>
           {/* Public Home Page */}
           <Route path="/" element={<Home />} />
+          <Route path="/solutions" element={<Solution />} />
+          <Route path="/works" element={<Works />} />
 
           {/* Admin Login */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -80,10 +83,6 @@ function App() {
               element={<SolutionSection2Editor />}
             />
             <Route
-              path="solution/section3"
-              element={<SolutionSection3Editor />}
-            />
-            <Route
               path="solution/section4"
               element={<SolutionSection4Editor />}
             />
@@ -97,8 +96,14 @@ function App() {
             <Route path="works/section3" element={<WorksSection3Editor />} />
 
             {/* Projects Page Sections */}
-            <Route path="projects/section1" element={<ProjectsSection1Editor />} />
-            <Route path="projects/section2" element={<ProjectsSection2Editor />} />
+            <Route
+              path="projects/section1"
+              element={<ProjectsSection1Editor />}
+            />
+            <Route
+              path="projects/section2"
+              element={<ProjectsSection2Editor />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

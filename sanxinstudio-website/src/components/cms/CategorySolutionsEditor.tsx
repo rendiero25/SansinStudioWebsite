@@ -1,5 +1,7 @@
 import { useState } from "react";
 import ImageUploader from "./ImageUploader";
+import ItemListEditor from "./ItemListEditor";
+import type { ListItem } from "./ItemListEditor";
 
 const generateId = () => Math.random().toString(36).substring(2, 10);
 
@@ -34,6 +36,7 @@ export interface Category {
   buttonText: string;
   buttonLink: string;
   methods: Method[];
+  features?: ListItem[];
 }
 
 interface CategorySolutionsEditorProps {
@@ -61,6 +64,7 @@ const CategorySolutionsEditor = ({
       buttonText: "",
       buttonLink: "",
       methods: [],
+      features: [],
     };
     onChange([...categories, newCategory]);
     setEditingCategoryId(newCategory.id);
@@ -321,6 +325,46 @@ const CategorySolutionsEditor = ({
                       onChange={(newMethods) =>
                         handleUpdateCategory(cat.id, "methods", newMethods)
                       }
+                    />
+                  </div>
+
+                  {/* Features Section */}
+                  <div className="mt-4 pt-4 border-t border-white/[0.06]">
+                    <h4 className="text-[14px] font-semibold text-white/80 mb-4">
+                      Features List
+                    </h4>
+                    <ItemListEditor
+                      label="Features"
+                      items={(cat.features as ListItem[]) || []}
+                      onChange={(items) =>
+                        handleUpdateCategory(cat.id, "features", items)
+                      }
+                      fields={[
+                        {
+                          key: "icon",
+                          label: "Icon",
+                          type: "image",
+                          folder: "sanxinstudio/solution/icons",
+                        },
+                        {
+                          key: "title",
+                          label: "Title",
+                          type: "text",
+                          placeholder: "e.g. Speed Optimization",
+                        },
+                        {
+                          key: "description",
+                          label: "Description",
+                          type: "textarea",
+                          placeholder: "Detailed description of feature...",
+                        },
+                        {
+                          key: "keywords",
+                          label: "Keywords",
+                          type: "text",
+                          placeholder: "e.g. fast, reliable, secure",
+                        },
+                      ]}
                     />
                   </div>
                 </div>
