@@ -7,9 +7,17 @@ interface HeroData {
   title?: string;
 }
 
+interface ProjectCategory {
+  id: string;
+  categoryName: string;
+  categoryIcon?: { url: string; publicId: string } | null;
+}
+
 interface MiniProject {
   id: string;
   projectName: string;
+  categoryIds?: string[];
+  categoryId?: string;
   thumbnail?: { url: string } | null;
   mainImage?: { url: string } | null;
   buttonText?: string;
@@ -20,11 +28,9 @@ const renderStyledText = (text: string) => {
   if (!text) return null;
   const lines = text.split("\n");
   return lines.map((line, lineIndex) => {
-    // We want to support _italic underline_ and *bold italic white*
     const parts = line.split(/(\*[^*]+\*|_[^_]+_)/g);
     const lineContent = parts.map((part, i) => {
       if (part.startsWith("_") && part.endsWith("_")) {
-        // underlined italics
         return (
           <span
             key={i}
@@ -49,16 +55,22 @@ const renderStyledText = (text: string) => {
 const SolutionHero = () => {
   const [data, setData] = useState<HeroData>({});
   const [projects, setProjects] = useState<MiniProject[]>([]);
+  const [categories, setCategories] = useState<ProjectCategory[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [heroRes, projRes] = await Promise.all([
+        const [heroRes, catRes, projRes] = await Promise.all([
           getSection("solution", "section1"),
+          getSection("projects", "section1"),
           getSection("projects", "section2"),
         ]);
 
         setData(heroRes.content || {});
+
+        if (catRes?.content?.categories) {
+          setCategories(catRes.content.categories as ProjectCategory[]);
+        }
 
         if (projRes?.content?.projects) {
           setProjects((projRes.content.projects as MiniProject[]).slice(0, 5));
@@ -70,35 +82,78 @@ const SolutionHero = () => {
     fetchData();
   }, []);
 
+  // Attach wheel → horizontal scroll via DOM ID (most reliable approach)
+  useEffect(() => {
+    if (projects.length === 0) return;
+
+    // Wait one tick for React to render the element
+    const timer = setTimeout(() => {
+      const container = document.getElementById("solution-projects-scroll") as HTMLElement & { __wheelCleanup?: () => void } | null;
+      if (!container) return;
+
+      const handleWheel = (e: WheelEvent) => {
+        if (container.scrollWidth <= container.clientWidth) return;
+        e.preventDefault();
+        e.stopPropagation();
+        container.scrollLeft += e.deltaY;
+      };
+
+      container.addEventListener("wheel", handleWheel, { passive: false });
+      container.__wheelCleanup = () => {
+        container.removeEventListener("wheel", handleWheel);
+      };
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      const container = document.getElementById("solution-projects-scroll") as (HTMLElement & { __wheelCleanup?: () => void }) | null;
+      if (container && container.__wheelCleanup) {
+        container.__wheelCleanup();
+      }
+    };
+  }, [projects]);
+
+  // Helper: resolve categoryIds to category objects
+  const getCategoriesForProject = (proj: MiniProject): ProjectCategory[] => {
+    if (proj.categoryIds && proj.categoryIds.length > 0) {
+      return proj.categoryIds
+        .map((cid) => categories.find((c) => c.id === cid))
+        .filter(Boolean) as ProjectCategory[];
+    }
+    if (proj.categoryId) {
+      const cat = categories.find((c) => c.id === proj.categoryId);
+      return cat ? [cat] : [];
+    }
+    return [];
+  };
+
   const title =
     data.title ||
     "Creative _solutions_\ntailored for the _future_\n_leading companies_";
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 lg:pt-48 pb-20 overflow-hidden bg-black">
-      {/* Background with mesh gradient and image overlay */}
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 bg-black" style={{ overflowX: 'clip', overflowY: 'visible' }}>
+      {/* Background */}
       <div className="absolute inset-0 z-0">
-        {/* <div className="absolute inset-0 bg-linear-to-br from-[#1a1025] via-[#2d1b4e] to-[#0a0a0a] opacity-80" />
-        <div className="absolute inset-x-0 bottom-0 h-[60%] bg-linear-to-t from-black via-black/80 to-transparent z-10" /> */}
         {data.bgImage?.url && (
           <img
             src={data.bgImage.url}
             alt="Background"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-bottom"
           />
         )}
       </div>
 
-      <div className="container relative mx-auto px-6 md:px-12 xl:px-20 z-10 w-full">
-        {/* Brand Logo and Title Inline */}
+      <div className="container relative mx-auto px-6 md:px-12 xl:px-20 z-10 w-full" style={{ overflow: 'visible' }}>
+        {/* Brand Logo and Title */}
         <div className="w-full text-left opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_forwards]">
-          <h1 className="w-4xl font-primary text-[48px] md:text-[64px] lg:text-[76px] xl:text-[88px] leading-[1.1] font-normal text-white tracking-[-0.02em] m-0">
-            <span className="inline-block align-middle mr-4 md:mr-6 -translate-y-[4px] md:-translate-y-[8px]">
+          <h1 className="max-w-4xl font-primary text-[40px] md:text-[64px] lg:text-[76px] xl:text-[88px] leading-[1.1] font-normal text-white tracking-[-0.02em] m-0">
+            <span className="block md:inline-block md:align-middle mb-4 md:mb-0 mr-0 md:mr-6 md:-translate-y-[8px]">
               {data.brandLogo?.url ? (
                 <img
                   src={data.brandLogo.url}
                   alt="Sanxin"
-                  className="h-[32px] md:h-[48px] lg:h-[30px] w-auto object-contain"
+                  className="h-[15px] md:h-[48px] lg:h-[30px] w-auto object-contain"
                 />
               ) : (
                 ""
@@ -108,42 +163,19 @@ const SolutionHero = () => {
           </h1>
         </div>
 
-        {/* Project Cards Placeholder */}
-        <div className="mt-16 md:mt-24 w-full flex flex-col md:flex-row gap-6 md:gap-8 justify-between items-stretch opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.3s_forwards]">
-          {/* Card 1 */}
-          <div className="flex-1 min-w-0 h-[320px] md:h-[370px] rounded-2xl overflow-hidden relative group cursor-pointer bg-linear-to-br from-[#125875] to-[#092B3A] shadow-2xl">
-            {/* Dummy Image/Styling */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-[60%] h-[60%] rounded-full bg-[#3FA8D4]/20 blur-[60px]"></div>
-              {/* Concentric rings to simulate the earbud graphic */}
-              <div className="w-[40%] aspect-square rounded-full border border-white/5 absolute"></div>
-              <div className="w-[60%] aspect-square rounded-full border border-white/5 absolute"></div>
-              <div className="w-[80%] aspect-square rounded-full border border-white/5 absolute"></div>
-            </div>
-
-            {/* View Project Button */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="px-8 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-medium text-[15px] rounded-[14px] bg-transparent group-hover:bg-white/10 transition-colors backdrop-blur-md">
-                See Project
-              </span>
-            </div>
-
-            {/* Top Badges */}
-            <div className="absolute top-6 left-6 md:top-8 md:left-8 flex flex-wrap gap-2 md:gap-3">
-              <span className="bg-white text-black text-[10px] md:text-[11px] font-bold tracking-widest px-3 md:px-4 py-1.5 md:py-2 rounded-[4px] flex items-center gap-2">
-                <span className="w-2 h-4 border-y-[3px] border-x border-black rounded-[1px] block shrink-0 relative">
-                  <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-black"></span>
-                </span>
-                Production
-              </span>
-              <span className="bg-white text-black text-[10px] md:text-[11px] font-bold uppercase tracking-[0.08em] px-3 md:px-4 py-1.5 md:py-2 rounded-[4px]">
-                PASSION PROJECT
-              </span>
-            </div>
-          </div>
-
-          {/* Gallery Container (Card 2 Replacement) */}
-          <div className="flex-1 min-w-0 h-[320px] md:h-[450px] flex overflow-x-auto scrollbar-hide snap-x gap-4 md:gap-6 pb-2">
+        {/* Project Cards — breaks out of container to right edge */}
+        <div className="mt-16 md:mt-24 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.3s_forwards]" style={{ overflow: 'visible' }}>
+          <div
+            id="solution-projects-scroll"
+            className="flex gap-6 md:gap-4 overflow-x-auto cursor-grab active:cursor-grabbing"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              overscrollBehavior: "contain",
+              marginRight: "calc(-50vw + 50%)",
+              paddingRight: "20px",
+            }}
+          >
             {projects.length > 0 ? (
               projects.map((proj) => {
                 const bestImage =
@@ -151,40 +183,56 @@ const SolutionHero = () => {
                   proj.mainImage?.url ||
                   "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80";
 
+                const projCategories = getCategoriesForProject(proj);
+
                 return (
                   <div
                     key={proj.id}
-                    className="w-[85%] sm:w-[calc(50%-8px)] lg:w-[calc(50%-12px)] shrink-0 h-[320px] md:h-[450px] rounded-[32px] overflow-hidden relative group cursor-pointer shadow-2xl snap-start bg-black/20 border border-white/5"
+                    className="w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(50%-16px)] shrink-0 h-[320px] md:h-[350px] rounded-3xl overflow-hidden relative group cursor-pointer snap-start"
                   >
+                    {/* Thumbnail */}
                     <img
                       src={bestImage}
                       alt={proj.projectName}
                       className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                     />
 
-                    {/* View Project Button */}
-                    {proj.buttonLink ? (
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                        <a
-                          href={proj.buttonLink}
-                          className="px-6 py-3 border-[1.5px] border-white/60 text-white font-primary font-medium text-[13px] md:text-[14px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/80 transition-colors"
-                        >
-                          {proj.buttonText || "See Project"}
-                        </a>
-                      </div>
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                        <span className="px-6 py-3 border-[1.5px] border-white/60 text-white font-primary font-medium text-[13px] md:text-[14px] rounded-[14px] bg-black/40 backdrop-blur-md">
-                          {proj.buttonText || "See Project"}
-                        </span>
-                      </div>
-                    )}
+                    {/* Dark overlay on hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300" />
 
-                    {/* Top Badges */}
-                    <div className="absolute top-6 left-6 md:top-8 md:left-8 flex flex-wrap gap-2 z-10 w-[calc(100%-48px)]">
-                      <span className="bg-white text-black text-[10px] md:text-[11px] font-bold tracking-widest px-3 md:px-4 py-1.5 md:py-2 rounded-[4px] shadow-sm truncate max-w-full uppercase">
-                        {proj.projectName || "Project"}
-                      </span>
+                    {/* See Project Button — center */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                      <a
+                        href={proj.buttonLink || "#"}
+                        className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline"
+                      >
+                        See Project
+                      </a>
+                    </div>
+
+                    {/* Top Badges — Category icons + names */}
+                    <div className="absolute top-6 left-6 md:top-8 md:left-8 flex flex-wrap gap-2 z-10">
+                      {projCategories.length > 0 ? (
+                        projCategories.map((cat) => (
+                          <span
+                            key={cat.id}
+                            className="inline-flex items-center gap-1.5 bg-white text-black text-[10px] md:text-[11px] font-bold tracking-wider px-3 md:px-4 py-1.5 md:py-2 rounded-[4px] shadow-sm uppercase"
+                          >
+                            {cat.categoryIcon?.url && (
+                              <img
+                                src={cat.categoryIcon.url}
+                                alt=""
+                                className="w-3.5 h-3.5 object-contain"
+                              />
+                            )}
+                            {cat.categoryName}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="bg-white text-black text-[10px] md:text-[11px] font-bold tracking-widest px-3 md:px-4 py-1.5 md:py-2 rounded-[4px] shadow-sm truncate max-w-full uppercase">
+                          {proj.projectName || "Project"}
+                        </span>
+                      )}
                     </div>
                   </div>
                 );

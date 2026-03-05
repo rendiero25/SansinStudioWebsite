@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getSection } from "../../services/sectionApi";
 
 interface SubItem {
@@ -48,6 +48,9 @@ const renderStyledText = (text: string) => {
 const Section5 = () => {
   const [data, setData] = useState<Section5Data>({});
   const [loaded, setLoaded] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,17 +66,38 @@ const Section5 = () => {
     fetchData();
   }, []);
 
+  // Prevent default wheel on native event to stop page scroll
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const preventScroll = (e: WheelEvent) => {
+      const hasOverflow = container.scrollWidth > container.clientWidth;
+      if (!hasOverflow) return;
+
+      // Always prevent page scroll when hovering over the cards
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Convert vertical scroll to horizontal
+      container.scrollLeft += e.deltaY;
+    };
+
+    container.addEventListener("wheel", preventScroll, { passive: false });
+    return () => container.removeEventListener("wheel", preventScroll);
+  }, [loaded]);
+
   if (!loaded) return null;
 
   const labelBtn = data.label || { text: "Solutions", link: "#" };
 
   return (
-    <section className="relative w-full bg-white py-20 md:py-28 overflow-hidden">
+    <section className="relative w-full bg-white py-20 md:py-28" style={{ overflowX: 'clip', overflowY: 'visible' }}>
       {/* Subtle purple glow at top */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#7c3aed]/8 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
-        <div className="flex flex-col justify-between xl:flex-row gap-10 md:gap-10">
+      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20" style={{ overflow: 'visible' }}>
+        <div className="flex flex-col justify-between xl:flex-row gap-10 md:gap-20" style={{ overflow: 'visible' }}>
           {/* Left: Title + Label */}
           <div className="md:max-w-[450px] shrink-0">
             <h2 className="font-primary text-[28px] md:text-[42px] font-normal text-black leading-[1.15] tracking-[-0.03em] m-0 mb-12">
@@ -90,13 +114,23 @@ const Section5 = () => {
             </a>
           </div>
 
-          {/* Right: Solution Cards */}
+          {/* Right: Solution Cards — breaks out of container to right edge */}
           {data.solutions && data.solutions.length > 0 && (
-            <div className="flex-1 flex gap-5 overflow-x-auto pb-6 scrollbar-hide snap-x">
+            <div
+              ref={scrollRef}
+              className="flex-1 flex gap-10 overflow-x-auto pb-6 scrollbar-hide snap-x cursor-grab active:cursor-grabbing"
+              style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                marginRight: "calc(-50vw + 50%)",
+                paddingRight: "20px",
+                overscrollBehavior: "contain",
+              }}
+            >
               {data.solutions.map((solution) => (
                 <div
                   key={solution.id}
-                  className="snap-start min-w-[280px] w-[300px] shrink-0 bg-white border border-[#E5E5E5] rounded-xl p-7 flex flex-col justify-between min-h-[420px]"
+                  className="snap-start min-w-[340px] w-[330px] xl:w-[380px] shrink-0 bg-white border border-[#E5E5E5] rounded-xl p-8 flex flex-col justify-between min-h-[500px]"
                 >
                   <div className="h-full flex flex-col justify-between items-start">
                     {/* Icon + Title */}

@@ -27,7 +27,7 @@ const Home = () => {
 
       <style>{`
         .home-page {
-          background: #0a0a0a;
+          background: #ffffff;
           color: #fff;
           min-height: 100vh;
           overflow-x: hidden;

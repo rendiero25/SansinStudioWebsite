@@ -59,21 +59,11 @@ const Header = () => {
                 alt="Sanxin Studio"
                 className="h-[35px] w-auto object-contain"
               />
-            ) : (
-              <svg
-                className="w-8 h-8"
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M20 4L32 12V28L20 36L8 28V12L20 4Z" fill="#1a1a1a" />
-                <path d="M20 10L27 15V25L20 30L13 25V15L20 10Z" fill="#fff" />
-              </svg>
-            )}
+            ) : ("")}
           </Link>
 
           {/* Nav Links */}
-          <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          <nav className="hidden lg:flex items-center gap-15 absolute left-1/2 -translate-x-1/2">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
@@ -89,7 +79,7 @@ const Header = () => {
           <div className="hidden lg:block shrink-0">
             <Link
               to={ctaButton.link}
-              className="inline-flex items-center justify-center px-8 py-2 bg-black hover:bg-[#333] text-white no-underline text-[17px] font-medium font-primary rounded-xl transition-all hover:-translate-y-[px] tracking-tight"
+              className="inline-flex items-center justify-center px-8 py-2 bg-black hover:bg-[#333] text-white no-underline text-[17px] font-medium font-primary rounded-lg transition-all hover:-translate-y-[px] tracking-tight"
             >
               {ctaButton.text}
             </Link>

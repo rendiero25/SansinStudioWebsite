@@ -42,6 +42,49 @@ const SolutionCategories = () => {
     fetchData();
   }, []);
 
+  // Attach wheel → horizontal scroll via DOM ID
+  useEffect(() => {
+    // Wait one tick for React to render the element
+    const timer = setTimeout(() => {
+      const container = document.getElementById("features-scroll");
+      if (!container) return;
+
+      const handleWheel = (e: WheelEvent) => {
+        if (container.scrollWidth <= container.clientWidth) return;
+        e.preventDefault();
+        e.stopPropagation();
+        container.scrollLeft += e.deltaY;
+      };
+
+      container.addEventListener("wheel", handleWheel, { passive: false });
+
+      // Calculate explicit width to exactly hit the right screen edge
+      const setBreakoutWidth = () => {
+        if (!container.parentElement) return;
+        const rect = container.parentElement.getBoundingClientRect();
+        // Fill from this element's left edge to the right edge of the window
+        container.style.width = `${window.innerWidth - rect.left}px`;
+      };
+      
+      setBreakoutWidth();
+      window.addEventListener("resize", setBreakoutWidth);
+
+      // Store cleanup ref on the element itself
+      (container as HTMLElement & { __wheelCleanup?: () => void }).__wheelCleanup = () => {
+        container.removeEventListener("wheel", handleWheel);
+        window.removeEventListener("resize", setBreakoutWidth);
+      };
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      const container = document.getElementById("features-scroll") as (HTMLElement & { __wheelCleanup?: () => void }) | null;
+      if (container && container.__wheelCleanup) {
+        container.__wheelCleanup();
+      }
+    };
+  }, [activeCategoryId]); // Re-attach when category changes
+
   if (!loaded) return null;
   if (!categories || categories.length === 0) return null;
 
@@ -53,21 +96,21 @@ const SolutionCategories = () => {
     categories.find((cat) => cat.id === activeCategoryId) || categories[0];
 
   return (
-    <section className="w-full bg-white text-black py-24 md:py-32 relative">
-      <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-20">
+    <section className="w-full bg-white text-black py-15 md:py-25 relative" style={{ overflowX: 'clip', overflowY: 'visible' }}>
+      <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-5 xl:gap-20" style={{ overflow: 'visible' }}>
         {/* Top Header & Tabs Area */}
         <div className="flex flex-col xl:flex-row justify-between items-start gap-12 w-full">
           {/* Left Sticky Title "Solutions" */}
-          <div className="w-full xl:w-auto shrink-0 xl:sticky xl:top-32 h-auto text-left z-10">
+          <div className="w-full xl:w-auto shrink-0 xl:sticky xl:top-32 h-auto text-left z-10 mt-4">
             <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0">
               Solutions
             </h2>
           </div>
 
           {/* Right Tabs */}
-          <div className="w-full xl:w-auto overflow-x-auto pb-4 xl:pb-0 scrollbar-hide">
-            <div className="inline-flex flex-row items-center p-4 bg-white rounded-xl shadow-2xl border border-black/5 min-w-max gap-12">
-              <span className="uppercase text-black/50 text-md ml-2">
+          <div className="w-full xl:w-auto pb-4 xl:pb-0 scrollbar-hide">
+            <div className="inline-flex w-full flex-col xl:flex-row items-center p-4 m-2 bg-white rounded-xl shadow-md border border-black/5 min-w-max gap-5">
+              <span className="uppercase text-black/50 text-md xl:ml-2 xl:mr-12">
                 Category
               </span>
 
@@ -75,7 +118,7 @@ const SolutionCategories = () => {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategoryId(cat.id)}
-                  className={`flex items-center gap-2 px-12 py-3 rounded-lg font-primary text-[14px] md:text-[15px] font-medium transition-all focus:outline-none whitespace-nowrap ${
+                  className={`cursor-pointer flex items-center gap-2 px-12 py-2 rounded-lg font-primary text-[14px] md:text-[15px] font-medium transition-all focus:outline-none whitespace-nowrap ${
                     activeCategoryId === cat.id
                       ? "bg-[#e0e0e0] text-black"
                       : "bg-transparent text-black/50 hover:text-black/80 hover:bg-black/5"
@@ -118,7 +161,7 @@ const SolutionCategories = () => {
             </p>
 
             {activeCategory.categoryImage?.url && (
-              <div className="w-[450px] h-[300px] overflow-hidden drop-shadow-md relative bg-white mt-4">
+              <div className="w-full xl:w-[500px] h-[300px] overflow-hidden drop-shadow-md relative bg-white mt-4">
                 <img
                   src={activeCategory.categoryImage.url}
                   alt={activeCategory.categoryName}
@@ -129,19 +172,19 @@ const SolutionCategories = () => {
           </div>
 
           {/* Right side: Methods */}
-          <div className="flex flex-col gap-8 w-full xl:w-[55%] mt-12 xl:mt-0">
+          <div className="flex flex-col gap-8 w-full xl:w-[55%] mt-12 xl:mt-0 min-w-0">
             {activeCategory.methods && activeCategory.methods.length > 0 && (
-              <div className="flex flex-col gap-4 w-full">
+              <div className="flex flex-col gap-4 w-full min-w-0">
                 {activeCategory.methods.map((method) => {
                   const isOpen = openMethodId === method.id;
                   return (
                     <div
                       key={method.id}
-                      className={`flex flex-col border border-black/10 rounded-2xl overflow-hidden transition-all duration-300 w-full bg-white shadow-sm ${isOpen ? "bg-[#f0f0f0]" : "hover:border-black/20"}`}
+                      className={`flex flex-col rounded-2xl md:rounded-[24px] overflow-hidden transition-all duration-300 w-full min-w-0 ${isOpen ? "bg-[#D9D9D9]" : "bg-white border border-black/10 hover:border-black/20 shadow-sm"}`}
                     >
                       {/* Accordion Header */}
                       <button
-                        className="w-full flex items-center justify-between p-6 md:p-8 bg-transparent border-none cursor-pointer text-left focus:outline-none"
+                        className="w-full flex items-center justify-between p-6 md:p-4 bg-transparent border-none cursor-pointer text-left focus:outline-none"
                         onClick={() => toggleMethod(method.id)}
                       >
                         <div className="flex items-center gap-4">
@@ -149,17 +192,17 @@ const SolutionCategories = () => {
                             <img
                               src={method.methodIcon.url}
                               alt=""
-                              className="w-5 h-5 object-contain opacity-80"
+                              className="w-6 h-6 md:w-8 md:h-8 object-contain opacity-90"
                             />
                           )}
                           <span
-                            className={`font-primary text-[20px] md:text-[22px] font-medium tracking-tight ${isOpen ? "text-black" : "text-black/80"}`}
+                            className={`font-primary text-[24px] font-bold tracking-tight ${isOpen ? "text-black" : "text-black/80"}`}
                           >
                             {method.methodName}
                           </span>
                         </div>
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-300 ${isOpen ? "bg-black text-white rotate-180" : "bg-black/5 text-black"}`}
+                          className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 ${isOpen ? "bg-black text-white rotate-180" : "bg-black/5 text-black"}`}
                         >
                           <svg
                             width="14"
@@ -178,51 +221,55 @@ const SolutionCategories = () => {
 
                       {/* Accordion Content */}
                       <div
-                        className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[1500px] opacity-100 pb-8" : "max-h-0 opacity-0"}`}
+                        className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[1500px] opacity-100 pb-2" : "max-h-0 opacity-0"}`}
                       >
-                        <div className="px-6 md:px-8 flex flex-col gap-4 w-full">
-                          {method.details?.map((detail) => (
-                            <div
-                              key={detail.id}
-                              className="bg-white p-6 md:p-8 rounded-xl w-full border border-black/5 shadow-sm"
-                            >
-                              <h5 className="font-primary text-[15px] font-bold text-black uppercase tracking-wide m-0 mb-3">
-                                {detail.detailName}
-                              </h5>
-                              <p className="font-primary text-[14px] leading-[1.6] text-black/60 m-0 mb-6">
-                                {detail.detailDesc}
-                              </p>
-
-                              {/* Keywords / Tags */}
-                              {detail.detailKeywords && (
-                                <div className="flex flex-wrap gap-x-4 items-center">
-                                  {detail.detailKeywords
-                                    .split(",")
-                                    .map((kw, i) => (
-                                      <span
-                                        key={i}
-                                        className="text-[11px] font-bold text-black/40 uppercase tracking-wider relative flex items-center gap-4"
-                                      >
-                                        {i > 0 && (
-                                          <span className="w-px h-3 bg-black/20 absolute -left-2 top-1/2 -translate-y-1/2"></span>
-                                        )}
-                                        {kw.trim()}
-                                      </span>
-                                    ))}
+                        <div className="flex flex-col w-full">
+                          {/* Horizontally scrolling row */}
+                          <div className="px-6 md:px-8 flex overflow-x-auto gap-4 md:gap-6 w-full pb-6 pt-2 snap-x scrollbar-hide">
+                            {method.details?.map((detail) => (
+                              <div
+                                key={detail.id}
+                                className="bg-white p-6 md:p-8 rounded-[16px] w-[300px] md:w-[350px] shrink-0 border border-black/5 shadow-sm snap-start flex flex-col justify-between min-h-[220px]"
+                              >
+                                <div>
+                                  <h5 className="font-primary text-[18px] md:text-[20px] font-bold text-black uppercase tracking-wide m-0 mb-4">
+                                    {detail.detailName}
+                                  </h5>
+                                  <p className="font-primary text-[14px] md:text-[15px] leading-[1.5] text-black/60 m-0 mb-8">
+                                    {detail.detailDesc}
+                                  </p>
                                 </div>
-                              )}
-                            </div>
-                          ))}
+
+                                {/* Keywords / Tags */}
+                                {detail.detailKeywords && (
+                                  <div className="flex flex-wrap gap-2 items-center mt-auto">
+                                    {detail.detailKeywords
+                                      .split(",")
+                                      .map((kw, i) => (
+                                        <span
+                                          key={i}
+                                          className="text-[11px] font-bold text-black bg-black/10 px-3 py-1.5 rounded-md uppercase tracking-wide"
+                                        >
+                                          {kw.trim()}
+                                        </span>
+                                      ))}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
 
                           {/* Delivery Time Box */}
                           {method.deliveryTime && (
-                            <div className="bg-white mt-4 p-5 rounded-xl flex flex-col items-center justify-center gap-1 w-max border border-black/5 shadow-sm px-10">
-                              <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest">
-                                Est. Delivery Time
-                              </span>
-                              <span className="text-[18px] font-bold text-black tracking-tight mt-1">
-                                {method.deliveryTime}
-                              </span>
+                            <div className="px-6 md:px-8 flex pb-6">
+                              <div className="bg-white px-8 py-4 md:py-5 rounded-[12px] flex flex-col items-center justify-center gap-1 w-max shadow-sm border border-black/5">
+                                <span className="text-[9px] md:text-[10px] font-bold text-black/40 uppercase tracking-widest">
+                                  Est. Delivery Time
+                                </span>
+                                <span className="text-[16px] md:text-[20px] font-bold text-black tracking-tight mt-1">
+                                  {method.deliveryTime}
+                                </span>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -235,15 +282,15 @@ const SolutionCategories = () => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-20">
+        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-20 mt-10">
           {/* Approach / Section Title underneath Image */}
-          <div className="flex flex-col gap-4 mt-4 xl:mt-8 w-full xl:w-[400px] shrink-0">
-            <span className="border-t border-black/50 w-[50px]"></span>
-            <h4 className="uppercase font-primary text-[12px] font-normal leading-tight tracking-tight m-0 max-w-[400px]">
+          <div className="flex flex-col gap-4 mt-4 xl:mt-8 w-full xl:w-[450px] shrink-0">
+            <span className="border-t-3 border-black/50 w-[100px] "></span>
+            <h4 className="uppercase font-primary text-[12px] font-medium leading-tight tracking-tight m-0 max-w-[450px]">
               {activeCategory.sectionTitle}
             </h4>
             {activeCategory.sectionDesc && (
-              <p className="font-primary text-[35px] text-black leading-tight max-w-[850px] m-0">
+              <p className="font-primary text-[35px] text-black leading-tight max-w-[1000px] m-0">
                 {activeCategory.sectionDesc}
               </p>
             )}
@@ -257,23 +304,34 @@ const SolutionCategories = () => {
             )}
           </div>
 
-          {/* Features Scroll Row */}
+          {/* Features Scroll Row - breaks out of container to right edge */}
           {activeCategory.features && activeCategory.features.length > 0 && (
-            <div className="w-full xl:w-[calc(100%-480px)] overflow-hidden">
-              <div className="flex flex-col xl:flex-row gap-6 w-full xl:overflow-x-auto scrollbar-hide snap-x auto-cols-max pb-8 xl:pt-4 pl-[2px] pr-8">
+            <div className="w-full xl:w-[calc(100%-480px)] opacity-0 translate-y-8 animate-[fadeIn_0.5s_ease-out_0.3s_forwards]" style={{ overflow: 'visible' }}>
+              <div 
+                id="features-scroll"
+                className="flex gap-6 overflow-x-auto cursor-grab active:cursor-grabbing pb-8 pt-4 pl-[2px]"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  overscrollBehavior: "contain",
+                  paddingRight: "20px",
+                }}
+              >
                 {activeCategory.features.map((f, i) => {
-                  const feature = f as any;
+                  const feature = f as Record<string, unknown>;
+                  const featureIcon = feature.icon as { url: string; publicId: string } | null | undefined;
+                  console.log(`Feature ${i}:`, feature.title, '| icon:', featureIcon?.url || 'NONE', '| raw icon:', JSON.stringify(feature.icon));
                   return (
                     <div
-                      key={i}
-                      className="flex flex-col bg-white rounded-2xl md:rounded-[32px] p-8 md:p-12 shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-shadow duration-300 border border-black/5 w-full xl:w-[420px] shrink-0 snap-start"
+                      key={(feature.id as string) || `feature-${i}`}
+                      className="flex flex-col gap-10 bg-white rounded-2xl md:rounded-[32px] p-8 md:p-12 shadow-md transition-shadow duration-300 border border-black/5 w-full xl:w-[420px] shrink-0"
                     >
-                      <div className="bg-black text-white w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-8 shrink-0">
-                        {feature.icon?.url ? (
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shrink-0">
+                        {featureIcon?.url ? (
                           <img
-                            src={feature.icon.url}
-                            alt=""
-                            className="w-7 h-7 md:w-8 md:h-8 object-contain"
+                            src={featureIcon.url}
+                            alt={`icon-${i}`}
+                            className="w-7 h-7 md:w-15 md:h-15 object-contain"
                           />
                         ) : (
                           <span className="text-[20px] md:text-[22px] font-bold">
@@ -282,24 +340,26 @@ const SolutionCategories = () => {
                         )}
                       </div>
 
-                      <h5 className="font-primary text-[28px] md:text-[32px] font-bold leading-tight tracking-[-0.01em] mb-4 text-black">
+                      <h5 className="font-primary text-[28px] md:text-[32px] max-w-[200px] font-bold leading-tight tracking-[-0.01em] text-black">
                         {String(feature.title || "")}
                       </h5>
-                      <p className="font-primary text-[15px] md:text-[16px] leading-[1.6] text-black/60 m-0 flex-1">
+
+                      <p className="font-primary text-[15px] md:text-[20px] leading-[1.6] text-black/60 -mt-5 flex-1">
                         {String(feature.description || "")}
                       </p>
-                      {feature.keywords &&
-                        typeof feature.keywords === "string" && (
-                          <div className="flex flex-wrap gap-x-4 gap-y-2 items-center mt-10 pt-6 border-t border-black/5">
-                            {feature.keywords
+
+                      {typeof feature.keywords === "string" &&
+                        feature.keywords && (
+                          <div className="flex flex-wrap gap-x-4 items-center">
+                            {(feature.keywords as string)
                               .split(",")
                               .map((kw: string, j: number) => (
                                 <span
                                   key={j}
-                                  className="text-[11px] font-bold text-black/50 uppercase tracking-[0.05em] relative flex items-center gap-4"
+                                  className="text-[11px] font-medium text-black uppercase tracking-[0.05em] relative flex items-center gap-4"
                                 >
                                   {j > 0 && (
-                                    <span className="w-px h-3 bg-black/20 absolute -left-2 top-1/2 -translate-y-1/2"></span>
+                                    <span className="w-0.5 h-4 bg-black/50 absolute -left-2 top-1/2 -translate-y-1/2"></span>
                                   )}
                                   {kw.trim()}
                                 </span>
@@ -317,7 +377,7 @@ const SolutionCategories = () => {
 
       {/* Category overall get started button - placed below features matching design */}
       {globalButton && (
-        <div className="flex justify-end mt-8 container mx-auto px-6 md:px-12 xl:px-20">
+        <div className="flex justify-center xl:justify-end mt-8 container mx-auto px-6 md:px-12 xl:px-20">
           <a
             href={globalButton.link}
             className="inline-flex items-center justify-center px-16 py-4 bg-[#8B5CF6] text-white rounded-xl text-[17px] font-primary font-bold hover:bg-[#7C3AED] transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300"
