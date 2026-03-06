@@ -293,15 +293,18 @@ const SolutionCategories = () => {
 
                                 {/* Keywords / Tags */}
                                 {detail.detailKeywords && (
-                                  <div className="flex flex-wrap gap-2 items-center mt-auto">
+                                  <div className="flex flex-wrap items-center gap-y-3 mt-auto">
+                                    {/* Leading separator */}
+                                    <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
                                     {detail.detailKeywords
                                       .split(",")
                                       .map((kw, i) => (
                                         <span
                                           key={i}
-                                          className="text-[10px] font-bold text-black bg-black/10 px-3 py-1.5 rounded-md uppercase tracking-wide"
+                                          className="text-[10px] font-bold text-black uppercase tracking-wide flex items-center"
                                         >
                                           {kw.trim()}
+                                          <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
                                         </span>
                                       ))}
                                   </div>
@@ -414,18 +417,18 @@ const SolutionCategories = () => {
 
                       {typeof feature.keywords === "string" &&
                         feature.keywords && (
-                          <div className="flex flex-wrap gap-x-4 items-center">
+                          <div className="flex flex-wrap items-center gap-y-3 mt-auto pt-8">
+                            {/* Leading separator */}
+                            <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
                             {(feature.keywords as string)
                               .split(",")
                               .map((kw: string, j: number) => (
                                 <span
                                   key={j}
-                                  className="text-[11px] font-medium text-black uppercase tracking-[0.05em] relative flex items-center gap-4"
+                                  className="text-[11px] font-bold text-black uppercase tracking-[0.05em] relative flex items-center"
                                 >
-                                  {j > 0 && (
-                                    <span className="w-0.5 h-4 bg-black/50 absolute -left-2 top-1/2 -translate-y-1/2"></span>
-                                  )}
                                   {kw.trim()}
+                                  <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
                                 </span>
                               ))}
                           </div>

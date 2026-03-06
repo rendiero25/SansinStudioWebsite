@@ -7,6 +7,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Home from "./pages/Home";
 import Solution from "./pages/Solution";
 import Works from "./pages/Works";
+import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
 
 // Home Section Editors
 import HeaderEditor from "./pages/admin/home/HeaderEditor";
@@ -33,6 +35,7 @@ import WorksSection3Editor from "./pages/admin/works/Section3Editor";
 // Projects Section Editors
 import ProjectsSection1Editor from "./pages/admin/projects/Section1Editor";
 import ProjectsSection2Editor from "./pages/admin/projects/Section2Editor";
+import ProjectsSection3Editor from "./pages/admin/projects/Section3Editor";
 
 // FAQ Editor
 import FAQEditor from "./pages/admin/faq/FAQEditor";
@@ -46,6 +49,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/solutions" element={<Solution />} />
           <Route path="/works" element={<Works />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
 
           {/* Admin Login */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -103,6 +108,10 @@ function App() {
             <Route
               path="projects/section2"
               element={<ProjectsSection2Editor />}
+            />
+            <Route
+              path="projects/section3"
+              element={<ProjectsSection3Editor />}
             />
           </Route>
         </Routes>

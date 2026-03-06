@@ -76,10 +76,21 @@ const WorksProcess = () => {
 
       container.addEventListener("wheel", handleWheel, { passive: false });
 
+      // Calculate explicit width to exactly hit the right screen edge
+      const setBreakoutWidth = () => {
+        if (!container.parentElement) return;
+        const rect = container.parentElement.getBoundingClientRect();
+        container.style.width = `${window.innerWidth - rect.left}px`;
+      };
+
+      setBreakoutWidth();
+      window.addEventListener("resize", setBreakoutWidth);
+
       (
         container as HTMLElement & { __processWheelCleanup?: () => void }
       ).__processWheelCleanup = () => {
         container.removeEventListener("wheel", handleWheel);
+        window.removeEventListener("resize", setBreakoutWidth);
       };
     }, 100);
 
@@ -120,9 +131,9 @@ const WorksProcess = () => {
         </h2>
 
         {/* Main Content: Left Tabs + Right Cards */}
-        <div className="flex flex-col xl:flex-row items-start gap-10 xl:gap-16 w-full">
+        <div className="flex flex-col xl:flex-row xl:gap-16 w-full">
           {/* Left Side: Tabs + Delivery Time */}
-          <div className="flex flex-col gap-8 w-full xl:w-[280px] shrink-0">
+          <div className="flex flex-col justify-between gap-8 w-full xl:w-[280px] shrink-0 self-stretch">
             {/* Process Tabs */}
             <div className="flex flex-col gap-3 w-full xl:w-[280px]">
               {processes.map((process) => {
@@ -152,7 +163,7 @@ const WorksProcess = () => {
 
             {/* Est. Delivery Time */}
             {timeline.deliveryTime && (
-              <div className="bg-white px-8 py-4 rounded-xl flex flex-col items-center justify-center gap-1 w-full xl:w-[280px] shadow-sm border border-black/8">
+              <div className="bg-white px-8 py-2 rounded-xl flex flex-col items-center justify-center gap-1 w-full xl:w-[280px] shadow-sm border border-black/8">
                 <span className="text-[9px] md:text-[10px] font-bold text-black/40 uppercase tracking-widest">
                   Est. Delivery Time
                 </span>
@@ -165,15 +176,17 @@ const WorksProcess = () => {
 
           {/* Right Side: Detail Cards (horizontal scroll) */}
           <div
-            className="flex-1 w-full min-w-0"
+            className="flex-1 w-full min-w-0 mt-15 xl:mt-0"
             style={{ overflow: "visible" }}
           >
             <div
               data-process-scroll={activeProcessId}
-              className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide"
+              className="flex gap-5 overflow-x-auto scrollbar-hide pr-[2px]"
               style={{
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
+                overscrollBehavior: "contain",
+                paddingRight: "40px",
               }}
             >
               {activeProcess.details?.map((detail, i) => (
@@ -210,28 +223,25 @@ const WorksProcess = () => {
 
                   {/* Keywords / Tags */}
                   {detail.detailKeywords && (
-                    <div className="flex flex-wrap items-center gap-0 mt-8">
+                    <div className="flex flex-wrap items-center gap-y-3 mt-8">
+                      {/* Leading separator */}
+                      <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
                       {detail.detailKeywords.split(",").map((kw, j) => (
                         <span
                           key={j}
                           className="text-[10px] font-bold text-black uppercase tracking-wide flex items-center"
                         >
-                          <span className="w-[1.5px] h-[14px] bg-black/30 mx-3 first:hidden"></span>
-                          {j > 0 && (
-                            <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
-                          )}
                           {kw.trim()}
+                          <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
                         </span>
                       ))}
-                      {/* Trailing separator */}
-                      <span className="w-[1.5px] h-[14px] bg-black/30 ml-3"></span>
                     </div>
                   )}
                 </div>
               ))}
 
               {/* Next card arrow indicator */}
-              {activeProcess.details && activeProcess.details.length > 1 && (
+              {/* {activeProcess.details && activeProcess.details.length > 1 && (
                 <div className="flex items-center shrink-0 pr-4">
                   <div className="w-10 h-10 rounded-full bg-[#8B5CF6] flex items-center justify-center shadow-lg">
                     <svg
@@ -248,13 +258,13 @@ const WorksProcess = () => {
                     </svg>
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>
 
         {/* Bottom Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
+        <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
           <button className="cursor-pointer px-12 py-3 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 min-w-[180px]">
             {btn1}
           </button>

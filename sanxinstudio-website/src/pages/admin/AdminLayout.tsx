@@ -108,6 +108,7 @@ const AdminLayout = () => {
       subItems: [
         { label: "Section 1", path: "/admin/projects/section1", icon: "🎬" },
         { label: "Section 2", path: "/admin/projects/section2", icon: "🚀" },
+        { label: "Section 3", path: "/admin/projects/section3", icon: "🎯" },
       ],
     },
     { label: "Contacts", icon: "📞", path: "#" },

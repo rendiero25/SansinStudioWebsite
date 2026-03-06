@@ -52,7 +52,13 @@ const renderStyledText = (text: string) => {
   });
 };
 
-const Footer = ({ hideCta = false }: { hideCta?: boolean }) => {
+const Footer = ({
+  hideCta = false,
+  backgroundImageOverride,
+}: {
+  hideCta?: boolean;
+  backgroundImageOverride?: string;
+}) => {
   const [data, setData] = useState<FooterData>({});
   const [loaded, setLoaded] = useState(false);
 
@@ -73,6 +79,7 @@ const Footer = ({ hideCta = false }: { hideCta?: boolean }) => {
   if (!loaded) return null;
 
   const bgImage =
+    backgroundImageOverride ||
     data.backgroundImage?.url ||
     "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80";
   const ctaHeading =
@@ -99,19 +106,15 @@ const Footer = ({ hideCta = false }: { hideCta?: boolean }) => {
   return (
     <footer
       className="w-full relative overflow-hidden pt-20 bg-black"
-      style={
-        data.backgroundImage?.url
-          ? {
-              backgroundImage: `url(${data.backgroundImage.url})`,
-              backgroundSize: "cover",
-              backgroundPosition: "top center",
-              backgroundRepeat: "no-repeat",
-            }
-          : {}
-      }
+      style={{
+        backgroundImage: bgImage ? `url(${bgImage})` : "none",
+        backgroundSize: "cover",
+        backgroundPosition: "top center",
+        backgroundRepeat: "no-repeat",
+      }}
     >
       {/* Fallback gradient if no image */}
-      {!data.backgroundImage?.url && (
+      {!bgImage && (
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0" />
       )}
 
@@ -150,7 +153,7 @@ const Footer = ({ hideCta = false }: { hideCta?: boolean }) => {
         )}
 
         {/* Middle: Links & Contact */}
-        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-16 lg:gap-8 border-b border-white/0.08 pb-24 md:pb-32">
+        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-16 lg:gap-8 pb-24 md:pb-32">
           {/* Left: Want to discover... */}
           <div className="flex flex-col gap-4">
             <p className="font-primary text-[15px] md:text-[16px] text-white/80 m-0 leading-[1.3] max-w-[200px]">
@@ -231,12 +234,12 @@ const Footer = ({ hideCta = false }: { hideCta?: boolean }) => {
           </div>
 
           <div className="w-full md:w-auto flex flex-col sm:flex-row items-start sm:items-center justify-between md:justify-end gap-8 md:gap-16">
-            <p className="font-primary text-[14px] text-white/80 m-0 max-w-[150px] leading-[1.3]">
+            <p className="font-primary text-[14px] text-white m-0 w-[200px] leading-[1.3]">
               Visit us on other
               <br />
               platforms
             </p>
-            <div className="flex flex-wrap items-center gap-6 2xl:gap-4 w-[70%]">
+            <div className="flex flex-wrap items-center justify-start lg:justify-end gap-6 2xl:gap-4 w-[70%]">
               {/* Fallback mock icons if no social links in CMS */}
               {(data.socialLinks || Array(5).fill(null)).map((item, i) => (
                 <a

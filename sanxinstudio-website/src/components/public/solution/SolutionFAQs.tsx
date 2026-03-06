@@ -225,12 +225,12 @@ const SolutionFAQs = () => {
           </div>
 
           <div className="w-full md:w-auto flex flex-col sm:flex-row items-start sm:items-center justify-between md:justify-end gap-8 md:gap-16">
-            <p className="font-primary text-[14px] text-white/80 m-0 max-w-[150px] leading-[1.3]">
+            <p className="font-primary text-[14px] text-white m-0 w-[200px] leading-[1.3]">
               Visit us on other
               <br />
               platforms
             </p>
-            <div className="flex flex-wrap items-center gap-6 2xl:gap-4 w-[70%]">
+            <div className="flex flex-wrap items-center justify-end gap-6 2xl:gap-4 w-[70%]">
               {/* Fallback mock icons if no social links in CMS */}
               {(footerData.socialLinks || Array(5).fill(null)).map(
                 (item, i) => (
@@ -243,12 +243,10 @@ const SolutionFAQs = () => {
                       <img
                         src={item.icon.url}
                         alt={item.platform}
-                        className="w-4 h-4 object-contain invert"
+                        className="w-5 h-5 object-contain"
                       />
                     ) : (
-                      <span className="text-white text-[10px] uppercase font-bold">
-                        {["IG", "X", "FB", "TK", "IN", "YT"][i] || "Scl"}
-                      </span>
+                      <div className="w-4 h-4 rounded-full bg-white/50"></div> // Placeholder circle
                     )}
                   </a>
                 ),

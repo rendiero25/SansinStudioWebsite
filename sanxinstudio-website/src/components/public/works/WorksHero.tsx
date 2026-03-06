@@ -206,7 +206,7 @@ const WorksHero = () => {
           <div className="mt-2 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.5s_forwards]">
             <div
               ref={scrollContainerRef}
-              className={`w-full h-[350px] md:h-[600px] overflow-hidden rounded-2xl md:rounded-3xl bg-[#EEEEEE] select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+              className={`w-full h-[350px] md:h-[600px] overflow-hidden shadow-md rounded-2xl md:rounded-3xl bg-[#EEEEEE] select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
               onMouseDown={onMouseDown}
               onMouseLeave={onMouseLeave}
               onMouseUp={onMouseUp}

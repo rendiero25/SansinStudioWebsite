@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../../services/sectionApi";
 
 interface HeroData {
@@ -202,12 +203,12 @@ const SolutionHero = () => {
 
                     {/* See Project Button — center */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                      <a
-                        href={proj.buttonLink || "#"}
+                      <Link
+                        to={`/projects/${proj.id}`}
                         className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline"
                       >
                         See Project
-                      </a>
+                      </Link>
                     </div>
 
                     {/* Top Badges — Category icons + names */}
