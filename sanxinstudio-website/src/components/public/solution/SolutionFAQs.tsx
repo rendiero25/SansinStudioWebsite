@@ -77,17 +77,17 @@ const SolutionFAQs = () => {
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0" />
       )}
 
-      <div className="container relative mx-auto px-6 md:px-12 xl:px-20 max-w-[1440px] z-10">
+      <div className="container relative mx-auto px-6 md:px-12 xl:px-20 w-full z-10">
         {/* FAQ Container Box (Acting as CTA in Footer) */}
-        <div className="w-full flex flex-col bg-white rounded-[24px] border border-black/20 overflow-hidden shadow-xl mb-24 md:mb-32 relative z-20">
+        <div className="w-full flex flex-col bg-white rounded-xl border border-black/20 overflow-hidden shadow-xl mb-24 md:mb-32 relative z-20">
           {/* FAQ Header & Intro */}
           <div className="w-full flex flex-col md:flex-row items-center justify-between gap-8 p-8 md:p-12 pb-6 border-b border-black/20">
             <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0 shrink-0">
               FAQs
             </h2>
-            
+
             {data.title && (
-              <p className="font-primary text-[14px] md:text-[18px] text-black/60 m-0 max-w-[550px] leading-[1.6]">
+              <p className="font-primary text-[14px] md:text-[18px] text-black/60 max-w-[550px] leading-[1.6]">
                 {data.title}
               </p>
             )}
@@ -108,8 +108,8 @@ const SolutionFAQs = () => {
                   >
                     <div className="size-6 md:size-8 rounded-full bg-black/10 flex items-center justify-center shrink-0">
                       <svg
-                        width="16"
-                        height="16"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -256,16 +256,18 @@ const SolutionFAQs = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Copyright */}
-        <div className="w-full pt-8 pb-12 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="font-primary text-[12px] md:text-[14px] text-white/40 m-0">
+      {/* Very Bottom Strip */}
+      <div className="w-full bg-white py-6 mt-8">
+        <div className="container mx-auto px-5 md:px-12 xl:px-32 2xl:px-0 max-w-[1440px] flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="font-primary text-[11px] font-bold text-black m-0">
             {footerData.copyright ||
               "Copyright Sanxin 2026. All rights reserved."}
           </p>
-          <div className="font-primary text-[12px] md:text-[14px] text-white/40">
+          <p className="font-primary text-[11px] font-bold text-black m-0">
             Jakarta, ID
-          </div>
+          </p>
         </div>
       </div>
     </footer>

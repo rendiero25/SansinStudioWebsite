@@ -115,7 +115,7 @@ const Footer = ({ hideCta = false }: { hideCta?: boolean }) => {
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0" />
       )}
 
-      <div className="container relative mx-auto px-10 md:px-12 xl:px-20 2xl:px-0 max-w-[1440px] z-10">
+      <div className="container relative mx-auto px-10 md:px-12 xl:px-20 z-10">
         {/* Top: CTA Card */}
         {!hideCta && (
           <div className="w-full flex flex-col rounded-3xl overflow-hidden drop-shadow-2xl mb-24 md:mb-32">

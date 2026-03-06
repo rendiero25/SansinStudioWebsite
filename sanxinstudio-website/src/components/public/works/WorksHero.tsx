@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getSection } from "../../../services/sectionApi";
 
 interface HeroData {
   title?: string;
   description?: string;
   brandLogo?: { url: string };
-  mainImage?: { url: string };
+  mainImage?: { url: string; publicId: string };
+  imagePanPosition?: number;
   bgImage?: { url: string };
 }
 
@@ -86,6 +87,14 @@ const WorksHero = () => {
   const [heroData, setHeroData] = useState<HeroData>({});
   const [timeline, setTimeline] = useState<TimelineData>({});
 
+  // Drag-to-scroll state for pannable image
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
+  const [dragScrollLeft, setDragScrollLeft] = useState(0);
+  const [dragScrollTop, setDragScrollTop] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -108,8 +117,49 @@ const WorksHero = () => {
 
   const processes = timeline.processes || [];
 
+  // Set initial scroll position based on CMS panPosition
+  useEffect(() => {
+    if (scrollContainerRef.current && heroData.mainImage) {
+      const container = scrollContainerRef.current;
+      const panPosition =
+        heroData.imagePanPosition !== undefined
+          ? heroData.imagePanPosition
+          : 50;
+
+      setTimeout(() => {
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+        const maxScrollTop = container.scrollHeight - container.clientHeight;
+        container.scrollLeft = maxScrollLeft * (panPosition / 100);
+        container.scrollTop = maxScrollTop / 2;
+      }, 100);
+    }
+  }, [heroData.mainImage, heroData.imagePanPosition]);
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setStartY(e.pageY - scrollContainerRef.current.offsetTop);
+    setDragScrollLeft(scrollContainerRef.current.scrollLeft);
+    setDragScrollTop(scrollContainerRef.current.scrollTop);
+  };
+
+  const onMouseLeave = () => setIsDragging(false);
+  const onMouseUp = () => setIsDragging(false);
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const y = e.pageY - scrollContainerRef.current.offsetTop;
+    const walkX = x - startX;
+    const walkY = y - startY;
+    scrollContainerRef.current.scrollLeft = dragScrollLeft - walkX;
+    scrollContainerRef.current.scrollTop = dragScrollTop - walkY;
+  };
+
   return (
-    <section className="relative w-full min-h-screen flex flex-col pt-32 lg:pt-48 pb-12 overflow-hidden bg-black">
+    <section className="relative w-full min-h-screen flex flex-col pt-32 pb-12 overflow-hidden bg-black">
       {/* Keyframes for fade-up animation */}
       <style>{`
         @keyframes fadeUp {
@@ -124,7 +174,7 @@ const WorksHero = () => {
           <img
             src={heroData.bgImage.url}
             alt="Background"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-bottom"
           />
         )}
       </div>
@@ -139,27 +189,39 @@ const WorksHero = () => {
 
         {/* Framework Section */}
         {processes.length > 0 && (
-          <div className="mt-16 md:mt-24 opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.3s_forwards]">
+          <div className="mt-16 opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.3s_forwards]">
             {/* Section Label */}
-            <div className="flex items-center gap-3 mb-8">
-              <span className="text-[10px] md:text-[11px] font-bold text-white/40 uppercase tracking-[0.2em] leading-tight">
-                SANXIN
-                <br />
-                FRAMEWORK
+            <div className="flex flex-col items-start gap-3 mb-8 w-[200px]">
+              <span className="w-[100px] border-t-2 border-white/50"></span>
+
+              <span className="text-[10px] md:text-[11px] max-w-[100px] font-normal text-white uppercase leading-tight whitespace-pre-line">
+                {heroData.description}
               </span>
             </div>
           </div>
         )}
 
-        {/* Main Image from CMS (like home Section 5 style) */}
+        {/* Pannable Image (drag to scroll like Section6) */}
         {heroData.mainImage?.url && (
-          <div className="bg-gray-500 mt-12 md:mt-16 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.5s_forwards]">
-            <div className="w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl shadow-black/20">
-              <img
-                src={heroData.mainImage.url}
-                alt="Works showcase"
-                className="w-full h-auto object-cover"
-              />
+          <div className="mt-2 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.5s_forwards]">
+            <div
+              ref={scrollContainerRef}
+              className={`w-full h-[350px] md:h-[600px] overflow-hidden rounded-2xl md:rounded-3xl bg-[#EEEEEE] select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+              onMouseDown={onMouseDown}
+              onMouseLeave={onMouseLeave}
+              onMouseUp={onMouseUp}
+              onMouseMove={onMouseMove}
+              style={{ touchAction: "none" }}
+            >
+              <div className="w-fit h-fit min-w-[125%] min-h-[125%] flex items-center justify-center p-10">
+                <img
+                  src={heroData.mainImage.url}
+                  alt="Works showcase"
+                  className="max-w-none pointer-events-none rounded-xl"
+                  style={{ width: "120%", height: "auto" }}
+                  draggable={false}
+                />
+              </div>
             </div>
           </div>
         )}

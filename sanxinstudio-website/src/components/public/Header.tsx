@@ -50,14 +50,14 @@ const Header = () => {
     >
       {/* Main Header Container */}
       <div className="w-full">
-        <div className="container mx-auto flex items-center justify-between h-[75px] px-10 md:px-12 xl:px-20 3xl:px-50">
+        <div className="container mx-auto flex items-center justify-between h-[75px] px-10 md:px-12 xl:px-20">
           {/* Logo */}
           <Link to="/" className="shrink-0 flex items-center no-underline">
             {data.logo?.url ? (
               <img
                 src={data.logo.url}
                 alt="Sanxin Studio"
-                className="h-[35px] w-auto object-contain"
+                className="h-[35px] w-auto object-cover"
               />
             ) : ("")}
           </Link>

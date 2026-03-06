@@ -73,7 +73,7 @@ const Section7 = () => {
 
   return (
     <section className="relative w-full bg-black py-32 md:py-48 text-white overflow-hidden">
-      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 2xl:px-0 max-w-[1440px]">
+      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-20">
           
           {/* Left: Main Statement (Title) */}

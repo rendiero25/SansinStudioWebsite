@@ -65,12 +65,14 @@ const SolutionCategories = () => {
         // Fill from this element's left edge to the right edge of the window
         container.style.width = `${window.innerWidth - rect.left}px`;
       };
-      
+
       setBreakoutWidth();
       window.addEventListener("resize", setBreakoutWidth);
 
       // Store cleanup ref on the element itself
-      (container as HTMLElement & { __wheelCleanup?: () => void }).__wheelCleanup = () => {
+      (
+        container as HTMLElement & { __wheelCleanup?: () => void }
+      ).__wheelCleanup = () => {
         container.removeEventListener("wheel", handleWheel);
         window.removeEventListener("resize", setBreakoutWidth);
       };
@@ -78,12 +80,52 @@ const SolutionCategories = () => {
 
     return () => {
       clearTimeout(timer);
-      const container = document.getElementById("features-scroll") as (HTMLElement & { __wheelCleanup?: () => void }) | null;
+      const container = document.getElementById("features-scroll") as
+        | (HTMLElement & { __wheelCleanup?: () => void })
+        | null;
       if (container && container.__wheelCleanup) {
         container.__wheelCleanup();
       }
     };
   }, [activeCategoryId]); // Re-attach when category changes
+
+  // Wheel → horizontal scroll for method accordion detail rows
+  useEffect(() => {
+    if (!openMethodId) return;
+
+    // Wait for accordion CSS transition to finish (300ms) before attaching
+    const timer = setTimeout(() => {
+      const container = document.querySelector(
+        `[data-method-scroll="${openMethodId}"]`,
+      ) as HTMLElement | null;
+      if (!container) return;
+
+      const handleWheel = (e: WheelEvent) => {
+        if (container.scrollWidth <= container.clientWidth) return;
+        e.preventDefault();
+        e.stopPropagation();
+        container.scrollLeft += e.deltaY;
+      };
+
+      container.addEventListener("wheel", handleWheel, { passive: false });
+
+      (
+        container as HTMLElement & { __methodWheelCleanup?: () => void }
+      ).__methodWheelCleanup = () => {
+        container.removeEventListener("wheel", handleWheel);
+      };
+    }, 350);
+
+    return () => {
+      clearTimeout(timer);
+      const container = document.querySelector(
+        `[data-method-scroll="${openMethodId}"]`,
+      ) as (HTMLElement & { __methodWheelCleanup?: () => void }) | null;
+      if (container?.__methodWheelCleanup) {
+        container.__methodWheelCleanup();
+      }
+    };
+  }, [openMethodId]);
 
   if (!loaded) return null;
   if (!categories || categories.length === 0) return null;
@@ -96,8 +138,14 @@ const SolutionCategories = () => {
     categories.find((cat) => cat.id === activeCategoryId) || categories[0];
 
   return (
-    <section className="w-full bg-white text-black py-15 md:py-25 relative" style={{ overflowX: 'clip', overflowY: 'visible' }}>
-      <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-5 xl:gap-20" style={{ overflow: 'visible' }}>
+    <section
+      className="w-full bg-white text-black py-15 md:py-25 relative"
+      style={{ overflowX: "clip", overflowY: "visible" }}
+    >
+      <div
+        className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-5 xl:gap-20"
+        style={{ overflow: "visible" }}
+      >
         {/* Top Header & Tabs Area */}
         <div className="flex flex-col xl:flex-row justify-between items-start gap-12 w-full">
           {/* Left Sticky Title "Solutions" */}
@@ -110,7 +158,7 @@ const SolutionCategories = () => {
           {/* Right Tabs */}
           <div className="w-full xl:w-auto pb-4 xl:pb-0 scrollbar-hide">
             <div className="inline-flex w-full flex-col xl:flex-row items-center p-4 m-2 bg-white rounded-xl shadow-md border border-black/5 min-w-max gap-5">
-              <span className="uppercase text-black/50 text-md xl:ml-2 xl:mr-12">
+              <span className="uppercase text-black/50 text-sm xl:ml-2 xl:mr-12">
                 Category
               </span>
 
@@ -118,7 +166,7 @@ const SolutionCategories = () => {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategoryId(cat.id)}
-                  className={`cursor-pointer flex items-center gap-2 px-12 py-2 rounded-lg font-primary text-[14px] md:text-[15px] font-medium transition-all focus:outline-none whitespace-nowrap ${
+                  className={`cursor-pointer flex items-center gap-2 px-9 py-2 rounded-lg font-primary text-[14px] md:text-[15px] font-medium transition-all focus:outline-none whitespace-nowrap ${
                     activeCategoryId === cat.id
                       ? "bg-[#e0e0e0] text-black"
                       : "bg-transparent text-black/50 hover:text-black/80 hover:bg-black/5"
@@ -141,7 +189,7 @@ const SolutionCategories = () => {
         {/* Content Area for Active Category */}
         <div className="flex flex-col xl:flex-row items-start gap-16 w-full animate-[fadeIn_0.5s_ease-out]">
           {/* Left side: Category Details */}
-          <div className="flex flex-col gap-8 w-full xl:w-[45%] shrink-0">
+          <div className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0">
             {/* Category Header */}
             <div className="flex items-center gap-4">
               {activeCategory.categoryIcon?.url && (
@@ -172,7 +220,7 @@ const SolutionCategories = () => {
           </div>
 
           {/* Right side: Methods */}
-          <div className="flex flex-col gap-8 w-full xl:w-[55%] mt-12 xl:mt-0 min-w-0">
+          <div className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0">
             {activeCategory.methods && activeCategory.methods.length > 0 && (
               <div className="flex flex-col gap-4 w-full min-w-0">
                 {activeCategory.methods.map((method) => {
@@ -180,11 +228,11 @@ const SolutionCategories = () => {
                   return (
                     <div
                       key={method.id}
-                      className={`flex flex-col rounded-2xl md:rounded-[24px] overflow-hidden transition-all duration-300 w-full min-w-0 ${isOpen ? "bg-[#D9D9D9]" : "bg-white border border-black/10 hover:border-black/20 shadow-sm"}`}
+                      className={`flex flex-col rounded-xl transition-all duration-300 w-full min-w-0 ${isOpen ? "bg-[#D9D9D9] overflow-visible" : "bg-white hover:border-black/20 shadow-sm overflow-hidden"}`}
                     >
                       {/* Accordion Header */}
                       <button
-                        className="w-full flex items-center justify-between p-6 md:p-4 bg-transparent border-none cursor-pointer text-left focus:outline-none"
+                        className="w-full flex items-center justify-between p-6 bg-transparent border-none cursor-pointer text-left focus:outline-none"
                         onClick={() => toggleMethod(method.id)}
                       >
                         <div className="flex items-center gap-4">
@@ -192,7 +240,7 @@ const SolutionCategories = () => {
                             <img
                               src={method.methodIcon.url}
                               alt=""
-                              className="w-6 h-6 md:w-8 md:h-8 object-contain opacity-90"
+                              className="w-6 h-6 object-contain opacity-90"
                             />
                           )}
                           <span
@@ -205,8 +253,8 @@ const SolutionCategories = () => {
                           className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 ${isOpen ? "bg-black text-white rotate-180" : "bg-black/5 text-black"}`}
                         >
                           <svg
-                            width="14"
-                            height="14"
+                            width="20"
+                            height="20"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -221,21 +269,24 @@ const SolutionCategories = () => {
 
                       {/* Accordion Content */}
                       <div
-                        className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[1500px] opacity-100 pb-2" : "max-h-0 opacity-0"}`}
+                        className={`px-6 w-full transition-all duration-300 ease-in-out ${isOpen ? "max-h-[1500px] opacity-100 pb-2 overflow-visible" : "max-h-0 opacity-0 overflow-hidden"}`}
                       >
                         <div className="flex flex-col w-full">
                           {/* Horizontally scrolling row */}
-                          <div className="px-6 md:px-8 flex overflow-x-auto gap-4 md:gap-6 w-full pb-6 pt-2 snap-x scrollbar-hide">
+                          <div
+                            data-method-scroll={method.id}
+                            className="flex overflow-x-auto gap-4 md:gap-4 w-full pb-6 scrollbar-hide"
+                          >
                             {method.details?.map((detail) => (
                               <div
                                 key={detail.id}
-                                className="bg-white p-6 md:p-8 rounded-[16px] w-[300px] md:w-[350px] shrink-0 border border-black/5 shadow-sm snap-start flex flex-col justify-between min-h-[220px]"
+                                className="bg-white p-6 md:p-8 rounded-md w-[300px] md:w-[350px] shrink-0 border border-black/5 shadow-xs snap-start flex flex-col justify-between min-h-[220px]"
                               >
                                 <div>
-                                  <h5 className="font-primary text-[18px] md:text-[20px] font-bold text-black uppercase tracking-wide m-0 mb-4">
+                                  <h5 className="font-primary text-[18px] md:text-[20px] font-bold text-black uppercase m-0 mb-4">
                                     {detail.detailName}
                                   </h5>
-                                  <p className="font-primary text-[14px] md:text-[15px] leading-[1.5] text-black/60 m-0 mb-8">
+                                  <p className="font-primary text-[14px] md:text-[15px] leading-normal text-black/60 m-0 mb-8">
                                     {detail.detailDesc}
                                   </p>
                                 </div>
@@ -248,7 +299,7 @@ const SolutionCategories = () => {
                                       .map((kw, i) => (
                                         <span
                                           key={i}
-                                          className="text-[11px] font-bold text-black bg-black/10 px-3 py-1.5 rounded-md uppercase tracking-wide"
+                                          className="text-[10px] font-bold text-black bg-black/10 px-3 py-1.5 rounded-md uppercase tracking-wide"
                                         >
                                           {kw.trim()}
                                         </span>
@@ -261,12 +312,12 @@ const SolutionCategories = () => {
 
                           {/* Delivery Time Box */}
                           {method.deliveryTime && (
-                            <div className="px-6 md:px-8 flex pb-6">
-                              <div className="bg-white px-8 py-4 md:py-5 rounded-[12px] flex flex-col items-center justify-center gap-1 w-max shadow-sm border border-black/5">
+                            <div className="flex pb-6">
+                              <div className="bg-white px-16 py-3 rounded-md flex flex-col items-center justify-center gap-1 w-max shadow-xs border border-black/5">
                                 <span className="text-[9px] md:text-[10px] font-bold text-black/40 uppercase tracking-widest">
                                   Est. Delivery Time
                                 </span>
-                                <span className="text-[16px] md:text-[20px] font-bold text-black tracking-tight mt-1">
+                                <span className="text-[16px] md:text-[20px] font-bold text-black tracking-tight ">
                                   {method.deliveryTime}
                                 </span>
                               </div>
@@ -306,8 +357,11 @@ const SolutionCategories = () => {
 
           {/* Features Scroll Row - breaks out of container to right edge */}
           {activeCategory.features && activeCategory.features.length > 0 && (
-            <div className="w-full xl:w-[calc(100%-480px)] opacity-0 translate-y-8 animate-[fadeIn_0.5s_ease-out_0.3s_forwards]" style={{ overflow: 'visible' }}>
-              <div 
+            <div
+              className="w-full xl:w-[calc(100%-480px)] opacity-0 translate-y-8 animate-[fadeIn_0.5s_ease-out_0.3s_forwards]"
+              style={{ overflow: "visible" }}
+            >
+              <div
                 id="features-scroll"
                 className="flex gap-6 overflow-x-auto cursor-grab active:cursor-grabbing pb-8 pt-4 pl-[2px]"
                 style={{
@@ -319,8 +373,18 @@ const SolutionCategories = () => {
               >
                 {activeCategory.features.map((f, i) => {
                   const feature = f as Record<string, unknown>;
-                  const featureIcon = feature.icon as { url: string; publicId: string } | null | undefined;
-                  console.log(`Feature ${i}:`, feature.title, '| icon:', featureIcon?.url || 'NONE', '| raw icon:', JSON.stringify(feature.icon));
+                  const featureIcon = feature.icon as
+                    | { url: string; publicId: string }
+                    | null
+                    | undefined;
+                  console.log(
+                    `Feature ${i}:`,
+                    feature.title,
+                    "| icon:",
+                    featureIcon?.url || "NONE",
+                    "| raw icon:",
+                    JSON.stringify(feature.icon),
+                  );
                   return (
                     <div
                       key={(feature.id as string) || `feature-${i}`}
