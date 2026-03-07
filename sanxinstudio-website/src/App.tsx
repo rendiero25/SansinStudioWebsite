@@ -9,6 +9,8 @@ import Solution from "./pages/Solution";
 import Works from "./pages/Works";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
+import Insights from "./pages/Insights";
+import Company from "./pages/Company";
 
 // Home Section Editors
 import HeaderEditor from "./pages/admin/home/HeaderEditor";
@@ -40,6 +42,10 @@ import ProjectsSection3Editor from "./pages/admin/projects/Section3Editor";
 // FAQ Editor
 import FAQEditor from "./pages/admin/faq/FAQEditor";
 
+// Insights Section Editors
+import AdminInsightsCategories from "./pages/admin/insights/AdminInsightsCategories";
+import AdminInsightsPosts from "./pages/admin/insights/AdminInsightsPosts";
+
 function App() {
   return (
     <AuthProvider>
@@ -51,6 +57,8 @@ function App() {
           <Route path="/works" element={<Works />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetail />} />
+          <Route path="/insights" element={<Insights />} />
+          <Route path="/company" element={<Company />} />
 
           {/* Admin Login */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -65,6 +73,7 @@ function App() {
             }
           >
             <Route index element={<AdminDashboard />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
 
             {/* Home Page Sections */}
             <Route path="home/header" element={<HeaderEditor />} />
@@ -112,6 +121,16 @@ function App() {
             <Route
               path="projects/section3"
               element={<ProjectsSection3Editor />}
+            />
+
+            {/* Insights Page Sections */}
+            <Route
+              path="insights/section1"
+              element={<AdminInsightsCategories />}
+            />
+            <Route
+              path="insights/section2"
+              element={<AdminInsightsPosts />}
             />
           </Route>
         </Routes>

@@ -42,9 +42,8 @@ const Projects = () => {
           footerBg: section3Res?.content?.backgroundImage?.url || "",
         });
 
-        if (categories.length > 0) {
-          setActiveCategory(categories[0].id);
-        }
+        // Default to showing "All Projects" when no specific category is selected
+        setActiveCategory("");
         setCurrentPage(1);
       } catch (err) {
         console.error("Failed to load projects data:", err);
@@ -98,6 +97,20 @@ const Projects = () => {
               <span className="text-sm uppercase text-black/50 px-3 shrink-0 mb-4 lg:mb-0">
                 CATEGORY
               </span>
+
+              <button
+                onClick={() => {
+                  setActiveCategory("");
+                  setCurrentPage(1);
+                }}
+                className={`cursor-pointer flex items-center gap-2 mb-3 lg:mb-0 px-9 py-2 rounded-lg text-[14px] md:text-[15px] font-medium transition-colors shrink-0 ${
+                  activeCategory === ""
+                    ? "bg-[#e0e0e0] text-black"
+                    : "bg-transparent text-black/50 hover:text-black/80 hover:bg-black/5"
+                }`}
+              >
+                All Projects
+              </button>
 
               {data.categories.map((cat) => (
                 <button

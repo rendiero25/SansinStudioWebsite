@@ -74,14 +74,6 @@ const renderStyledText = (text: string, brandLogoUrl?: string) => {
   });
 };
 
-// Category badge color palette
-const BADGE_COLORS = [
-  { bg: "bg-purple-500", text: "text-white" },
-  { bg: "bg-indigo-500", text: "text-white" },
-  { bg: "bg-emerald-500", text: "text-white" },
-  { bg: "bg-amber-500", text: "text-black" },
-  { bg: "bg-rose-500", text: "text-white" },
-];
 
 const WorksHero = () => {
   const [heroData, setHeroData] = useState<HeroData>({});

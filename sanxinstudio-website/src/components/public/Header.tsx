@@ -50,7 +50,7 @@ const Header = () => {
     >
       {/* Main Header Container */}
       <div className="w-full">
-        <div className="container mx-auto flex items-center justify-between h-[75px] px-10 md:px-12 xl:px-20">
+        <div className="container mx-auto flex items-center justify-between h-[70px] px-10 md:px-12 xl:px-20">
           {/* Logo */}
           <Link to="/" className="shrink-0 flex items-center no-underline">
             {data.logo?.url ? (

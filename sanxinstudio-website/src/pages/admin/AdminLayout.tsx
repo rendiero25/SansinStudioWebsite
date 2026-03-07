@@ -19,7 +19,7 @@ const AdminLayout = () => {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(["Home"]);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
@@ -109,6 +109,14 @@ const AdminLayout = () => {
         { label: "Section 1", path: "/admin/projects/section1", icon: "🎬" },
         { label: "Section 2", path: "/admin/projects/section2", icon: "🚀" },
         { label: "Section 3", path: "/admin/projects/section3", icon: "🎯" },
+      ],
+    },
+    {
+      label: "Insights",
+      icon: "📰",
+      subItems: [
+        { label: "Section 1", path: "/admin/insights/section1", icon: "🎬" },
+        { label: "Section 2", path: "/admin/insights/section2", icon: "🚀" },
       ],
     },
     { label: "Contacts", icon: "📞", path: "#" },

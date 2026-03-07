@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../components/public/Header";
 import Footer from "../components/public/Footer";
@@ -18,7 +18,6 @@ const ProjectDetail = () => {
     projects: [],
   });
   const [loading, setLoading] = useState(true);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Scroll to top when loading new project
@@ -53,15 +52,19 @@ const ProjectDetail = () => {
     return data.categories.find((c) => c.id === catId)?.categoryName || "Uncategorized";
   };
 
+  // Helper to get category icon by ID
+  const getCategoryIcon = (catId: string) => {
+    return data.categories.find((c) => c.id === catId)?.categoryIcon || null;
+  };
+
   // Extract paragraphs from description
   const descriptionLines = currentProject?.description
     ? currentProject.description.split("\n\n").filter(Boolean)
     : [];
   
   // Decide how to split the description if there are multiple paragraphs.
-  // The mockup shows one paragraph below the main image, and another below the secondary image.
+  // The mockup shows one paragraph below the main image.
   const topDescription = descriptionLines.length > 0 ? descriptionLines[0] : "";
-  const bottomDescription = descriptionLines.length > 1 ? descriptionLines.slice(1).join("\n\n") : "";
 
   // Extract categories for the specific project
   const projectCategories = currentProject
@@ -99,6 +102,66 @@ const ProjectDetail = () => {
     };
   }, [moreProjects, loading, id]);
 
+  // Window scroll sync for Secondary Image
+  useEffect(() => {
+    if (loading || !currentProject?.image2?.url) return;
+
+    const handleScroll = () => {
+      const parent = document.getElementById("project-detail-image2-parent");
+      const container = document.getElementById("project-detail-image2-container");
+      const img = document.getElementById("project-detail-secondary-img");
+      
+      if (!parent || !container || !img) return;
+
+      const imgNaturalHeight = img.scrollHeight;
+      const containerHeight = container.clientHeight;
+      
+      // If the image hasn't loaded or is shorter than the container, 
+      // don't apply the sticky scroll effect.
+      if (imgNaturalHeight <= containerHeight) {
+        parent.style.height = 'auto';
+        img.style.transform = `translateY(0px)`;
+        return;
+      }
+      
+      // 1. Set the parent height to the image's full scrollable height
+      // This ensures 1px of page scroll = 1px of inner image scroll
+      if (parent.style.height !== `${imgNaturalHeight}px`) {
+        parent.style.height = `${imgNaturalHeight}px`;
+      }
+
+      // 2. Calculate the progress of the container sticking
+      const parentRect = parent.getBoundingClientRect();
+      const stickyTop = 100; // Header height (70px) + Gap (70px)
+      
+      const scrolledPastStart = stickyTop - parentRect.top;
+      const totalStickyScroll = parentRect.height - containerHeight;
+      
+      let progress = 0;
+      if (totalStickyScroll > 0) {
+        progress = scrolledPastStart / totalStickyScroll;
+      }
+      
+      // Clamp progress between 0 and 1
+      progress = Math.max(0, Math.min(1, progress));
+
+      // 3. Translate the image upwards by the progress amount
+      const maxTranslate = imgNaturalHeight - containerHeight;
+      if (maxTranslate > 0) {
+        const translateY = progress * maxTranslate;
+        img.style.transform = `translateY(-${translateY}px)`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run once on mount
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [loading, currentProject?.image2?.url]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center font-primary flex-col gap-4">
@@ -121,88 +184,51 @@ const ProjectDetail = () => {
   }
 
   return (
-    <div className="project-detail-page font-primary bg-[#0A0A0A] text-white min-h-screen overflow-x-hidden">
+    <div className="project-detail-page font-primary bg-[#0A0A0A] text-white min-h-screen">
       <Header />
 
       <main className="pt-32 pb-24">
-        <div className="container mx-auto px-6 md:px-12 xl:px-20 max-w-[1440px]">
+        <div className="container mx-auto px-6 md:px-12 xl:px-20">
           
-          {/* Row 1: Title and Main Image Layout */}
-          <div className="flex flex-col xl:flex-row items-start gap-12 xl:gap-20 mb-20 md:mb-32 mt-8 md:mt-16">
-            
-            {/* Left Column (Metadata) */}
-            <div className="w-full xl:w-[350px] flex flex-col gap-12 shrink-0">
-              <h1 className="text-[42px] md:text-[56px] xl:text-[64px] leading-[1.1] font-normal tracking-[-0.02em] m-0">
-                {currentProject.projectName.split(' ').map((word, i) => (
-                  <span key={i}>
-                    {word}{i < currentProject.projectName.split(' ').length - 1 && ' '}
-                    {/* Add breaking point optionally if needed, but flex wrap handles it */}
-                  </span>
-                ))}
-              </h1>
+          {/* Row 1: Main Image Only */}
+          <div className="w-full mb-20 md:mb-32 mt-8 md:mt-16">
+            <div className="w-full aspect-video md:aspect-[16/9] lg:aspect-[16/10] rounded-lg overflow-hidden relative">
+              {currentProject.mainImage?.url ? (
+                <img
+                  src={currentProject.mainImage.url}
+                  alt={`${currentProject.projectName} Main`}
+                  className="absolute inset-0 w-full h-full xl:object-cover"
+                />
+              ) : currentProject.thumbnail?.url ? (
+                <img
+                  src={currentProject.thumbnail.url}
+                  alt={`${currentProject.projectName} Thumbnail`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-white/20">No Main Image</div>
+              )}
 
-              {/* Client and Service Meta */}
-              <div className="flex flex-col gap-8 md:gap-10 border-t border-white/10 pt-8">
-                {/* Simulated Client from Keywords or Title word 1 if needed, defaulting to generic layout if unknown */}
-                {/* The Mockup uses TOZO as client, since we don't have 'client' field we'll use first keyword or first word of title */}
-                <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">CLIENT</span>
-                  <span className="text-[15px] font-medium text-white/90">
-                    {currentProject.keywords ? currentProject.keywords.split(',')[0].trim() : currentProject.projectName.split(' ')[0]}
-                  </span>
+              {/* Category Tags at Bottom Left */}
+              {projectCategories.length > 0 && (
+                <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 flex flex-wrap gap-2 md:gap-3 z-10">
+                  {projectCategories.map((catId, index) => (
+                    <div
+                      key={catId}
+                      className={`${index === 0 ? "bg-white text-black" : "bg-white/80 backdrop-blur-md text-black"} px-4 py-2 md:px-5 md:py-2.5 rounded-md flex items-center shadow-lg`}
+                    >
+                      <span className="text-[11px] md:text-[12px] font-bold uppercase tracking-widest leading-none mt-px flex items-center gap-2">
+                        {index === 0 && (
+                          <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0H10V1.5L6 6L10 10.5V12H0V10.5L4 6L0 1.5V0Z" fill="currentColor"/>
+                          </svg>
+                        )}
+                        {getCategoryName(catId)}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-
-                <div className="grid grid-cols-[100px_1fr] gap-4 items-start">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/40 leading-relaxed mt-1">PROJECT<br/>SERVICE</span>
-                  <div className="flex flex-col gap-4">
-                    <p className="text-[15px] font-medium text-white/90 m-0 leading-relaxed">
-                      {/* Short summary or generic text based on mockup */}
-                      {topDescription && topDescription.length < 100 
-                        ? topDescription 
-                        : `Showcasing works of ${currentProject.projectName}`}
-                    </p>
-                    
-                    {/* Category Tags */}
-                    {projectCategories.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {projectCategories.map((catId) => (
-                          <div
-                            key={catId}
-                            className="bg-white/10 text-white px-3 py-1.5 rounded-md flex items-center gap-1.5"
-                          >
-                            <span className="text-[11px] font-bold uppercase tracking-wider leading-none mt-px flex items-center gap-1.5">
-                              {/* Using generic box icon shape for service tags if no custom icon uploaded */}
-                              <span className="w-1.5 h-1.5 bg-white/40 rounded-sm inline-block"></span>
-                              {getCategoryName(catId)}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column (Main Image) */}
-            <div className="w-full flex-1">
-              <div className="w-full aspect-video md:aspect-[16/10] rounded-[24px] overflow-hidden bg-white/5 relative">
-                {currentProject.mainImage?.url ? (
-                  <img
-                    src={currentProject.mainImage.url}
-                    alt={`${currentProject.projectName} Main`}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : currentProject.thumbnail?.url ? (
-                  <img
-                    src={currentProject.thumbnail.url}
-                    alt={`${currentProject.projectName} Thumbnail`}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-white/20">No Main Image</div>
-                )}
-              </div>
+              )}
             </div>
           </div>
 
@@ -210,83 +236,63 @@ const ProjectDetail = () => {
           {/* We only render this if topDescription is long enough to not be used as the service summary, 
               or we render the first long chunk. Let's just render the full description cleanly. */}
           {topDescription && topDescription.length >= 100 && (
-            <div className="w-full max-w-4xl mx-auto mb-20 md:mb-32">
-              <p className="text-[18px] md:text-[22px] leading-[1.6] md:leading-[1.8] text-white/80 font-normal m-0 tracking-[-0.01em]">
+            <div className="self-start w-full max-w-5xl mb-20 md:mb-32">
+              <p className="text-[18px] md:text-[24px] leading-[1.6] md:leading-[1.8] text-white/80 font-normal m-0 tracking-[-0.01em]">
                 {topDescription}
               </p>
             </div>
           )}
           {/* Fallback if logic above skips it and there's only one description part provided */}
           {topDescription && topDescription.length < 100 && descriptionLines.length === 1 && (
-            <div className="w-full max-w-4xl mx-auto mb-20 md:mb-32">
-               <p className="text-[18px] md:text-[22px] leading-[1.6] md:leading-[1.8] text-white/80 font-normal m-0 tracking-[-0.01em]">
+            <div className="self-start w-full max-w-5xl mb-20 md:mb-32">
+               <p className="text-[18px] md:text-[24px] leading-[1.6] md:leading-[1.8] text-white/80 font-normal m-0 tracking-[-0.01em]">
                 {topDescription}
               </p>
             </div>
           )}
 
-          {/* Row 3: Secondary Image with Vertical Scroll */}
+          {/* Row 3: Secondary Image with Window Scroll Sync */}
           {currentProject.image2?.url && (
-            <div className="w-full mb-16 md:mb-24">
+            <div id="project-detail-image2-parent" className="w-full mb-16 md:mb-20 relative rounded-2xl" style={{ minHeight: "100vh" }}>
               <div 
-                ref={scrollContainerRef}
-                className="w-full max-w-5xl mx-auto h-[400px] md:h-[600px] lg:h-[700px] rounded-[24px] overflow-y-auto no-scrollbar relative cursor-ns-resize"
-                style={{ 
-                  backgroundColor: "rgba(255,255,255,0.03)", 
-                  border: "1px solid rgba(255,255,255,0.05)"
-                }}
+                id="project-detail-image2-container"
+                className="w-full mx-auto h-[calc(100vh-140px)] min-h-[400px] rounded-2xl overflow-hidden sticky top-[100px]"
               >
-                {/* Optional Scroll instruction tooltip */}
-                <div className="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[12px] text-white/80 z-10 pointer-events-none flex items-center gap-2 border border-white/10">
-                  <span className="animate-bounce">↓</span> Scroll to view full
-                </div>
-                
                 <img
+                  id="project-detail-secondary-img"
                   src={currentProject.image2.url}
                   alt={`${currentProject.projectName} Details`}
-                  className="w-full h-auto object-cover min-h-full" 
-                  style={{ display: "block" }}
+                  className="w-full h-auto object-cover absolute top-0 left-0 transition-transform duration-75" 
+                  style={{ display: "block", willChange: "transform" }}
                 />
               </div>
             </div>
           )}
 
-          {/* Row 4: Bottom Description Text (Problem / Additional text) */}
-          {bottomDescription && (
-            <div className="w-full max-w-4xl mx-auto mb-24 md:mb-32">
-              <div className="grid grid-cols-1 md:grid-cols-[100px_1fr] md:gap-8 items-start">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-4 md:mb-0 mt-2 block">PROBLEM</span>
-                  <p className="text-[18px] md:text-[22px] leading-[1.6] md:leading-[1.8] text-white/80 font-normal m-0 tracking-[-0.01em]">
-                    {bottomDescription}
-                  </p>
-              </div>
-            </div>
-          )}
-
           {/* Row 5: Call to Action Button */}
-          {currentProject.buttonText && currentProject.buttonLink && (
-            <div className="w-full flex justify-center mb-32 md:mb-48">
+          {(currentProject.buttonText || currentProject.buttonLink) && (
+            <div className="w-full flex justify-center">
               <a
-                href={currentProject.buttonLink}
+                href={currentProject.buttonLink || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-[#a78bfa] hover:bg-[#9333ea] text-white px-10 py-4 md:px-12 md:py-4 rounded-xl font-bold text-[15px] md:text-[16px] tracking-wide transition-colors duration-300 shadow-[0_4px_20px_rgba(167,139,250,0.3)] hover:shadow-[0_6px_30px_rgba(167,139,250,0.5)]"
+                className="inline-flex items-center justify-center bg-[#8A2BE2] hover:bg-white text-white hover:text-black px-10 py-4 md:px-12 md:py-4 rounded-xl font-bold text-[15px] md:text-[16px] tracking-wide transition-colors duration-300"
               >
-                {currentProject.buttonText}
+                {currentProject.buttonText || "View Project"}
               </a>
             </div>
           )}
 
           {/* Row 6: More Projects Module */}
           {moreProjects.length > 0 && (
-            <div className="w-full border-t border-white/10 pt-20">
-              <h2 className="text-[28px] md:text-[36px] font-normal tracking-[-0.01em] mb-12">
+            <div className="w-full pt-20">
+              <h2 className="font-primary text-[28px] md:text-[36px] font-normal tracking-[-0.01em] mb-12">
                 More Projects
               </h2>
               
               <div
                 id="project-detail-more-scroll"
-                className="flex gap-6 md:gap-8 overflow-x-auto cursor-grab active:cursor-grabbing pb-12"
+                className="flex gap-4 overflow-x-auto cursor-grab active:cursor-grabbing pb-0 xl:pb-12"
                 style={{
                   scrollbarWidth: "none",
                   msOverflowStyle: "none",
@@ -301,41 +307,63 @@ const ProjectDetail = () => {
                   const pCats = proj.categoryIds || (proj.categoryId ? [proj.categoryId] : []);
 
                   return (
-                    <Link
-                      to={`/projects/${proj.id}`}
+                    <div
                       key={proj.id}
-                      className="w-[85%] sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-20px)] shrink-0 aspect-[16/10] rounded-[20px] md:rounded-[24px] overflow-hidden relative group block snap-start bg-white/5"
+                      className="w-[85%] sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-20px)] shrink-0 aspect-[16/10] rounded-lg overflow-hidden relative group snap-start cursor-pointer"
                     >
-                      {/* bg */}
-                      {bestFallbackImage && (
+                      {/* Background Image */}
+                      {bestFallbackImage ? (
                         <img
                           src={bestFallbackImage}
                           alt={proj.projectName}
-                          className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                          className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-700"
                         />
+                      ) : (
+                        <div className="absolute inset-0 w-full h-full bg-black" />
                       )}
 
-                      {/* overlay */}
+                      {/* Gradient Overlay for bottom text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+                      {/* Dark overlay on hover */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
 
-                      {/* Top Left Badge */}
+                      {/* See Project Button — center */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                        <Link
+                          to={`/projects/${proj.id}`}
+                          className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline block"
+                        >
+                          See Project
+                        </Link>
+                      </div>
+
+                      {/* Top Left: Keyword Badge */}
                       {firstKey && (
-                        <div className="absolute top-5 left-5 bg-white text-black text-[10px] md:text-[11px] font-bold tracking-wider px-3 py-1.5 rounded-md pointer-events-none z-10 shadow-sm uppercase">
+                        <div className="absolute top-6 left-6 bg-black text-white text-[12px] font-semibold px-4 py-2 rounded-lg pointer-events-none z-10 uppercase">
                           {firstKey}
                         </div>
                       )}
 
-                      {/* Bottom Layout */}
-                      <div className="absolute bottom-5 left-5 flex flex-col items-start gap-2.5 pointer-events-none pr-5 z-10 w-full">
+                      {/* Bottom Left Content */}
+                      <div className="absolute bottom-6 left-6 flex flex-col items-start gap-3 pointer-events-none pr-6 z-10 w-full">
+                        
+                        {/* Categories Row */}
                         {pCats.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5">
+                          <div className="flex flex-wrap gap-2">
                             {pCats.map((catId) => (
                               <div
                                 key={catId}
-                                className="bg-white/90 text-black px-2.5 py-1 rounded-[4px] flex items-center shadow-sm"
+                                className="bg-white text-black px-3 py-1.5 rounded-md flex items-center gap-1.5 shadow-sm"
                               >
-                                <span className="text-[10px] font-bold uppercase tracking-widest leading-none mt-[1px]">
+                                {getCategoryIcon(catId) && (
+                                  <img
+                                    src={getCategoryIcon(catId)!.url}
+                                    alt=""
+                                    className="w-3.5 h-3.5 object-contain"
+                                  />
+                                )}
+                                <span className="text-[12px] font-medium leading-none mt-px">
                                   {getCategoryName(catId)}
                                 </span>
                               </div>
@@ -343,11 +371,12 @@ const ProjectDetail = () => {
                           </div>
                         )}
 
-                        <h3 className="text-white text-[18px] md:text-[22px] font-normal tracking-[-0.01em] m-0 w-[90%] truncate">
+                        {/* Project Title */}
+                        <h3 className="text-white text-[24px] md:text-[28px] font-normal tracking-[-0.02em] m-0 leading-[1.2] w-[90%] truncate">
                           {proj.projectName}
                         </h3>
                       </div>
-                    </Link>
+                    </div>
                   );
                 })}
                 

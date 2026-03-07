@@ -105,7 +105,7 @@ const Footer = ({
 
   return (
     <footer
-      className="w-full relative overflow-hidden pt-20 bg-black"
+      className="w-full relative overflow-hidden pt-5 xl:pt-20 bg-[#0A0A0A]"
       style={{
         backgroundImage: bgImage ? `url(${bgImage})` : "none",
         backgroundSize: "cover",
