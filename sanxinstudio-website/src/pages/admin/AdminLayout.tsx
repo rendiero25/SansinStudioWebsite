@@ -119,6 +119,14 @@ const AdminLayout = () => {
         { label: "Section 2", path: "/admin/insights/section2", icon: "🚀" },
       ],
     },
+    {
+      label: "Company",
+      icon: "🏢",
+      subItems: [
+        { label: "Section 1", path: "/admin/company/section1", icon: "🎬" },
+        { label: "Section 2", path: "/admin/company/section2", icon: "🚀" },
+      ],
+    },
     { label: "Contacts", icon: "📞", path: "#" },
     { label: "FAQ", icon: "❓", path: "/admin/faq" },
   ];

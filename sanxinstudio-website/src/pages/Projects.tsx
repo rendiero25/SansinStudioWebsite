@@ -88,7 +88,7 @@ const Projects = () => {
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
           {/* Row 1: Title & Categories */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-            <h1 className="text-[40px] md:text-[56px] font-normal tracking-[-0.02em] text-[#0A0A0A] m-0 leading-none">
+            <h1 className="text-[32px] md:text-[42px] font-normal tracking-[-0.02em] text-[#0A0A0A] m-0 leading-none">
               {data.title}
             </h1>
 

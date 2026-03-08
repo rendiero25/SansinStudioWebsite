@@ -99,7 +99,7 @@ const Insights = () => {
           
           {/* Page Title & Filter */}
           <div className="flex flex-col gap-8 mb-16">
-            <h1 className="text-[48px] md:text-[64px] font-normal text-[#0A0A0A] m-0 leading-none tracking-tight">
+            <h1 className="text-[32px] md:text-[42px] font-normal text-[#0A0A0A] m-0 leading-none tracking-tight">
               Insights
             </h1>
             <InsightCategoryFilter 

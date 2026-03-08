@@ -46,6 +46,10 @@ import FAQEditor from "./pages/admin/faq/FAQEditor";
 import AdminInsightsCategories from "./pages/admin/insights/AdminInsightsCategories";
 import AdminInsightsPosts from "./pages/admin/insights/AdminInsightsPosts";
 
+// Company Section Editors
+import CompanySection1Editor from "./pages/admin/company/Section1Editor";
+import CompanySection2Editor from "./pages/admin/company/Section2Editor";
+
 function App() {
   return (
     <AuthProvider>
@@ -131,6 +135,16 @@ function App() {
             <Route
               path="insights/section2"
               element={<AdminInsightsPosts />}
+            />
+
+            {/* Company Page Sections */}
+            <Route
+              path="company/section1"
+              element={<CompanySection1Editor />}
+            />
+            <Route
+              path="company/section2"
+              element={<CompanySection2Editor />}
             />
           </Route>
         </Routes>

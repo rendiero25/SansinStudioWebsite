@@ -9,9 +9,11 @@ export interface ListItem {
 interface FieldConfig {
   key: string;
   label: string;
-  type: "text" | "textarea" | "url" | "image" | "subitems";
+  type: "text" | "textarea" | "url" | "image" | "subitems" | "select";
   placeholder?: string;
   folder?: string;
+  options?: string[];
+  condition?: (item: ListItem) => boolean;
   subFields?: FieldConfig[];
 }
 
@@ -91,7 +93,7 @@ const ItemListEditor = ({
         </label>
         <button
           type="button"
-          className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
+          className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-linear-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
           onClick={handleAdd}
           disabled={!!(maxItems && items.length >= maxItems)}
         >
@@ -100,7 +102,7 @@ const ItemListEditor = ({
       </div>
 
       {items.length === 0 ? (
-        <div className="py-8 text-center text-white/30 text-sm border border-dashed border-white/[0.08] rounded-xl">
+        <div className="py-8 text-center text-white/30 text-sm border border-dashed border-white/8 rounded-xl">
           No items yet. Click "Add Item" to start.
         </div>
       ) : (
@@ -108,10 +110,10 @@ const ItemListEditor = ({
           {items.map((item, index) => (
             <div
               key={item.id}
-              className={`bg-white/[0.03] border rounded-xl overflow-hidden transition-colors duration-200 ${
+              className={`bg-white/3 border rounded-xl overflow-hidden transition-colors duration-200 ${
                 editingId === item.id
                   ? "border-indigo-500/30"
-                  : "border-white/[0.06]"
+                  : "border-white/6"
               }`}
             >
               <div className="flex items-center gap-3 py-3.5 px-4">
@@ -127,7 +129,7 @@ const ItemListEditor = ({
                 <div className="flex gap-1 shrink-0">
                   <button
                     type="button"
-                    className="w-8 h-8 flex items-center justify-center bg-white/[0.04] border border-white/[0.08] rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-white/[0.08] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-8 h-8 flex items-center justify-center bg-white/4 border border-white/8 rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-white/8 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
                     onClick={() => handleMoveUp(index)}
                     disabled={index === 0}
                     title="Move up"
@@ -136,7 +138,7 @@ const ItemListEditor = ({
                   </button>
                   <button
                     type="button"
-                    className="w-8 h-8 flex items-center justify-center bg-white/[0.04] border border-white/[0.08] rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-white/[0.08] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-8 h-8 flex items-center justify-center bg-white/4 border border-white/8 rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-white/8 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
                     onClick={() => handleMoveDown(index)}
                     disabled={index === items.length - 1}
                     title="Move down"
@@ -145,7 +147,7 @@ const ItemListEditor = ({
                   </button>
                   <button
                     type="button"
-                    className="w-8 h-8 flex items-center justify-center bg-white/[0.04] border border-white/[0.08] rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-white/[0.08] hover:text-white"
+                    className="w-8 h-8 flex items-center justify-center bg-white/4 border border-white/8 rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-white/8 hover:text-white"
                     onClick={() =>
                       setEditingId(editingId === item.id ? null : item.id)
                     }
@@ -155,7 +157,7 @@ const ItemListEditor = ({
                   </button>
                   <button
                     type="button"
-                    className="w-8 h-8 flex items-center justify-center bg-white/[0.04] border border-white/[0.08] rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-red-500/15 hover:text-red-500"
+                    className="w-8 h-8 flex items-center justify-center bg-white/4 border border-white/8 rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-red-500/15 hover:text-red-500"
                     onClick={() => handleDelete(item.id)}
                     title="Delete"
                   >
@@ -165,16 +167,20 @@ const ItemListEditor = ({
               </div>
 
               {editingId === item.id && (
-                <div className="px-4 pb-4 flex flex-col gap-3 border-t border-white/[0.04] pt-4">
-                  {fields.map((field) => (
-                    <div key={field.key} className="flex flex-col gap-2">
+                <div className="px-4 pb-4 flex flex-col gap-3 border-t border-white/4 pt-4">
+                  {fields
+                    .filter((f) => !f.condition || f.condition(item))
+                    .map((field) => (
+                      <div key={field.key} className="flex flex-col gap-2">
                       <label className="text-xs font-medium text-white/50">
                         {field.label}
                       </label>
                       {field.type === "subitems" && field.subFields ? (
                         <SubItemsEditor
                           subItems={(item[field.key] as ListItem[]) || []}
-                          subFields={field.subFields}
+                          subFields={field.subFields.filter(
+                            (sf) => !sf.condition || sf.condition(item)
+                          )}
                           onChange={(subItems) =>
                             handleUpdate(item.id, field.key, subItems as unknown as string)
                           }
@@ -200,6 +206,21 @@ const ItemListEditor = ({
                           placeholder={field.placeholder}
                           rows={3}
                         />
+                      ) : field.type === "select" ? (
+                        <select
+                          className={INPUT_CLASS}
+                          value={(item[field.key] as string) || ""}
+                          onChange={(e) =>
+                            handleUpdate(item.id, field.key, e.target.value)
+                          }
+                        >
+                          <option value="">Select {field.label}</option>
+                          {field.options?.map((opt) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
                       ) : (
                         <input
                           type={field.type === "url" ? "url" : "text"}
@@ -257,13 +278,13 @@ const SubItemsEditor = ({
       {subItems.map((sub, idx) => (
         <div
           key={sub.id}
-          className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-3 mb-2"
+          className="bg-white/2 border border-white/6 rounded-lg p-3 mb-2"
         >
           <div className="flex justify-between items-center mb-2">
             <span className="text-xs text-white/40">Sub-item #{idx + 1}</span>
             <button
               type="button"
-              className="w-8 h-8 flex items-center justify-center bg-white/[0.04] border border-white/[0.08] rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-red-500/15 hover:text-red-500"
+              className="w-8 h-8 flex items-center justify-center bg-white/4 border border-white/8 rounded-lg cursor-pointer text-sm transition-all duration-150 text-white/60 hover:bg-red-500/15 hover:text-red-500"
               onClick={() => handleDeleteSub(sub.id)}
               title="Delete sub-item"
             >
@@ -292,6 +313,21 @@ const SubItemsEditor = ({
                   placeholder={sf.placeholder}
                   rows={2}
                 />
+              ) : sf.type === "select" ? (
+                <select
+                  className={INPUT_CLASS}
+                  value={(sub[sf.key] as string) || ""}
+                  onChange={(e) =>
+                    handleUpdateSub(sub.id, sf.key, e.target.value)
+                  }
+                >
+                  <option value="">Select {sf.label}</option>
+                  {sf.options?.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
               ) : (
                 <input
                   type="text"
@@ -307,7 +343,7 @@ const SubItemsEditor = ({
       ))}
       <button
         type="button"
-        className="mt-1 py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/10"
+        className="mt-1 py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-white/6 text-white/80 border border-white/12 hover:bg-white/10"
         onClick={handleAddSub}
       >
         + Add Sub-item
