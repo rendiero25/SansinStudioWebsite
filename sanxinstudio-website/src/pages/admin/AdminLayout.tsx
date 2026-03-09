@@ -127,7 +127,7 @@ const AdminLayout = () => {
         { label: "Section 2", path: "/admin/company/section2", icon: "🚀" },
       ],
     },
-    { label: "Contacts", icon: "📞", path: "#" },
+    { label: "Contact", icon: "📞", path: "/admin/contact" },
     { label: "FAQ", icon: "❓", path: "/admin/faq" },
   ];
 

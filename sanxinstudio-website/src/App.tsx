@@ -50,6 +50,9 @@ import AdminInsightsPosts from "./pages/admin/insights/AdminInsightsPosts";
 import CompanySection1Editor from "./pages/admin/company/Section1Editor";
 import CompanySection2Editor from "./pages/admin/company/Section2Editor";
 
+// Contact Section Editor
+import ContactCMS from "./pages/admin/contact/ContactCMS";
+
 function App() {
   return (
     <AuthProvider>
@@ -132,10 +135,7 @@ function App() {
               path="insights/section1"
               element={<AdminInsightsCategories />}
             />
-            <Route
-              path="insights/section2"
-              element={<AdminInsightsPosts />}
-            />
+            <Route path="insights/section2" element={<AdminInsightsPosts />} />
 
             {/* Company Page Sections */}
             <Route
@@ -146,6 +146,9 @@ function App() {
               path="company/section2"
               element={<CompanySection2Editor />}
             />
+
+            {/* Contact Page Section */}
+            <Route path="contact" element={<ContactCMS />} />
           </Route>
         </Routes>
       </BrowserRouter>
