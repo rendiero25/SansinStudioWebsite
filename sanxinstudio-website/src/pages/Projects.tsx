@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Header from "../components/public/Header";
 import Footer from "../components/public/Footer";
 import { getSection } from "../services/sectionApi";
@@ -23,6 +23,7 @@ const Projects = () => {
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchProjectsData = async () => {
@@ -42,6 +43,22 @@ const Projects = () => {
           footerBg: section3Res?.content?.backgroundImage?.url || "",
         });
 
+        // Handle category navigation from Works page
+        const state = location.state as { categoryName?: string };
+        if (state?.categoryName) {
+          const targetCategory = categories.find(
+            (c: ProjectCategory) => 
+              c.categoryName.toLowerCase().includes(state.categoryName!.toLowerCase()) ||
+              state.categoryName!.toLowerCase().includes(c.categoryName.toLowerCase())
+          );
+          if (targetCategory) {
+            setActiveCategory(targetCategory.id);
+            setCurrentPage(1);
+            setLoading(false);
+            return;
+          }
+        }
+
         // Default to showing "All Projects" when no specific category is selected
         setActiveCategory("");
         setCurrentPage(1);
@@ -52,7 +69,7 @@ const Projects = () => {
       }
     };
     fetchProjectsData();
-  }, []);
+  }, [location.state]);
 
   const filteredProjects = activeCategory
     ? data.projects.filter(
@@ -144,7 +161,7 @@ const Projects = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-12 md:gap-y-16">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-5 md:gap-y-5">
                 {paginatedProjects.map((project) => {
                   // Extract first keyword for top left badge
                 const firstKeyword = project.keywords
@@ -157,7 +174,7 @@ const Projects = () => {
                 return (
                   <div
                     key={project.id}
-                    className="group relative w-full aspect-[16/10] md:aspect-[4/3] lg:aspect-[16/10] rounded-[24px] overflow-hidden cursor-pointer"
+                    className="group relative w-full aspect-[16/10] md:aspect-[4/3] lg:aspect-[16/10] rounded-xl overflow-hidden cursor-pointer"
                   >
                     {/* Background Image */}
                     {project.thumbnail?.url ? (

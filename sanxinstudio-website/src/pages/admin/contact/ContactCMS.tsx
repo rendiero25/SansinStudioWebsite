@@ -80,6 +80,21 @@ const ContactCMS = () => {
               />
             </div>
           </div>
+
+          {/* Contact Form Section */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Contact Form Section
+            </h3>
+            <div className="flex flex-col gap-6">
+              <TextFieldEditor
+                label="Form Title"
+                value={(content.formTitle as string) || ""}
+                onChange={(val) => updateContent("formTitle", val)}
+                placeholder="e.g. Tell us about your project"
+              />
+            </div>
+          </div>
         </div>
       )}
     </SectionWrapper>

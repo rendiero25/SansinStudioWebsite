@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getSection } from "../../../services/sectionApi";
 
 interface ProcessDetail {
@@ -32,6 +33,17 @@ const WorksProcess = () => {
   const [buttons, setButtons] = useState<ButtonData>({});
   const [loaded, setLoaded] = useState(false);
   const [activeProcessId, setActiveProcessId] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleApproach = () => {
+    const processes = timeline.processes || [];
+    const activeProcess = processes.find((p) => p.id === activeProcessId);
+    if (activeProcess) {
+      navigate("/projects", { state: { categoryName: activeProcess.processTitle } });
+    } else {
+      navigate("/projects");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -265,7 +277,10 @@ const WorksProcess = () => {
 
         {/* Bottom Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
-          <button className="cursor-pointer px-12 py-3 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 min-w-[180px]">
+          <button 
+            onClick={handleApproach}
+            className="cursor-pointer px-12 py-3 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 min-w-[180px]"
+          >
             {btn1}
           </button>
           <a

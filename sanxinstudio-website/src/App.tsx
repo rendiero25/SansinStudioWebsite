@@ -11,6 +11,7 @@ import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import Insights from "./pages/Insights";
 import Company from "./pages/Company";
+import Contact from "./pages/Contact";
 
 // Home Section Editors
 import HeaderEditor from "./pages/admin/home/HeaderEditor";
@@ -66,6 +67,7 @@ function App() {
           <Route path="/projects/:id" element={<ProjectDetail />} />
           <Route path="/insights" element={<Insights />} />
           <Route path="/company" element={<Company />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Admin Login */}
           <Route path="/admin/login" element={<AdminLogin />} />

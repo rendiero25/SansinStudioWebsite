@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 
 interface Section8Data {
@@ -58,7 +59,7 @@ const Section8 = () => {
 
   if (!loaded) return null;
 
-  const btn = data.ctaButton || { text: "Insights", link: "#" };
+  const btn = data.ctaButton || { text: "Insights", link: "/insights" };
   const title = data.title || "Discover our _industry\nnews & creative insights_";
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -79,12 +80,12 @@ const Section8 = () => {
             <h2 className="font-primary text-[28px] md:text-[38px] lg:text-[42px] font-normal text-black leading-[1.2] tracking-[-0.02em] m-0 max-w-[500px]">
               {renderStyledText(title)}
             </h2>
-            <a
-              href={btn.link}
-              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[14px] font-bold border border-black/20 rounded-xl hover:bg-black hover:text-white transition-all duration-300"
+            <Link
+              to={btn.link}
+              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[14px] font-bold border border-black/20 rounded-xl hover:bg-black hover:text-white transition-all duration-300 no-underline"
             >
               {btn.text}
-            </a>
+            </Link>
           </div>
 
           {/* Right: Newsletter Form */}

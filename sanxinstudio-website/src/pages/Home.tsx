@@ -6,6 +6,7 @@ import Section4 from "../components/public/Section4";
 import Section5 from "../components/public/Section5";
 import Section6 from "../components/public/Section6";
 import Section7 from "../components/public/Section7";
+import InsightsSliderSection from "../components/public/InsightsSliderSection";
 import Section8 from "../components/public/Section8";
 import Footer from "../components/public/Footer";
 
@@ -20,6 +21,7 @@ const Home = () => {
       <Section5 />
       <Section6 />
       <Section7 />
+      <InsightsSliderSection />
       <Section8 />
 
       {/* Footer */}

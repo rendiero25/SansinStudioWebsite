@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 
 interface HeroData {
@@ -88,7 +89,7 @@ const HeroSection = () => {
   const useBgVideo = data.bgType === "video" && bgVideoUrl;
   const ctaButton = data.ctaButton || {
     text: "Get Started",
-    link: "#services",
+    link: "/solutions",
   };
 
   return (
@@ -148,12 +149,12 @@ const HeroSection = () => {
                 {data.subtitle}
               </p>
             )}
-            <a
-              href={ctaButton.link}
-              className="inline-flex items-center justify-center min-w-[130px] md:min-w-[250px] px-6 md:px-8 py-3 md:py-[14px] bg-white hover:bg-white text-black rounded-xl hover:text-[#0a0a0a] font-primary text-[12px] md:text-[17px] font-bold border border-white/25 hover:border-white transition-all duration-300 tracking-[0.02em]"
+            <Link
+              to={ctaButton.link}
+              className="inline-flex items-center justify-center min-w-[130px] md:min-w-[250px] px-6 md:px-8 py-3 md:py-[14px] bg-white hover:bg-white text-black rounded-xl hover:text-[#0a0a0a] font-primary text-[12px] md:text-[17px] font-bold border border-white/25 hover:border-white transition-all duration-300 tracking-[0.02em] no-underline"
             >
               {ctaButton.text}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

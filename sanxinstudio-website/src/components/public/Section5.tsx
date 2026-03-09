@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 
 interface SubItem {
@@ -89,7 +90,7 @@ const Section5 = () => {
 
   if (!loaded) return null;
 
-  const labelBtn = data.label || { text: "Solutions", link: "#" };
+  const labelBtn = data.label || { text: "Solutions", link: "/solutions" };
 
   return (
     <section className="relative w-full bg-white py-20 md:py-28" style={{ overflowX: 'clip', overflowY: 'visible' }}>
@@ -106,12 +107,12 @@ const Section5 = () => {
                   "Yes, we can make it happen for you, the _future leading company_",
               )}
             </h2>
-            <a
-              href={labelBtn.link}
-              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[17px] font-bold border border-black/20 rounded-lg hover:bg-black hover:text-white transition-all duration-300 tracking-[0.01em]"
+            <Link
+              to={labelBtn.link}
+              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[17px] font-bold border border-black/20 rounded-lg hover:bg-black hover:text-white transition-all duration-300 tracking-[0.01em] no-underline"
             >
               {labelBtn.text}
-            </a>
+            </Link>
           </div>
 
           {/* Right: Solution Cards — breaks out of container to right edge */}

@@ -1,7 +1,9 @@
 import Header from "../components/public/Header";
 import WorksHero from "../components/public/works/WorksHero";
 import WorksProcess from "../components/public/works/WorksProcess";
+import WorksProjectsSection from "../components/public/works/WorksProjectsSection";
 import SolutionFAQs from "../components/public/solution/SolutionFAQs";
+import Footer from "../components/public/Footer";
 
 const Works = () => {
   return (
@@ -11,8 +13,11 @@ const Works = () => {
       <main>
         <WorksHero />
         <WorksProcess />
+        <WorksProjectsSection />
         <SolutionFAQs />
       </main>
+
+      {/* <Footer /> */}
 
       <style>
         {`

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 
 interface Section6Data {
@@ -107,7 +108,7 @@ const Section6 = () => {
 
   if (!loaded) return null;
 
-  const btn = data.ctaButton || { text: "Works", link: "#" };
+  const btn = data.ctaButton || { text: "Works", link: "/works" };
   const sideImage = data.sideImage;
 
   return (
@@ -122,12 +123,12 @@ const Section6 = () => {
                 data.title || ""
               )}
             </h2>
-            <a
-              href={btn.link}
-              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[15px] font-bold border border-black/20 rounded-[10px] hover:bg-black hover:text-white transition-all duration-300 tracking-[0.01em] mt-2"
+            <Link
+              to={btn.link}
+              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[15px] font-bold border border-black/20 rounded-[10px] hover:bg-black hover:text-white transition-all duration-300 tracking-[0.01em] mt-2 no-underline"
             >
               {btn.text}
-            </a>
+            </Link>
           </div>
 
           {/* Right: Pannable Image */}
