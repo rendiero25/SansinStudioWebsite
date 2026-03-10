@@ -13,6 +13,12 @@ interface Section8Data {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const lines = text.split("\n");
   return lines.map((line, lineIndex) => {
     // Split to find _italic underline_
@@ -21,7 +27,10 @@ const renderStyledText = (text: string) => {
       if (part.startsWith("_") && part.endsWith("_")) {
         // Formatted matching design: italic block
         return (
-          <span key={i} className="italic font-light text-black/80 underline underline-offset-4 decoration-[1px]">
+          <span
+            key={i}
+            className="italic font-light text-black/80 underline underline-offset-4 decoration-1"
+          >
             {part.slice(1, -1)}
           </span>
         );
@@ -60,7 +69,8 @@ const Section8 = () => {
   if (!loaded) return null;
 
   const btn = data.ctaButton || { text: "Insights", link: "/insights" };
-  const title = data.title || "Discover our _industry\nnews & creative insights_";
+  const title =
+    data.title || "Discover our _industry\nnews & creative insights_";
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +87,7 @@ const Section8 = () => {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 lg:gap-20">
           {/* Left: Title + Button */}
           <div className="flex-1 flex flex-col items-start gap-8">
-            <h2 className="font-primary text-[28px] md:text-[38px] lg:text-[42px] font-normal text-black leading-[1.2] tracking-[-0.02em] m-0 max-w-[500px]">
+            <h2 className="font-primary text-[23px] lg:text-[42px] font-light text-black leading-[1.2] tracking-[-0.02em] m-0 max-w-[500px]">
               {renderStyledText(title)}
             </h2>
             <Link
@@ -91,12 +101,21 @@ const Section8 = () => {
           {/* Right: Newsletter Form */}
           <div className="flex-1 w-full max-w-[700px] flex gap-6 items-end">
             <div className="font-primary text-[8px] md:text-[10px] font-bold text-black tracking-widest pb-3 hidden sm:block">
-              {data.emailTitle ? renderStyledText(data.emailTitle.replace(' ', '\n')) : (
-                <>SUBSCRIBE<br/>NEWSLETTER</>
+              {data.emailTitle ? (
+                renderStyledText(data.emailTitle.replace(" ", "\n"))
+              ) : (
+                <>
+                  SUBSCRIBE
+                  <br />
+                  NEWSLETTER
+                </>
               )}
             </div>
-            
-            <form onSubmit={handleSubscribe} className="flex-1 flex flex-col sm:flex-row gap-4 items-stretch mb-0.5">
+
+            <form
+              onSubmit={handleSubscribe}
+              className="flex-1 flex flex-col sm:flex-row gap-4 items-stretch mb-0.5"
+            >
               <input
                 type="email"
                 required
@@ -113,7 +132,6 @@ const Section8 = () => {
               </button>
             </form>
           </div>
-
         </div>
       </div>
     </section>

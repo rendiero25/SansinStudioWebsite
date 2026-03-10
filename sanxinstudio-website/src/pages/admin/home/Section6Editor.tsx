@@ -3,6 +3,7 @@ import SectionWrapper from "../../../components/cms/SectionWrapper";
 import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
 import ButtonEditor from "../../../components/cms/ButtonEditor";
+import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 /* Inner component so useEffect stays inside a proper React component */
 const Section6Content = ({
@@ -12,9 +13,10 @@ const Section6Content = ({
   content: Record<string, unknown>;
   updateContent: (key: string, value: unknown) => void;
 }) => {
-  const initialPan = content.imagePanPosition !== undefined
-    ? (content.imagePanPosition as number)
-    : 50;
+  const initialPan =
+    content.imagePanPosition !== undefined
+      ? (content.imagePanPosition as number)
+      : 50;
   const [panPosition, setPanPosition] = useState(initialPan);
 
   const imageData = content.sideImage as {
@@ -26,13 +28,14 @@ const Section6Content = ({
     <>
       {/* Title */}
       <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-        <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Text Content</h3>
-        <TextFieldEditor
-                className="mt-4"
+        <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+          Text Content
+        </h3>
+        <QuillFieldEditor
+          className="mt-4"
           label="Title"
           value={(content.title as string) || ""}
           onChange={(val) => updateContent("title", val)}
-          multiline
           placeholder="How will we achieve it through our framework"
         />
       </div>
@@ -60,7 +63,9 @@ const Section6Content = ({
               />
             </div>
             <div className="py-3 px-4 bg-black/50 flex items-center gap-3">
-              <label className="text-xs text-white/50 whitespace-nowrap">Pan Position:</label>
+              <label className="text-xs text-white/50 whitespace-nowrap">
+                Pan Position:
+              </label>
               <input
                 type="range"
                 min="0"
@@ -83,7 +88,9 @@ const Section6Content = ({
 
       {/* Button */}
       <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-        <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Button</h3>
+        <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+          Button
+        </h3>
         <ButtonEditor
           label="CTA Button"
           value={

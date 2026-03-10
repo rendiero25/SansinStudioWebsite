@@ -8,17 +8,26 @@ interface Section7Data {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const lines = text.split("\n");
   return lines.map((line, lineIndex) => {
     // We want to support _italic purple underline_ and *bold italic white*
-    // The previous regex split on both, but because there are spaces inside `_ _`, 
+    // The previous regex split on both, but because there are spaces inside `_ _`,
     // `[^*]+` and `[^_]+` work. Let's make sure it handles the arrows properly too.
     const parts = line.split(/(\*[^*]+\*|_[^_]+_)/g);
     const lineContent = parts.map((part, i) => {
       if (part.startsWith("_") && part.endsWith("_")) {
         // Purple underlined italics (as seen in Section 7 design)
         return (
-          <span key={i} className="italic underline underline-offset-4 decoration-[1px] text-[#b39add]">
+          <span
+            key={i}
+            className="italic underline underline-offset-4 decoration-1 text-[#b39add]"
+          >
             {part.slice(1, -1)}
           </span>
         );
@@ -75,10 +84,9 @@ const Section7 = () => {
     <section className="relative w-full bg-black py-32 md:py-48 text-white overflow-hidden">
       <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-20">
-          
           {/* Left: Main Statement (Title) */}
           <div className="md:w-3/5 lg:w-[50%]">
-            <h2 className="font-primary text-[32px] md:text-[42px] lg:text-[42px] font-normal leading-tight tracking-[-0.01em] m-0 text-white/95">
+            <h2 className="font-primary text-[23px] md:text-[42px] font-light leading-tight tracking-[-0.01em] m-0 text-white/95">
               {renderStyledText(title)}
             </h2>
           </div>
@@ -89,7 +97,6 @@ const Section7 = () => {
               {renderStyledText(description)}
             </p>
           </div>
-
         </div>
       </div>
     </section>

@@ -23,6 +23,12 @@ interface Section5Data {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
   return parts.map((part, i) => {
     if (part.startsWith("_") && part.endsWith("_")) {
@@ -50,8 +56,6 @@ const Section5 = () => {
   const [data, setData] = useState<Section5Data>({});
   const [loaded, setLoaded] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,15 +97,24 @@ const Section5 = () => {
   const labelBtn = data.label || { text: "Solutions", link: "/solutions" };
 
   return (
-    <section className="relative w-full bg-white py-20 md:py-28" style={{ overflowX: 'clip', overflowY: 'visible' }}>
+    <section
+      className="relative w-full bg-white py-20 md:py-28"
+      style={{ overflowX: "clip", overflowY: "visible" }}
+    >
       {/* Subtle purple glow at top */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20" style={{ overflow: 'visible' }}>
-        <div className="flex flex-col justify-between xl:flex-row gap-10 md:gap-20" style={{ overflow: 'visible' }}>
+      <div
+        className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20"
+        style={{ overflow: "visible" }}
+      >
+        <div
+          className="flex flex-col justify-between xl:flex-row gap-10 md:gap-20"
+          style={{ overflow: "visible" }}
+        >
           {/* Left: Title + Label */}
           <div className="md:max-w-[450px] shrink-0">
-            <h2 className="font-primary text-[28px] md:text-[42px] font-normal text-black leading-[1.15] tracking-[-0.03em] m-0 mb-12">
+            <h2 className="font-primary text-[23px] md:text-[42px] font-light text-black leading-[1.15] tracking-[-0.03em] m-0 mb-12">
               {renderStyledText(
                 data.title ||
                   "Yes, we can make it happen for you, the _future leading company_",

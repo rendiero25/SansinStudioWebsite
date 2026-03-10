@@ -27,6 +27,12 @@ interface MiniProject {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const lines = text.split("\n");
   return lines.map((line, lineIndex) => {
     const parts = line.split(/(\*[^*]+\*|_[^_]+_)/g);
@@ -89,7 +95,9 @@ const SolutionHero = () => {
 
     // Wait one tick for React to render the element
     const timer = setTimeout(() => {
-      const container = document.getElementById("solution-projects-scroll") as HTMLElement & { __wheelCleanup?: () => void } | null;
+      const container = document.getElementById("solution-projects-scroll") as
+        | (HTMLElement & { __wheelCleanup?: () => void })
+        | null;
       if (!container) return;
 
       const handleWheel = (e: WheelEvent) => {
@@ -107,7 +115,9 @@ const SolutionHero = () => {
 
     return () => {
       clearTimeout(timer);
-      const container = document.getElementById("solution-projects-scroll") as (HTMLElement & { __wheelCleanup?: () => void }) | null;
+      const container = document.getElementById("solution-projects-scroll") as
+        | (HTMLElement & { __wheelCleanup?: () => void })
+        | null;
       if (container && container.__wheelCleanup) {
         container.__wheelCleanup();
       }
@@ -133,7 +143,10 @@ const SolutionHero = () => {
     "Creative _solutions_\ntailored for the _future_\n_leading companies_";
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 bg-black" style={{ overflowX: 'clip', overflowY: 'visible' }}>
+    <section
+      className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 bg-black"
+      style={{ overflowX: "clip", overflowY: "visible" }}
+    >
       {/* Background */}
       <div className="absolute inset-0 z-0">
         {data.bgImage?.url && (
@@ -145,10 +158,13 @@ const SolutionHero = () => {
         )}
       </div>
 
-      <div className="container relative mx-auto px-6 md:px-12 xl:px-20 z-10 w-full" style={{ overflow: 'visible' }}>
+      <div
+        className="container relative mx-auto px-6 md:px-12 xl:px-20 z-10 w-full"
+        style={{ overflow: "visible" }}
+      >
         {/* Brand Logo and Title */}
         <div className="w-full text-left opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_forwards]">
-          <h1 className="max-w-4xl font-primary text-[40px] md:text-[64px] lg:text-[76px] xl:text-[88px] leading-[1.1] font-normal text-white tracking-[-0.02em] m-0">
+          <h1 className="max-w-4xl font-primary text-[40px] md:text-[64px] lg:text-[76px] xl:text-[88px] leading-[1.1] font-light text-white tracking-[-0.02em] m-0">
             <span className="block md:inline-block md:align-middle mb-4 md:mb-0 mr-0 md:mr-6 md:-translate-y-[8px]">
               {data.brandLogo?.url ? (
                 <img
@@ -165,7 +181,10 @@ const SolutionHero = () => {
         </div>
 
         {/* Project Cards — breaks out of container to right edge */}
-        <div className="mt-16 md:mt-24 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.3s_forwards]" style={{ overflow: 'visible' }}>
+        <div
+          className="mt-16 md:mt-24 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.3s_forwards]"
+          style={{ overflow: "visible" }}
+        >
           <div
             id="solution-projects-scroll"
             className="flex gap-6 md:gap-4 overflow-x-auto cursor-grab active:cursor-grabbing"

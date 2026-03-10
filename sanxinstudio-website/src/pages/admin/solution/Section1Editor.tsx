@@ -1,6 +1,6 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
-import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
+import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const Section1Editor = () => {
   return (
@@ -37,12 +37,11 @@ const Section1Editor = () => {
               onChange={(val) => updateContent("brandLogo", val)}
               folder="sanxinstudio/solution"
             />
-            <TextFieldEditor
+            <QuillFieldEditor
               className="mt-4"
               label="Title"
               value={(content.title as string) || ""}
               onChange={(val) => updateContent("title", val)}
-              multiline
               placeholder="Enter title text..."
             />
           </div>

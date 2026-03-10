@@ -2,6 +2,7 @@ import SectionWrapper from "../../../components/cms/SectionWrapper";
 import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ButtonEditor from "../../../components/cms/ButtonEditor";
 import ItemListEditor from "../../../components/cms/ItemListEditor";
+import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const Section5Editor = () => {
   return (
@@ -14,16 +15,17 @@ const Section5Editor = () => {
         <>
           {/* Title */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Text Content</h3>
-            <TextFieldEditor
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Text Content
+            </h3>
+            <QuillFieldEditor
               className="mt-4"
               label="Title"
               value={(content.title as string) || ""}
               onChange={(val) => updateContent("title", val)}
-              multiline
               placeholder="Yes, we can make it happen for you, the future leading company"
             />
-            <div style={{ marginTop: '16px' }}>
+            <div style={{ marginTop: "16px" }}>
               <ButtonEditor
                 label="Section Label"
                 value={
@@ -39,7 +41,9 @@ const Section5Editor = () => {
 
           {/* Solution Items */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Solution Items</h3>
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Solution Items
+            </h3>
             <ItemListEditor
               label="Solutions"
               items={

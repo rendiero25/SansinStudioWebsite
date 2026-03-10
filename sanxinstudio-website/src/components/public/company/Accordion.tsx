@@ -1,20 +1,31 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 interface AccordionProps {
   title: string;
   icon?: string;
   children: React.ReactNode;
   isOpen?: boolean;
+  onToggle?: () => void;
 }
 
 const Accordion = ({
   title,
   icon,
   children,
-  isOpen: defaultOpen = false,
+  isOpen: parentIsOpen,
+  onToggle,
 }: AccordionProps) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = onToggle !== undefined ? parentIsOpen : internalIsOpen;
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle();
+    } else {
+      setInternalIsOpen(!internalIsOpen);
+    }
+  };
 
   return (
     <div
@@ -23,7 +34,7 @@ const Accordion = ({
       }`}
     >
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className="cursor-pointer w-full flex items-center justify-between p-5 text-left focus:outline-none"
       >
         <div className="flex items-center gap-4">

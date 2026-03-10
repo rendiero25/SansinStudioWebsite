@@ -4,6 +4,7 @@ import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
 import VideoUploader from "../../../components/cms/VideoUploader";
 import ButtonEditor from "../../../components/cms/ButtonEditor";
+import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const HeroEditor = () => {
   const [bgType, setBgType] = useState<"image" | "video">("image");
@@ -20,19 +21,22 @@ const HeroEditor = () => {
           <>
             {/* Headline */}
             <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Headline Text</h3>
+              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+                Headline Text
+              </h3>
               <ImageUploader
                 label="Brand Logo"
-                value={content.brandLogo as { url: string; publicId: string } | null}
+                value={
+                  content.brandLogo as { url: string; publicId: string } | null
+                }
                 onChange={(val) => updateContent("brandLogo", val)}
                 folder="sanxinstudio/hero"
               />
-              <TextFieldEditor
+              <QuillFieldEditor
                 className="mt-4"
                 label="Headline"
                 value={(content.headline as string) || ""}
                 onChange={(val) => updateContent("headline", val)}
-                multiline
                 placeholder="A branding agency with one objective: To make you profitable."
               />
               <TextFieldEditor
@@ -47,9 +51,13 @@ const HeroEditor = () => {
 
             {/* Background */}
             <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Background</h3>
+              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+                Background
+              </h3>
               <div className="flex flex-col gap-2">
-                <label className="text-[13px] font-semibold text-white/70 uppercase tracking-wider">Background Type</label>
+                <label className="text-[13px] font-semibold text-white/70 uppercase tracking-wider">
+                  Background Type
+                </label>
                 <div className="flex gap-1 p-1 bg-white/[0.04] rounded-[10px] border border-white/[0.06] mb-4">
                   <button
                     type="button"
@@ -97,7 +105,9 @@ const HeroEditor = () => {
 
             {/* CTA Button */}
             <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">CTA Button</h3>
+              <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+                CTA Button
+              </h3>
               <ButtonEditor
                 label="Button"
                 value={

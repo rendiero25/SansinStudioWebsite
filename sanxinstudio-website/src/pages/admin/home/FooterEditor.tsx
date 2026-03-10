@@ -3,6 +3,7 @@ import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
 import ButtonEditor from "../../../components/cms/ButtonEditor";
 import ItemListEditor from "../../../components/cms/ItemListEditor";
+import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const FooterEditor = () => {
   return (
@@ -11,10 +12,17 @@ const FooterEditor = () => {
         <>
           {/* Background Image */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Background Image</h3>
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Background Image
+            </h3>
             <ImageUploader
               label="Background Image"
-              value={content.backgroundImage as { url: string; publicId: string } | null}
+              value={
+                content.backgroundImage as {
+                  url: string;
+                  publicId: string;
+                } | null
+              }
               onChange={(val) => updateContent("backgroundImage", val)}
               folder="sanxinstudio/footer/background"
             />
@@ -22,19 +30,22 @@ const FooterEditor = () => {
 
           {/* CTA Section */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">CTA Area</h3>
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              CTA Area
+            </h3>
             <ImageUploader
               label="CTA Image"
-              value={content.ctaImage as { url: string; publicId: string } | null}
+              value={
+                content.ctaImage as { url: string; publicId: string } | null
+              }
               onChange={(val) => updateContent("ctaImage", val)}
               folder="sanxinstudio/footer/cta"
             />
-            <TextFieldEditor
+            <QuillFieldEditor
               className="mt-4 mb-4"
               label="CTA Heading"
               value={(content.ctaHeading as string) || ""}
               onChange={(val) => updateContent("ctaHeading", val)}
-              multiline
               placeholder="Lets create your profitable plan through our discovery map session."
             />
             <ButtonEditor
@@ -47,7 +58,7 @@ const FooterEditor = () => {
               }
               onChange={(val) => updateContent("ctaButton", val)}
             />
-            <div style={{ marginTop: '16px' }}>
+            <div style={{ marginTop: "16px" }}>
               <TextFieldEditor
                 className="mt-4"
                 label="Note"
@@ -61,16 +72,18 @@ const FooterEditor = () => {
 
           {/* Contact Info */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Contact Info</h3>
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Contact Info
+            </h3>
             <TextFieldEditor
-                className="mt-4"
+              className="mt-4"
               label="Title"
               value={(content.contactTitle as string) || ""}
               onChange={(val) => updateContent("contactTitle", val)}
               placeholder="Contact Us"
             />
             <TextFieldEditor
-                className="mt-4"
+              className="mt-4"
               label="Email"
               value={(content.email as string) || ""}
               onChange={(val) => updateContent("email", val)}
@@ -80,7 +93,9 @@ const FooterEditor = () => {
 
           {/* Footer Logo */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Footer Logo</h3>
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Footer Logo
+            </h3>
             <ImageUploader
               label="Logo Image"
               value={content.logo as { url: string; publicId: string } | null}
@@ -91,9 +106,11 @@ const FooterEditor = () => {
 
           {/* Social Links */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Social Links</h3>
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Social Links
+            </h3>
             <TextFieldEditor
-                className="mt-4 mb-4"
+              className="mt-4 mb-4"
               label="Title"
               value={(content.socialTitle as string) || ""}
               onChange={(val) => updateContent("socialTitle", val)}
@@ -135,9 +152,11 @@ const FooterEditor = () => {
 
           {/* Copyright */}
           <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">Copyright</h3>
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Copyright
+            </h3>
             <TextFieldEditor
-                className="mt-4"
+              className="mt-4"
               label="Copyright Text"
               value={(content.copyright as string) || ""}
               onChange={(val) => updateContent("copyright", val)}

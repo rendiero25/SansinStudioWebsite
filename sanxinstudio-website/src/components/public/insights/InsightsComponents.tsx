@@ -89,7 +89,13 @@ export const NewsletterBox = () => {
 
   return (
     <div
-      onClick={() => setIsClicked(true)}
+      onClick={() => {
+        setIsClicked(true);
+        const footer = document.getElementById("insights-footer");
+        if (footer) {
+          footer.scrollIntoView({ behavior: "smooth" });
+        }
+      }}
       className={`p-6 rounded-xl flex gap-2 items-center justify-between group cursor-pointer transition-all hover:shadow-lg hover:shadow-purple-500/10 mb-2 ${
         isClicked
           ? "bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]"
@@ -124,7 +130,7 @@ export const MainInsightCard = ({ item }: { item: InsightItem }) => {
   return (
     <Link
       to={`/insights/${item.id}`}
-      className="group relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-8 block no-underline shadow-xl shadow-black/5 shrink-0"
+      className="group relative w-full aspect-16/10 rounded-xl overflow-hidden mb-8 block no-underline shadow-xl shadow-black/5 shrink-0"
     >
       <img
         src={
@@ -313,8 +319,10 @@ export const MoreInsightsSlider = ({
 // --- Subscribe Section (Above Footer) ---
 export const InsightsSubscribeSection = ({
   latestImage,
+  onSubscribe,
 }: {
   latestImage?: string;
+  onSubscribe?: () => void;
 }) => {
   return (
     <div className="container mx-auto px-6 md:px-12 xl:px-20 mb-20 md:mb-32">
@@ -329,7 +337,10 @@ export const InsightsSubscribeSection = ({
               placeholder="Email..."
               className="flex-1 px-6 py-4 bg-white border-black/10 rounded-xl outline-none placeholder:text-black/30 text-black text-[15px]"
             />
-            <button className="px-8 py-4 bg-white hover:bg-black hover:text-white text-black font-bold text-[15px] rounded-xl transition-all shadow-sm">
+            <button
+              onClick={onSubscribe}
+              className="px-8 py-4 bg-white hover:bg-black hover:text-white text-black font-bold text-[15px] rounded-xl transition-all shadow-sm"
+            >
               Get free guidebook
             </button>
           </div>
@@ -344,6 +355,72 @@ export const InsightsSubscribeSection = ({
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Success Modal ---
+export const SuccessModal = ({
+  isOpen,
+  onClose,
+  title = "Email Submitted",
+  message = "You'll get your guidebook immediately",
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  message?: string;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-6">
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+      <div className="bg-white rounded-xl p-8 shadow-2xl relative w-full max-w-[500px] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+        <button
+          onClick={onClose}
+          className="cursor-pointer absolute top-6 right-6 text-black/40 hover:text-black transition-colors"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <div className="w-12 h-12 rounded-[12px] bg-[#7526BF] flex items-center justify-center mb-6">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+
+        <h3 className="text-[24px] md:text-[32px] font-bold text-black mb-3">
+          {title}
+        </h3>
+        <p className="text-[14px] md:text-[16px] text-black font-normal">
+          {message}
+        </p>
       </div>
     </div>
   );

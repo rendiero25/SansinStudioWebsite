@@ -59,7 +59,9 @@ const Header = () => {
                 alt="Sanxin Studio"
                 className="h-[35px] w-auto object-cover"
               />
-            ) : ("")}
+            ) : (
+              ""
+            )}
           </Link>
 
           {/* Nav Links */}

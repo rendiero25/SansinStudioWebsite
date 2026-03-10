@@ -33,6 +33,12 @@ interface TimelineData {
 
 const renderStyledText = (text: string, brandLogoUrl?: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const lines = text.split("\n");
   return lines.map((line, lineIndex) => {
     // Split by _underline_, *italic*, and {logo} placeholders
@@ -73,7 +79,6 @@ const renderStyledText = (text: string, brandLogoUrl?: string) => {
     );
   });
 };
-
 
 const WorksHero = () => {
   const [heroData, setHeroData] = useState<HeroData>({});
@@ -174,7 +179,7 @@ const WorksHero = () => {
       <div className="container relative mx-auto px-6 md:px-12 xl:px-20 z-10 w-full">
         {/* Title Section */}
         <div className="w-full text-left opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_forwards]">
-          <h1 className="max-w-5xl font-primary text-[42px] md:text-[60px] lg:text-[72px] xl:text-[84px] leading-[1.1] font-normal text-white tracking-[-0.02em] m-0">
+          <h1 className="max-w-5xl font-primary text-[30px] md:text-[60px] lg:text-[72px] xl:text-[84px] leading-[1.1] font-light text-white tracking-[-0.02em] m-0">
             {renderStyledText(title, heroData.brandLogo?.url)}
           </h1>
         </div>

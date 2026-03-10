@@ -11,13 +11,22 @@ interface Section6Data {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const lines = text.split("\n");
   return lines.map((line, lineIndex) => {
     const parts = line.split(/(\*[^*]+\*|_[^_]+_)/g);
     const lineContent = parts.map((part, i) => {
       if (part.startsWith("_") && part.endsWith("_")) {
         return (
-          <span key={i} className="italic underline underline-offset-4 decoration-[1px] text-black">
+          <span
+            key={i}
+            className="italic underline underline-offset-4 decoration-[1px] text-black"
+          >
             {part.slice(1, -1)}
           </span>
         );
@@ -71,8 +80,9 @@ const Section6 = () => {
   useEffect(() => {
     if (scrollContainerRef.current && loaded && data.sideImage) {
       const container = scrollContainerRef.current;
-      const panPosition = data.imagePanPosition !== undefined ? data.imagePanPosition : 50;
-      
+      const panPosition =
+        data.imagePanPosition !== undefined ? data.imagePanPosition : 50;
+
       // Wait a tiny bit for image to paint so scrollWidth/scrollHeight are accurate
       setTimeout(() => {
         const maxScrollLeft = container.scrollWidth - container.clientWidth;
@@ -100,8 +110,8 @@ const Section6 = () => {
     e.preventDefault();
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
     const y = e.pageY - scrollContainerRef.current.offsetTop;
-    const walkX = (x - startX); // 1:1 scroll speed
-    const walkY = (y - startY);
+    const walkX = x - startX; // 1:1 scroll speed
+    const walkY = y - startY;
     scrollContainerRef.current.scrollLeft = scrollLeft - walkX;
     scrollContainerRef.current.scrollTop = scrollTop - walkY;
   };
@@ -115,13 +125,10 @@ const Section6 = () => {
     <section className="relative w-full bg-white py-20 md:py-32 overflow-hidden">
       <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
         <div className="flex flex-col xl:flex-row items-start  xl:items-center gap-14 md:gap-20">
-          
           {/* Left: Title + Button */}
           <div className="md:max-w-[500px] shrink-0 w-full flex flex-col items-start text-left text-black">
-            <h2 className="font-primary text-[36px] md:text-[42px] font-normal text-black leading-[1.15] tracking-[-0.03em] m-0 mb-8">
-              {renderStyledText(
-                data.title || ""
-              )}
+            <h2 className="font-primary text-[23px] md:text-[42px] font-light text-black leading-[1.15] tracking-[-0.03em] m-0 mb-8">
+              {renderStyledText(data.title || "")}
             </h2>
             <Link
               to={btn.link}
@@ -132,9 +139,9 @@ const Section6 = () => {
           </div>
 
           {/* Right: Pannable Image */}
-          <div 
+          <div
             ref={scrollContainerRef}
-            className={`flex-1 w-full relative h-[350px] md:h-[600px] overflow-hidden rounded-[20px] bg-[#EEEEEE] select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`flex-1 w-full relative h-[350px] md:h-[600px] overflow-hidden rounded-[20px] bg-[#EEEEEE] select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
             onMouseDown={onMouseDown}
             onMouseLeave={onMouseLeave}
             onMouseUp={onMouseUp}
@@ -153,7 +160,6 @@ const Section6 = () => {
               </div>
             )}
           </div>
-          
         </div>
       </div>
     </section>

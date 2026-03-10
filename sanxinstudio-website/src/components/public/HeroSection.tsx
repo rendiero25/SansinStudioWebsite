@@ -34,7 +34,12 @@ const HeroSection = () => {
   const renderHeadline = (text: string) => {
     if (!text) return null;
 
-    // First try: *word* → italic, _word_ → italic + underline (markdown-style)
+    // If it looks like HTML (from Quill), render it directly
+    if (text.includes("<") && text.includes(">")) {
+      return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    }
+
+    // Legacy parser for *word* and _word_
     if (text.includes("*") || text.includes("_")) {
       const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
       return parts.map((part, i) => {
@@ -129,11 +134,17 @@ const HeroSection = () => {
           <div className="md:max-w-[680px] 2xl:max-w-[950px] shrink-0">
             <p className="font-primary leading-tight text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white 2xl:leading-[1.1] tracking-[-0.03em] m-0">
               {data.brandLogo?.url ? (
-                <img src={data.brandLogo.url} alt="Brand" className="inline-block h-6 md:h-10 2xl:h-8 align-middle mr-2 object-contain" />
-              ) : data.brandName && (
-                <span className="font-primary text-[16px] md:text-[20px] 2xl:text-[30px] font-semibold text-white tracking-[0.06em] lowercase align-middle mr-1.5">
-                  {data.brandName}
-                </span>
+                <img
+                  src={data.brandLogo.url}
+                  alt="Brand"
+                  className="inline-block h-6 md:h-10 2xl:h-8 align-middle mr-2 object-contain"
+                />
+              ) : (
+                data.brandName && (
+                  <span className="font-primary text-[16px] md:text-[20px] 2xl:text-[30px] font-light text-white tracking-[0.06em] lowercase align-middle mr-1.5">
+                    {data.brandName}
+                  </span>
+                )
               )}{" "}
               {renderHeadline(
                 data.headline ||

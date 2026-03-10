@@ -12,6 +12,12 @@ interface Section2Data {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
   return parts.map((part, i) => {
     if (part.startsWith("_") && part.endsWith("_")) {
@@ -59,7 +65,7 @@ const Section2 = () => {
     <section className="relative w-full bg-white py-20 md:py-28 overflow-hidden">
       <div className="container mx-auto px-10 md:px-12 xl:px-20">
         {/* Title */}
-        <h2 className="font-primary text-[28px] md:text-[42px] font-normal text-black leading-[1.15] tracking-[-0.03em] m-0 max-w-[600px]">
+        <h2 className="font-primary text-[23px] md:text-[42px] font-light text-black leading-[1.15] tracking-[-0.03em] m-0 w-full lg:max-w-[600px]">
           {renderStyledText(data.title || "")}
         </h2>
 

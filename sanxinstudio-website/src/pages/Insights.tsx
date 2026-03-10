@@ -8,7 +8,9 @@ import {
   MainInsightCard,
   MustReadAside,
   NewsletterBox,
+  InsightsSubscribeSection,
   Pagination,
+  SuccessModal,
 } from "../components/public/insights/InsightsComponents";
 import { InsightsFooter } from "../components/public/insights/InsightsFooter";
 
@@ -61,6 +63,7 @@ const Insights = () => {
 
   const mustReadPosts = allPosts.slice(0, 5); // Take first 5 for "Must Read"
   const latestPostImage = allPosts[0]?.image?.url;
+  const [showModal, setShowModal] = useState(false);
 
   if (loading) {
     return (
@@ -124,10 +127,19 @@ const Insights = () => {
         </div>
       </main>
 
+      <div className="mt-20">
+        <InsightsSubscribeSection
+          latestImage={latestPostImage}
+          onSubscribe={() => setShowModal(true)}
+        />
+      </div>
+
       <InsightsFooter
         latestImage={latestPostImage}
         items={allPosts.slice(0, 5)}
       />
+
+      <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)} />
 
       <style>{`
         .insights-page {

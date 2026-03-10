@@ -37,6 +37,12 @@ const Company = () => {
   const [section1, setSection1] = useState<Section1Data | null>(null);
   const [section2, setSection2] = useState<Section2Data | null>(null);
   const [loading, setLoading] = useState(true);
+  const [openSection1Accordion, setOpenSection1Accordion] = useState<
+    string | null
+  >(null);
+  const [openSection2Accordion, setOpenSection2Accordion] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,11 +83,31 @@ const Company = () => {
 
             <div className="flex flex-col gap-4 max-md:w-full">
               <div className="cursor-pointer">
-                <Accordion title="Vision">{section1?.vision}</Accordion>
+                <Accordion
+                  title="Vision"
+                  isOpen={openSection1Accordion === "Vision"}
+                  onToggle={() =>
+                    setOpenSection1Accordion(
+                      openSection1Accordion === "Vision" ? null : "Vision",
+                    )
+                  }
+                >
+                  {section1?.vision}
+                </Accordion>
               </div>
 
               <div className="cursor-pointer">
-                <Accordion title="Mission">{section1?.mission}</Accordion>
+                <Accordion
+                  title="Mission"
+                  isOpen={openSection1Accordion === "Mission"}
+                  onToggle={() =>
+                    setOpenSection1Accordion(
+                      openSection1Accordion === "Mission" ? null : "Mission",
+                    )
+                  }
+                >
+                  {section1?.mission}
+                </Accordion>
               </div>
             </div>
           </div>
@@ -99,6 +125,12 @@ const Company = () => {
                     key={item.id}
                     title={item.name}
                     icon={item.icon?.url}
+                    isOpen={openSection2Accordion === item.id}
+                    onToggle={() =>
+                      setOpenSection2Accordion(
+                        openSection2Accordion === item.id ? null : item.id,
+                      )
+                    }
                   >
                     <div className="flex flex-col gap-6 py-2">
                       {/* If categorized subItems exist, group them */}

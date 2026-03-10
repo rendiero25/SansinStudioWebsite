@@ -9,11 +9,20 @@ interface Section4Data {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
   return parts.map((part, i) => {
     if (part.startsWith("_") && part.endsWith("_")) {
       return (
-        <span key={i} className="italic underline underline-offset-4 decoration-1">
+        <span
+          key={i}
+          className="italic underline underline-offset-4 decoration-1"
+        >
           {part.slice(1, -1)}
         </span>
       );
@@ -62,16 +71,17 @@ const Section4 = () => {
             alt=""
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0"/>
+          <div className="absolute inset-0" />
         </div>
       )}
 
       <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 py-20 md:py-28">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-12">
           {/* Title */}
-          <h2 className="font-primary text-[28px] md:text-[35px] font-normal text-white leading-[1.15] tracking-[-0.02em] m-0">
+          <h2 className="font-primary text-[23px] md:text-[35px] font-light text-white leading-[1.15] tracking-[-0.02em] m-0">
             {renderStyledText(
-              data.title || "Got _similar problems_? we'll help you to _fix it._"
+              data.title ||
+                "Got _similar problems_? we'll help you to _fix it._",
             )}
           </h2>
 

@@ -1,6 +1,7 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
 import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
+import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const Section1Editor = () => {
   return (
@@ -11,7 +12,7 @@ const Section1Editor = () => {
             <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
               Text Content
             </h3>
-            <TextFieldEditor
+            <QuillFieldEditor
               label="Title"
               value={(content.title as string) || ""}
               onChange={(val) => updateContent("title", val)}

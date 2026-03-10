@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getSection } from "../../../services/sectionApi";
 
-import { MoreInsightsSlider } from "./InsightsComponents";
+import { MoreInsightsSlider, SuccessModal } from "./InsightsComponents";
 import type { InsightItem } from "../../cms/InsightsItemsEditor";
 
 interface SocialLink {
@@ -30,6 +30,7 @@ export const InsightsFooter = ({
 }) => {
   const [footerData, setFooterData] = useState<FooterData>({});
   const [loaded, setLoaded] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +52,7 @@ export const InsightsFooter = ({
 
   return (
     <footer
+      id="insights-footer"
       className="w-full relative overflow-hidden bg-black xl:mt-32"
       style={
         footerData.backgroundImage?.url
@@ -81,9 +83,14 @@ export const InsightsFooter = ({
                 placeholder="Email..."
                 className="flex-1 px-6 py-4 bg-white/50 border border-black/10 rounded-xl outline-none placeholder:text-black/30 text-black text-[15px]"
               />
-              <button className="px-8 py-4 bg-white hover:bg-black hover:text-white text-black font-bold text-[15px] rounded-xl transition-all shadow-sm">
+
+              <button
+                onClick={() => setShowModal(true)}
+                className="cursor-pointer px-8 py-4 bg-white hover:bg-black hover:text-white text-black font-bold text-[15px] rounded-xl transition-all shadow-sm"
+              >
                 Get free guidebook
               </button>
+              
             </div>
           </div>
           <div className="w-full md:w-[35%] lg:w-[40%] h-[250px] md:h-auto shrink-0 relative">
@@ -97,7 +104,6 @@ export const InsightsFooter = ({
             />
           </div>
         </div>
-
         {/* Middle: Links & Contact */}
         <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-16 lg:gap-8 border-b border-white/10 pb-24 md:pb-32">
           <div className="flex flex-col gap-4">
@@ -218,6 +224,8 @@ export const InsightsFooter = ({
           </p>
         </div>
       </div>
+
+      <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </footer>
   );
 };

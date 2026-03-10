@@ -17,11 +17,20 @@ interface Section3Data {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
   return parts.map((part, i) => {
     if (part.startsWith("_") && part.endsWith("_")) {
       return (
-        <span key={i} className="italic underline underline-offset-4 decoration-1">
+        <span
+          key={i}
+          className="italic underline underline-offset-4 decoration-1"
+        >
           {part.slice(1, -1)}
         </span>
       );
@@ -73,9 +82,10 @@ const Section3 = () => {
 
       <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
         {/* Title */}
-        <h2 className="font-primary text-[28px] md:text-[42px] font-normal text-white leading-[1.15] tracking-[-0.03em] m-0 max-w-[600px] mb-12 md:mb-16">
+        <h2 className="font-primary text-[23px] md:text-[42px] font-light text-white leading-[1.15] tracking-[-0.03em] m-0 max-w-[600px] mb-12 md:mb-16">
           {renderStyledText(
-            data.title || "Most companies might face these specific _roadblocks_ for years."
+            data.title ||
+              "Most companies might face these specific _roadblocks_ for years.",
           )}
         </h2>
 
