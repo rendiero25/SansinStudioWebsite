@@ -192,7 +192,7 @@ const ProjectDetail = () => {
           
           {/* Row 1: Main Image Only */}
           <div className="w-full mb-20 md:mb-32 mt-8 md:mt-16">
-            <div className="w-full aspect-video md:aspect-[16/9] lg:aspect-[16/10] rounded-lg overflow-hidden relative">
+            <div className="w-full aspect-video md:aspect-16/9 lg:aspect-16/10 rounded-lg overflow-hidden relative">
               {currentProject.mainImage?.url ? (
                 <img
                   src={currentProject.mainImage.url}
