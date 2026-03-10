@@ -9,15 +9,13 @@ const InsightsSliderSection = () => {
   const [categories, setCategories] = useState<InsightCategory[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
-  const [logoUrl, setLogoUrl] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [postRes, catRes, headerRes] = await Promise.all([
+        const [postRes, catRes] = await Promise.all([
           getSection("insights", "posts"),
           getSection("insights", "categories"),
-          getSection("home", "header"),
         ]);
 
         if (postRes?.content?.insights) {
@@ -25,9 +23,6 @@ const InsightsSliderSection = () => {
         }
         if (catRes?.content?.categories) {
           setCategories(catRes.content.categories as InsightCategory[]);
-        }
-        if (headerRes?.content?.logo?.url) {
-          setLogoUrl(headerRes.content.logo.url);
         }
       } catch (err) {
         console.error("Failed to load insights for slider:", err);

@@ -1,5 +1,4 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
-import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ButtonEditor from "../../../components/cms/ButtonEditor";
 import ItemListEditor from "../../../components/cms/ItemListEditor";
 import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";

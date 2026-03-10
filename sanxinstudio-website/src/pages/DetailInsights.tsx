@@ -4,8 +4,6 @@ import Header from "../components/public/Header";
 import { getSection } from "../services/sectionApi";
 import type { InsightItem } from "../components/cms/InsightsItemsEditor";
 import {
-  MoreInsightsSlider,
-  InsightsSubscribeSection,
   SuccessModal,
 } from "../components/public/insights/InsightsComponents";
 import { InsightsFooter } from "../components/public/insights/InsightsFooter";
@@ -58,7 +56,6 @@ const DetailInsights = () => {
     );
   }
 
-  const moreInsights = allPosts.filter((p) => p.id !== id).slice(0, 5);
   const latestPostImage = allPosts[0]?.image?.url;
 
   return (

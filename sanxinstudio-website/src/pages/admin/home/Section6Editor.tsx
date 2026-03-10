@@ -1,6 +1,5 @@
 import { useState } from "react";
 import SectionWrapper from "../../../components/cms/SectionWrapper";
-import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
 import ButtonEditor from "../../../components/cms/ButtonEditor";
 import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
