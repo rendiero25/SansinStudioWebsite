@@ -4,6 +4,7 @@ import React from "react";
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
   duration?: number;
@@ -13,6 +14,7 @@ interface ScrollRevealProps {
 const ScrollReveal: React.FC<ScrollRevealProps> = ({ 
   children, 
   className = "", 
+  style,
   delay = 0, 
   direction = "up",
   duration = 0.8,
@@ -28,6 +30,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
   return (
     <motion.div
+      style={style}
       initial={{ 
         opacity: 0, 
         ...directionOffset[direction] 
