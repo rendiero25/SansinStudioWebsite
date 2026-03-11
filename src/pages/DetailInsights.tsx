@@ -3,10 +3,9 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "../components/public/Header";
 import { getSection } from "../services/sectionApi";
 import type { InsightItem } from "../components/cms/InsightsItemsEditor";
-import {
-  SuccessModal,
-} from "../components/public/insights/InsightsComponents";
+import { SuccessModal } from "../components/public/insights/InsightsComponents";
 import { InsightsFooter } from "../components/public/insights/InsightsFooter";
+import Skeleton from "../components/Skeleton";
 
 const DetailInsights = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,8 +38,36 @@ const DetailInsights = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-black/10 border-t-black rounded-full animate-spin" />
+      <div className="insights-detail-page font-primary bg-white text-black min-h-screen">
+        <Header />
+        <main className="pt-32 pb-24">
+          <div className="container mx-auto px-6 md:px-12 xl:px-20">
+             <Skeleton className="w-[80px] h-[30px] mb-10" />
+             <div className="flex flex-col lg:flex-row justify-between items-end gap-8 mb-12">
+               <div className="w-full lg:max-w-[800px] space-y-4">
+                   <Skeleton className="w-full h-[45px]" />
+                   <Skeleton className="w-[70%] h-[45px]" />
+               </div>
+               <div className="flex flex-col items-start gap-3 shrink-0">
+                  <Skeleton className="w-[100px] h-[20px]" />
+                  <div className="flex gap-2">
+                     <Skeleton className="w-[80px] h-[25px] rounded-md" />
+                     <Skeleton className="w-[80px] h-[25px] rounded-md" />
+                  </div>
+               </div>
+             </div>
+             <div className="w-full aspect-video lg:aspect-21/9 rounded-[24px] overflow-hidden mb-6">
+                 <Skeleton className="w-full h-full" />
+             </div>
+             <div className="max-w-full mx-auto w-full overflow-hidden space-y-4 mt-12">
+                 <Skeleton className="w-full h-[20px]" />
+                 <Skeleton className="w-full h-[20px]" />
+                 <Skeleton className="w-[90%] h-[20px]" />
+                 <Skeleton className="w-full h-[20px]" />
+                 <Skeleton className="w-[80%] h-[20px]" />
+             </div>
+          </div>
+        </main>
       </div>
     );
   }

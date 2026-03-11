@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
+import Skeleton from "../Skeleton";
+import ScrollReveal from "../ScrollReveal";
 
 interface Section6Data {
   title?: string;
@@ -25,7 +27,7 @@ const renderStyledText = (text: string) => {
         return (
           <span
             key={i}
-            className="italic underline underline-offset-4 decoration-[1px] text-black"
+            className="italic underline underline-offset-4 decoration-1 text-black"
           >
             {part.slice(1, -1)}
           </span>
@@ -116,8 +118,6 @@ const Section6 = () => {
     scrollContainerRef.current.scrollTop = scrollTop - walkY;
   };
 
-  if (!loaded) return null;
-
   const btn = data.ctaButton || { text: "Works", link: "/works" };
   const sideImage = data.sideImage;
 
@@ -127,39 +127,60 @@ const Section6 = () => {
         <div className="flex flex-col xl:flex-row items-start  xl:items-center gap-14 md:gap-20">
           {/* Left: Title + Button */}
           <div className="md:max-w-[500px] shrink-0 w-full flex flex-col items-start text-left text-black">
-            <h2 className="font-primary text-[23px] md:text-[42px] font-light text-black leading-[1.15] tracking-[-0.03em] m-0 mb-8">
-              {renderStyledText(data.title || "")}
-            </h2>
-            <Link
-              to={btn.link}
-              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[15px] font-bold border border-black/20 rounded-[10px] hover:bg-black hover:text-white transition-all duration-300 tracking-[0.01em] mt-2 no-underline"
-            >
-              {btn.text}
-            </Link>
+            {!loaded ? (
+              <div className="w-full space-y-3 mb-8">
+                <Skeleton className="w-[90%] h-[30px] md:h-[45px]" />
+                <Skeleton className="w-[70%] h-[30px] md:h-[45px]" />
+              </div>
+            ) : (
+              <ScrollReveal>
+                <h2 className="font-primary text-[23px] md:text-[42px] font-light text-black leading-[1.15] tracking-[-0.03em] m-0 mb-8">
+                  {renderStyledText(data.title || "")}
+                </h2>
+              </ScrollReveal>
+            )}
+            {!loaded ? (
+              <Skeleton className="w-[120px] h-[45px] rounded-[10px] mt-2" />
+            ) : (
+              <ScrollReveal delay={0.2}>
+                <Link
+                  to={btn.link}
+                  className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[15px] font-bold border border-black/20 rounded-[10px] hover:bg-black hover:text-white transition-all duration-300 tracking-[0.01em] mt-2 no-underline"
+                >
+                  {btn.text}
+                </Link>
+              </ScrollReveal>
+            )}
           </div>
 
           {/* Right: Pannable Image */}
-          <div
-            ref={scrollContainerRef}
-            className={`flex-1 w-full relative h-[350px] md:h-[600px] overflow-hidden rounded-[20px] bg-[#EEEEEE] select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
-            onMouseDown={onMouseDown}
-            onMouseLeave={onMouseLeave}
-            onMouseUp={onMouseUp}
-            onMouseMove={onMouseMove}
-            style={{ touchAction: "none" }}
-          >
-            {sideImage?.url && (
-              <div className="w-fit h-fit min-w-[150%] min-h-[150%] flex items-center justify-center p-10">
-                <img
-                  src={sideImage.url}
-                  alt="Framework Workflow"
-                  className="max-w-none pointer-events-none rounded-xl"
-                  style={{ width: "120%", height: "auto" }}
-                  draggable={false}
-                />
+          {!loaded ? (
+            <Skeleton className="flex-1 w-full relative h-[350px] md:h-[600px] rounded-[20px]" />
+          ) : (
+            <ScrollReveal direction="left" delay={0.3} className="flex-1 w-full relative h-[350px] md:h-[600px]">
+              <div
+                ref={scrollContainerRef}
+                className={`w-full relative h-[350px] md:h-[600px] overflow-hidden rounded-[20px] bg-[#EEEEEE] select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+                onMouseDown={onMouseDown}
+                onMouseLeave={onMouseLeave}
+                onMouseUp={onMouseUp}
+                onMouseMove={onMouseMove}
+                style={{ touchAction: "none" }}
+              >
+                {sideImage?.url && (
+                  <div className="w-fit h-fit min-w-[150%] min-h-[150%] flex items-center justify-center p-10">
+                    <img
+                      src={sideImage.url}
+                      alt="Framework Workflow"
+                      className="max-w-none pointer-events-none rounded-xl"
+                      style={{ width: "120%", height: "auto" }}
+                      draggable={false}
+                    />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </ScrollReveal>
+          )}
         </div>
       </div>
     </section>

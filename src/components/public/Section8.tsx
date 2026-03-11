@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
+import Skeleton from "../Skeleton";
+import ScrollReveal from "../ScrollReveal";
 
 interface Section8Data {
   title?: string;
@@ -66,8 +68,6 @@ const Section8 = () => {
     fetchData();
   }, []);
 
-  if (!loaded) return null;
-
   const btn = data.ctaButton || { text: "Insights", link: "/insights" };
   const title =
     data.title || "Discover our _industry\nnews & creative insights_";
@@ -86,51 +86,81 @@ const Section8 = () => {
       <div className="container mx-auto px-10 md:px-12 xl:px-20">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 lg:gap-20">
           {/* Left: Title + Button */}
-          <div className="flex-1 flex flex-col items-start gap-8">
-            <h2 className="font-primary text-[23px] lg:text-[42px] font-light text-black leading-[1.2] tracking-[-0.02em] m-0 max-w-[500px]">
-              {renderStyledText(title)}
-            </h2>
-            <Link
-              to={btn.link}
-              className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[14px] font-bold border border-black/20 rounded-xl hover:bg-black hover:text-white transition-all duration-300 no-underline"
-            >
-              {btn.text}
-            </Link>
+          <div className="flex-1 flex flex-col items-start gap-8 w-full">
+            {!loaded ? (
+              <div className="space-y-3 w-full max-w-[500px]">
+                <Skeleton className="w-full h-[30px] lg:h-[50px]" />
+                <Skeleton className="w-[70%] h-[30px] lg:h-[50px]" />
+              </div>
+            ) : (
+              <ScrollReveal>
+                <h2 className="font-primary text-[23px] lg:text-[42px] font-light text-black leading-[1.2] tracking-[-0.02em] m-0 max-w-[500px]">
+                  {renderStyledText(title)}
+                </h2>
+              </ScrollReveal>
+            )}
+            {!loaded ? (
+              <Skeleton className="w-[120px] h-[45px] rounded-xl" />
+            ) : (
+              <ScrollReveal delay={0.2}>
+                <Link
+                  to={btn.link}
+                  className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[14px] font-bold border border-black/20 rounded-xl hover:bg-black hover:text-white transition-all duration-300 no-underline"
+                >
+                  {btn.text}
+                </Link>
+              </ScrollReveal>
+            )}
           </div>
 
           {/* Right: Newsletter Form */}
           <div className="flex-1 w-full max-w-[700px] flex gap-6 items-end">
-            <div className="font-primary text-[8px] md:text-[10px] font-bold text-black tracking-widest pb-3 hidden sm:block">
-              {data.emailTitle ? (
-                renderStyledText(data.emailTitle.replace(" ", "\n"))
-              ) : (
+            {!loaded ? (
+              <Skeleton className="w-[60px] h-[30px] hidden sm:block mb-3" />
+            ) : (
+              <div className="font-primary text-[8px] md:text-[10px] font-bold text-black tracking-widest pb-3 hidden sm:block">
+                {data.emailTitle ? (
+                  renderStyledText(data.emailTitle.replace(" ", "\n"))
+                ) : (
+                  <>
+                    SUBSCRIBE
+                    <br />
+                    NEWSLETTER
+                  </>
+                )}
+              </div>
+            )}
+
+            <div className="flex-1 flex flex-col sm:flex-row gap-4 items-stretch mb-0.5">
+              {!loaded ? (
                 <>
-                  SUBSCRIBE
-                  <br />
-                  NEWSLETTER
+                  <Skeleton className="flex-1 h-[50px] rounded-xl" />
+                  <Skeleton className="w-[150px] h-[50px] rounded-xl" />
                 </>
+              ) : (
+                <ScrollReveal delay={0.4} direction="up" className="flex-1 flex flex-col sm:flex-row gap-4 items-stretch w-full">
+                  <form
+                    onSubmit={handleSubscribe}
+                    className="flex-1 flex flex-col sm:flex-row gap-4 items-stretch w-full"
+                  >
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={data.emailPlaceholder || "Email..."}
+                      className="flex-1 bg-[#F5F5F5] border border-black/5 rounded-xl px-5 py-3.5 text-[15px] font-primary text-black placeholder:text-black/40 focus:outline-none focus:ring-1 focus:ring-black/20 transition-all"
+                    />
+                    <button
+                      type="submit"
+                      className="bg-[#A033FF] text-white font-primary font-medium text-[17px] px-8 py-3.5 rounded-xl hover:bg-[#8527DE] transition-colors duration-300 whitespace-nowrap cursor-pointer"
+                    >
+                      {data.emailBtnText || "Get free guidebook"}
+                    </button>
+                  </form>
+                </ScrollReveal>
               )}
             </div>
-
-            <form
-              onSubmit={handleSubscribe}
-              className="flex-1 flex flex-col sm:flex-row gap-4 items-stretch mb-0.5"
-            >
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={data.emailPlaceholder || "Email..."}
-                className="flex-1 bg-[#F5F5F5] border border-black/5 rounded-xl px-5 py-3.5 text-[15px] font-primary text-black placeholder:text-black/40 focus:outline-none focus:ring-1 focus:ring-black/20 transition-all"
-              />
-              <button
-                type="submit"
-                className="bg-[#A033FF] text-white font-primary font-medium text-[17px] px-8 py-3.5 rounded-xl hover:bg-[#8527DE] transition-colors duration-300 whitespace-nowrap cursor-pointer"
-              >
-                {data.emailBtnText || "Get free guidebook"}
-              </button>
-            </form>
           </div>
         </div>
       </div>

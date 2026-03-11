@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getSection } from "../../services/sectionApi";
+import Skeleton from "../Skeleton";
+import ScrollReveal from "../ScrollReveal";
 
 interface RoadblockCard {
   id: string;
@@ -64,8 +66,6 @@ const Section3 = () => {
     fetchData();
   }, []);
 
-  if (!loaded) return null;
-
   return (
     <section className="relative w-full bg-[#0D0D0D] pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
       {/* Background image overlay */}
@@ -82,59 +82,96 @@ const Section3 = () => {
 
       <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
         {/* Title */}
-        <h2 className="font-primary text-[23px] md:text-[42px] font-light text-white leading-[1.15] tracking-[-0.03em] m-0 max-w-[600px] mb-12 md:mb-16">
-          {renderStyledText(
-            data.title ||
-              "Most companies might face these specific _roadblocks_ for years.",
-          )}
-        </h2>
+        {!loaded ? (
+          <div className="max-w-[600px] mb-12 md:mb-16 space-y-3">
+            <Skeleton dark className="w-[90%] h-[30px] md:h-[50px]" />
+            <Skeleton dark className="w-[70%] h-[30px] md:h-[50px]" />
+            <Skeleton dark className="w-[85%] h-[30px] md:h-[50px]" />
+          </div>
+        ) : (
+          <ScrollReveal>
+            <h2 className="font-primary text-[23px] md:text-[42px] font-light text-white leading-[1.15] tracking-[-0.03em] m-0 max-w-[600px] mb-12 md:mb-16">
+              {renderStyledText(
+                data.title ||
+                  "Most companies might face these specific _roadblocks_ for years.",
+              )}
+            </h2>
+          </ScrollReveal>
+        )}
 
         {/* Roadblock Cards */}
-        {data.cards && data.cards.length > 0 && (
+        {!loaded ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {data.cards.map((card) => (
+            {[1, 2, 3].map((i) => (
               <div
-                key={card.id}
-                className="bg-black/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden flex flex-col px-2 py-2"
+                key={i}
+                className="bg-black/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden flex flex-col px-2 py-2 min-h-[400px]"
               >
-                {/* Category label */}
-                {card.category && (
-                  <div className="px-5 pt-5 mb-2">
-                    <span className="inline-block text-[10px] bg-white font-semibold uppercase text-black rounded-md px-3 py-1 font-primary">
-                      {card.category}
-                    </span>
+                <div className="px-5 pt-5 mb-2">
+                  <Skeleton dark className="w-[80px] h-[20px] rounded-md" />
+                </div>
+                <div className="px-5 pt-4">
+                  <Skeleton dark className="w-full h-[200px] rounded-xl" />
+                </div>
+                <div className="p-5 pt-4 flex flex-col flex-1 mt-2 space-y-4">
+                  <Skeleton dark className="w-[80%] h-[28px]" />
+                  <div className="space-y-2 mt-4">
+                    <Skeleton dark className="w-full h-[16px]" />
+                    <Skeleton dark className="w-[90%] h-[16px]" />
                   </div>
-                )}
-
-                {/* Card image */}
-                {card.image?.url && (
-                  <div className="px-5 pt-4">
-                    <div className="w-full h-full rounded-xl overflow-hidden">
-                      <img
-                        src={card.image.url}
-                        alt={card.title || ""}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Card content */}
-                <div className="p-5 pt-4 flex flex-col flex-1">
-                  {card.title && (
-                    <h3 className="font-primary text-[18px] md:text-[28px] font-normal text-white m-0 mt-2 mb-7 leading-tight">
-                      {card.title}
-                    </h3>
-                  )}
-                  {card.description && (
-                    <p className="font-primary text-[14px] text-white leading-[1.6] m-0">
-                      {card.description}
-                    </p>
-                  )}
                 </div>
               </div>
             ))}
           </div>
+        ) : (
+          data.cards && data.cards.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {data.cards.map((card, index) => (
+                <ScrollReveal
+                  key={card.id}
+                  delay={0.2 + index * 0.1}
+                  direction="up"
+                  className="bg-black/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden flex flex-col px-2 py-2"
+                >
+                  {/* Category label */}
+                  {card.category && (
+                    <div className="px-5 pt-5 mb-2">
+                      <span className="inline-block text-[10px] bg-white font-semibold uppercase text-black rounded-md px-3 py-1 font-primary">
+                        {card.category}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Card image */}
+                  {card.image?.url && (
+                    <div className="px-5 pt-4">
+                      <div className="w-full h-full rounded-xl overflow-hidden">
+                        <img
+                          src={card.image.url}
+                          alt={card.title || ""}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Card content */}
+                  <div className="p-5 pt-4 flex flex-col flex-1">
+                    {card.title && (
+                      <h3 className="font-primary text-[18px] md:text-[28px] font-normal text-white m-0 mt-2 mb-7 leading-tight">
+                        {card.title}
+                      </h3>
+                    )}
+                    {card.description && (
+                      <p className="font-primary text-[14px] text-white leading-[1.6] m-0">
+                        {card.description}
+                      </p>
+                    )}
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          )
         )}
       </div>
     </section>

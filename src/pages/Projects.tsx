@@ -5,6 +5,8 @@ import Footer from "../components/public/Footer";
 import { getSection } from "../services/sectionApi";
 import type { ProjectCategory } from "../components/cms/ProjectCategoriesEditor";
 import type { ProjectItem } from "../components/cms/ProjectItemsEditor";
+import Skeleton from "../components/Skeleton";
+import ScrollReveal from "../components/ScrollReveal";
 
 interface ProjectsData {
   categories: ProjectCategory[];
@@ -120,18 +122,20 @@ const Projects = () => {
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
           {/* Row 1: Title */}
           <div className="lg:sticky lg:top-[70px] lg:z-40 mb-8 flex flex-col xl:flex-row justify-between items-center">
-            <h1
-              className={`text-[32px] md:text-[42px] font-normal tracking-[-0.02em] text-[#0A0A0A] m-0 leading-none transition-all duration-300 ${
-                isScrolled
-                  ? "opacity-0 invisible h-0 w-0 overflow-hidden"
-                  : "opacity-100 visible"
-              }`}
-            >
-              {data.title}
-            </h1>
+            <ScrollReveal className="w-full xl:w-auto overflow-hidden">
+              <h1
+                className={`text-[32px] md:text-[42px] font-normal tracking-[-0.02em] text-[#0A0A0A] m-0 leading-none transition-all duration-300 ${
+                  isScrolled
+                    ? "opacity-0 invisible h-0 w-0 overflow-hidden"
+                    : "opacity-100 visible h-auto w-auto"
+                }`}
+              >
+                {data.title}
+              </h1>
+            </ScrollReveal>
 
             {/* Row 2: Sticky Category Filter Pills */}
-            <div className="py-4 -mx-4 lg:px-4 sm:mx-0 sm:px-0 w-full">
+            <ScrollReveal delay={0.2} direction="left" className="py-4 -mx-4 lg:px-4 sm:mx-0 sm:px-0 w-full xl:w-auto">
               <div className="flex justify-start lg:justify-end">
                 <div className="flex flex-col lg:flex-row w-full lg:w-auto items-center bg-white shadow-md border border-black/5 rounded-xl p-4 m-2 xl:m-0 xl:p-2 gap-2 overflow-x-auto max-w-full hide-scrollbar">
                   <span className="text-sm uppercase text-black/50 px-3 shrink-0 mb-4 lg:mb-0">
@@ -177,12 +181,15 @@ const Projects = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
 
           {loading ? (
-            <div className="w-full h-[400px] flex items-center justify-center">
-              <div className="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-5 md:gap-y-5">
+              <Skeleton className="w-full aspect-video rounded-xl" />
+              <Skeleton className="w-full aspect-video rounded-xl" />
+              <Skeleton className="w-full aspect-video rounded-xl" />
+              <Skeleton className="w-full aspect-video rounded-xl" />
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className="w-full py-20 text-center text-gray-500">
@@ -203,9 +210,9 @@ const Projects = () => {
                     (project.categoryId ? [project.categoryId] : []);
 
                   return (
-                    <div
+                    <ScrollReveal
                       key={project.id}
-                      className="group relative w-full aspect-[16/10] md:aspect-[4/3] lg:aspect-[16/10] rounded-xl overflow-hidden cursor-pointer"
+                      className="group relative w-full aspect-16/10 md:aspect-4/3 lg:aspect-16/10 rounded-xl overflow-hidden cursor-pointer"
                     >
                       {/* Background Image */}
                       {project.thumbnail?.url ? (
@@ -219,7 +226,7 @@ const Projects = () => {
                       )}
 
                       {/* Gradient Overlay for bottom text readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
                       {/* Dark overlay on hover */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
@@ -271,7 +278,7 @@ const Projects = () => {
                           {project.projectName}
                         </h3>
                       </div>
-                    </div>
+                    </ScrollReveal>
                   );
                 })}
               </div>

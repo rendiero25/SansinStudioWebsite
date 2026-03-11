@@ -4,6 +4,8 @@ import SolutionFAQs from "../components/public/solution/SolutionFAQs";
 import { getSection } from "../services/sectionApi";
 import Accordion from "../components/public/company/Accordion";
 import PannableImage from "../components/public/company/PannableImage";
+import Skeleton from "../components/Skeleton";
+import ScrollReveal from "../components/ScrollReveal";
 
 interface Section1Data {
   title?: string;
@@ -62,7 +64,66 @@ const Company = () => {
     fetchData();
   }, []);
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <div className="company-page bg-white min-h-screen font-primary">
+        <Header />
+        <main className="pt-32 pb-20 overflow-x-hidden">
+          <div className="container mx-auto px-6 md:px-12 xl:px-20 overflow-visible">
+            {/* Row 1 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-24 md:mb-32">
+              <div className="flex flex-col gap-8">
+                <Skeleton className="w-[80%] h-[40px] md:h-[50px]" />
+                <div className="space-y-3 w-full max-w-xl">
+                   <Skeleton className="w-full h-[20px]" />
+                   <Skeleton className="w-full h-[20px]" />
+                   <Skeleton className="w-[80%] h-[20px]" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-4 max-md:w-full">
+                <Skeleton className="w-full h-[60px] rounded-xl" />
+                <Skeleton className="w-full h-[60px] rounded-xl" />
+              </div>
+            </div>
+            {/* Row 2 */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-32 md:mb-48">
+               <div className="lg:col-span-5 flex flex-col justify-between gap-10 lg:h-[800px]">
+                 <div className="space-y-3 w-full max-w-2xl">
+                    <Skeleton className="w-full h-[20px]" />
+                    <Skeleton className="w-full h-[20px]" />
+                    <Skeleton className="w-[85%] h-[20px]" />
+                 </div>
+                 <div className="flex flex-col gap-4 max-md:w-full">
+                    <Skeleton className="w-full h-[60px] rounded-xl" />
+                    <Skeleton className="w-full h-[60px] rounded-xl" />
+                    <Skeleton className="w-full h-[60px] rounded-xl" />
+                 </div>
+               </div>
+               <div className="lg:col-span-7 relative h-[400px] lg:h-[800px]">
+                 <Skeleton className="w-full h-full rounded-xl" />
+               </div>
+            </div>
+          </div>
+          {/* Row 3 - Section 2 */}
+          <div className="bg-[#d9d9d9]/20">
+            <div className="container mx-auto px-6 md:px-12 xl:px-20 pt-15 flex flex-col lg:flex-row gap-10 md:gap-16">
+               <div className="flex flex-col items-start gap-8 lg:gap-20 w-full lg:w-1/2 shrink-0">
+                 <Skeleton className="w-[80%] h-[40px] md:h-[50px] mt-15 xl:mt-0" />
+                 <div className="space-y-3 w-full max-w-6xl">
+                    <Skeleton className="w-full h-[20px]" />
+                    <Skeleton className="w-full h-[20px]" />
+                    <Skeleton className="w-[70%] h-[20px]" />
+                 </div>
+               </div>
+               <div className="w-full h-[400px] md:h-[700px]">
+                 <Skeleton className="w-full h-full rounded-xl" />
+               </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="company-page bg-white min-h-screen font-primary">
@@ -72,16 +133,16 @@ const Company = () => {
         <div className="container mx-auto px-6 md:px-12 xl:px-20 overflow-visible">
           {/* Row 1 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-24 md:mb-32">
-            <div className="flex flex-col gap-8">
+            <ScrollReveal delay={0.1} className="flex flex-col gap-8">
               <h1 className="text-[32px] lg:text-[40px] leading-[1.1] font-normal tracking-[-0.03em] max-w-xl">
                 {section1?.title || "Default Title"}
               </h1>
               <p className="text-[17px] md:text-[20px] font-normal leading-relaxed text-black max-w-xl">
                 {section1?.description1}
               </p>
-            </div>
+            </ScrollReveal>
 
-            <div className="flex flex-col gap-4 max-md:w-full">
+            <ScrollReveal delay={0.2} direction="right" className="flex flex-col gap-4 max-md:w-full">
               <div className="cursor-pointer">
                 <Accordion
                   title="Vision"
@@ -109,17 +170,19 @@ const Company = () => {
                   {section1?.mission}
                 </Accordion>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
 
           {/* Row 2 */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-32 md:mb-48">
             <div className="lg:col-span-5 flex flex-col justify-between gap-10 lg:h-[800px]">
-              <p className="text-[17px] md:text-[20px] leading-relaxed text-black max-w-2xl">
-                {section1?.description2}
-              </p>
+              <ScrollReveal delay={0.1}>
+                <p className="text-[17px] md:text-[20px] leading-relaxed text-black max-w-2xl">
+                  {section1?.description2}
+                </p>
+              </ScrollReveal>
 
-              <div className="flex flex-col gap-4 max-md:w-full">
+              <ScrollReveal delay={0.3} className="flex flex-col gap-4 max-md:w-full">
                 {section1?.items?.map((item) => (
                   <Accordion
                     key={item.id}
@@ -211,10 +274,10 @@ const Company = () => {
                     </div>
                   </Accordion>
                 ))}
-              </div>
+              </ScrollReveal>
             </div>
 
-            <div className="lg:col-span-7 relative h-[400px] lg:h-[800px]">
+            <ScrollReveal delay={0.2} direction="left" className="lg:col-span-7 relative h-[400px] lg:h-[800px]">
               <div className="lg:absolute lg:inset-y-0 lg:left-0 lg:right-[-15vw] rounded-xl overflow-hidden">
                 {section1?.image?.url ? (
                   <img
@@ -226,14 +289,14 @@ const Company = () => {
                   <div className="w-full h-full bg-[#EEEEEE]" />
                 )}
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
 
         {/* Row 3 - Section 2 */}
         <div className="bg-linear-to-b from-[#d9d9d9]/50 to-transparent">
           <div className="container mx-auto px-6 md:px-12 xl:px-20 pt-15 flex flex-col lg:flex-row gap-10 md:gap-16 ">
-            <div className="flex flex-col items-start gap-8 lg:gap-20">
+            <ScrollReveal className="flex flex-col items-start gap-8 lg:gap-20">
               <h2 className="text-[32px] mt-15 xl:mt-0 md:text-[42px] font-normal tracking-tight m-0 leading-tight">
                 {section2?.title}
               </h2>
@@ -241,9 +304,9 @@ const Company = () => {
               <p className="text-[15px] md:text-[21px] leading-relaxed text-black max-w-6xl m-0">
                 {section2?.description}
               </p>
-            </div>
+            </ScrollReveal>
 
-            <div className="rounded-xl overflow-hidden bg-[#EEEEEE] h-[400px] md:h-[700px] w-full">
+            <ScrollReveal direction="left" className="rounded-xl overflow-hidden bg-[#EEEEEE] h-[400px] md:h-[700px] w-full">
               {section2?.image?.url ? (
                 <PannableImage
                   src={section2.image.url}
@@ -253,7 +316,7 @@ const Company = () => {
               ) : (
                 <div className="w-full h-full" />
               )}
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </main>

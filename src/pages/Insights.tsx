@@ -13,6 +13,8 @@ import {
   SuccessModal,
 } from "../components/public/insights/InsightsComponents";
 import { InsightsFooter } from "../components/public/insights/InsightsFooter";
+import Skeleton from "../components/Skeleton";
+import ScrollReveal from "../components/ScrollReveal";
 
 const Insights = () => {
   const [categories, setCategories] = useState<InsightCategory[]>([]);
@@ -67,8 +69,35 @@ const Insights = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-black/10 border-t-black rounded-full animate-spin" />
+      <div className="insights-page font-primary bg-white min-h-screen">
+        <Header />
+        <main className="pt-32">
+          <div className="bg-white pb-24">
+            <div className="container mx-auto px-6 md:px-12 xl:px-20">
+              <div className="flex flex-col lg:flex-row gap-16 lg:gap-12">
+                <div className="w-full lg:w-[68%] flex flex-col">
+                  <div className="flex flex-col gap-8 mb-12">
+                     <Skeleton className="w-[150px] h-[40px] md:h-[50px]" />
+                     <div className="flex gap-4">
+                        <Skeleton className="w-[100px] h-[35px] rounded-lg" />
+                        <Skeleton className="w-[100px] h-[35px] rounded-lg" />
+                        <Skeleton className="w-[100px] h-[35px] rounded-lg" />
+                     </div>
+                  </div>
+                  <div className="flex flex-col gap-12">
+                     <Skeleton className="w-full h-[250px] rounded-3xl" />
+                     <Skeleton className="w-full h-[250px] rounded-3xl" />
+                     <Skeleton className="w-full h-[250px] rounded-3xl" />
+                  </div>
+                </div>
+                <aside className="w-full lg:w-[32%] flex flex-col relative min-h-full gap-12">
+                   <Skeleton className="w-full h-[180px] rounded-3xl" />
+                   <Skeleton className="w-full h-[500px] rounded-3xl" />
+                </aside>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -83,7 +112,7 @@ const Insights = () => {
             <div className="flex flex-col lg:flex-row gap-16 lg:gap-12">
               {/* Left Column: Title, Filter, Posts */}
               <div className="w-full lg:w-[68%] flex flex-col">
-                <div className="flex flex-col gap-8 mb-12">
+                <ScrollReveal className="flex flex-col gap-8 mb-12">
                   <h1 className="text-[32px] md:text-[42px] font-normal text-[#0A0A0A] m-0 leading-none tracking-tight">
                     Insights
                   </h1>
@@ -92,7 +121,7 @@ const Insights = () => {
                     activeCategory={activeCategory}
                     onCategoryChange={setActiveCategory}
                   />
-                </div>
+                </ScrollReveal>
 
                 <div className="flex flex-col">
                   {currentPosts.length > 0 ? (
@@ -117,10 +146,12 @@ const Insights = () => {
 
               {/* Right Column: Subscribe & Must Read */}
               <aside className="w-full lg:w-[32%] flex flex-col relative min-h-full">
-                <NewsletterBox />
-                <div className="sticky top-25 z-20">
+                <ScrollReveal delay={0.2} direction="left">
+                  <NewsletterBox />
+                </ScrollReveal>
+                <ScrollReveal delay={0.4} direction="left" className="sticky top-25 z-20 mt-12">
                   <MustReadAside items={mustReadPosts} />
-                </div>
+                </ScrollReveal>
               </aside>
             </div>
           </div>

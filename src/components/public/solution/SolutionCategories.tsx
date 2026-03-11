@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { getSection } from "../../../services/sectionApi";
 import type { Category } from "../../cms/CategorySolutionsEditor";
+import Skeleton from "../../Skeleton";
+import ScrollReveal from "../../ScrollReveal";
 
 const SolutionCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -127,7 +129,30 @@ const SolutionCategories = () => {
     };
   }, [openMethodId]);
 
-  if (!loaded) return null;
+  if (!loaded) {
+    return (
+      <section className="w-full bg-white text-black py-15 md:py-25 relative">
+        <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-5 xl:gap-20">
+          <div className="flex flex-col xl:flex-row justify-between items-start gap-12 w-full">
+            <Skeleton className="w-[150px] h-[40px] md:h-[50px] mt-4" />
+            <Skeleton className="w-full xl:w-[400px] h-[55px] rounded-xl" />
+          </div>
+          <div className="flex flex-col xl:flex-row items-start gap-16 w-full">
+            <div className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0">
+               <Skeleton className="w-[80%] h-[40px] md:h-[50px]" />
+               <Skeleton className="w-full h-[60px]" />
+               <Skeleton className="w-full xl:w-[500px] h-[300px] rounded-xl" />
+            </div>
+            <div className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0">
+               <Skeleton className="w-full h-[80px] rounded-xl" />
+               <Skeleton className="w-full h-[80px] rounded-xl" />
+               <Skeleton className="w-full h-[80px] rounded-xl" />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (!categories || categories.length === 0) return null;
 
   const toggleMethod = (methodId: string) => {
@@ -147,7 +172,7 @@ const SolutionCategories = () => {
         style={{ overflow: "visible" }}
       >
         {/* Top Header & Tabs Area */}
-        <div className="flex flex-col xl:flex-row justify-between items-start gap-12 w-full">
+        <ScrollReveal className="flex flex-col xl:flex-row justify-between items-start gap-12 w-full">
           {/* Left Sticky Title "Solutions" */}
           <div className="w-full xl:w-auto shrink-0 xl:sticky xl:top-32 h-auto text-left z-10 mt-4">
             <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0">
@@ -184,12 +209,12 @@ const SolutionCategories = () => {
               ))}
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Content Area for Active Category */}
         <div className="flex flex-col xl:flex-row items-start gap-16 w-full animate-[fadeIn_0.5s_ease-out]">
           {/* Left side: Category Details */}
-          <div className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0">
+          <ScrollReveal delay={0.2} direction="right" className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0">
             {/* Category Header */}
             <div className="flex items-center gap-4">
               {activeCategory.categoryIcon?.url && (
@@ -217,10 +242,10 @@ const SolutionCategories = () => {
                 />
               </div>
             )}
-          </div>
+          </ScrollReveal>
 
           {/* Right side: Methods */}
-          <div className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0">
+          <ScrollReveal delay={0.3} direction="up" className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0">
             {activeCategory.methods && activeCategory.methods.length > 0 && (
               <div className="flex flex-col gap-4 w-full min-w-0">
                 {activeCategory.methods.map((method) => {
@@ -333,12 +358,12 @@ const SolutionCategories = () => {
                 })}
               </div>
             )}
-          </div>
+          </ScrollReveal>
         </div>
 
         <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-20 mt-10">
           {/* Approach / Section Title underneath Image */}
-          <div className="flex flex-col gap-4 mt-4 xl:mt-8 w-full xl:w-[450px] shrink-0">
+          <ScrollReveal delay={0.4} direction="up" className="flex flex-col gap-4 mt-4 xl:mt-8 w-full xl:w-[450px] shrink-0">
             <span className="border-t-3 border-black/50 w-[100px] "></span>
             <h4 className="uppercase font-primary text-[12px] font-medium leading-tight tracking-tight m-0 max-w-[450px]">
               {activeCategory.sectionTitle}
@@ -356,7 +381,7 @@ const SolutionCategories = () => {
                 {activeCategory.buttonText}
               </a>
             )}
-          </div>
+          </ScrollReveal>
 
           {/* Features Scroll Row - breaks out of container to right edge */}
           {activeCategory.features && activeCategory.features.length > 0 && (
@@ -444,14 +469,14 @@ const SolutionCategories = () => {
 
       {/* Category overall get started button - placed below features matching design */}
       {globalButton && (
-        <div className="flex justify-center xl:justify-end mt-8 container mx-auto px-6 md:px-12 xl:px-20">
+        <ScrollReveal delay={0.5} direction="up" className="flex justify-center xl:justify-end mt-8 container mx-auto px-6 md:px-12 xl:px-20">
           <a
             href={globalButton.link}
             className="inline-flex items-center justify-center px-16 py-4 bg-[#8B5CF6] text-white rounded-xl text-[17px] font-primary font-bold hover:bg-[#7C3AED] transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300"
           >
             {globalButton.text}
           </a>
-        </div>
+        </ScrollReveal>
       )}
 
       <style>{`

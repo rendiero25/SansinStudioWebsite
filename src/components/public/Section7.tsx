@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getSection } from "../../services/sectionApi";
+import Skeleton from "../Skeleton";
+import ScrollReveal from "../ScrollReveal";
 
 interface Section7Data {
   title?: string;
@@ -70,8 +72,6 @@ const Section7 = () => {
     fetchData();
   }, []);
 
-  if (!loaded) return null;
-
   // Fallback text matching the design if CMS is empty
   const title =
     data.title ||
@@ -85,17 +85,37 @@ const Section7 = () => {
       <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20">
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-20">
           {/* Left: Main Statement (Title) */}
-          <div className="md:w-3/5 lg:w-[50%]">
-            <h2 className="font-primary text-[23px] md:text-[42px] font-light leading-tight tracking-[-0.01em] m-0 text-white/95">
-              {renderStyledText(title)}
-            </h2>
+          <div className="md:w-3/5 lg:w-[50%] w-full">
+            {!loaded ? (
+              <div className="space-y-4">
+                <Skeleton dark className="w-full h-[30px] md:h-[50px]" />
+                <Skeleton dark className="w-[85%] h-[30px] md:h-[50px]" />
+                <Skeleton dark className="w-[70%] h-[30px] md:h-[50px]" />
+              </div>
+            ) : (
+              <ScrollReveal>
+                <h2 className="font-primary text-[23px] md:text-[42px] font-light leading-tight tracking-[-0.01em] m-0 text-white/95">
+                  {renderStyledText(title)}
+                </h2>
+              </ScrollReveal>
+            )}
           </div>
 
           {/* Right: Smaller Descriptive Text */}
-          <div className="md:w-2/5 lg:w-[32%] md:mt-4">
-            <p className="font-['IBM_Plex_Sans',sans-serif] text-[15px] md:text-[16px] leading-[1.6] text-white/80 m-0">
-              {renderStyledText(description)}
-            </p>
+          <div className="md:w-2/5 lg:w-[32%] md:mt-4 w-full">
+            {!loaded ? (
+              <div className="space-y-2">
+                <Skeleton dark className="w-full h-[16px]" />
+                <Skeleton dark className="w-[95%] h-[16px]" />
+                <Skeleton dark className="w-[80%] h-[16px]" />
+              </div>
+            ) : (
+              <ScrollReveal delay={0.2} direction="right">
+                <p className="font-['IBM_Plex_Sans',sans-serif] text-[15px] md:text-[16px] leading-[1.6] text-white/80 m-0">
+                  {renderStyledText(description)}
+                </p>
+              </ScrollReveal>
+            )}
           </div>
         </div>
       </div>

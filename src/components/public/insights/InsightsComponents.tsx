@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useRef, useEffect, useState } from "react";
 import type { InsightItem } from "../../cms/InsightsItemsEditor";
 import type { InsightCategory } from "../../cms/InsightCategoriesEditor";
+import ScrollReveal from "../../ScrollReveal";
 
 // --- Category Filter ---
 export const InsightCategoryFilter = ({
@@ -128,44 +129,46 @@ export const NewsletterBox = () => {
 // --- Main Insight Card ---
 export const MainInsightCard = ({ item }: { item: InsightItem }) => {
   return (
-    <Link
-      to={`/insights/${item.id}`}
-      className="group relative w-full aspect-16/10 rounded-xl overflow-hidden mb-8 block no-underline shadow-xl shadow-black/5 shrink-0"
-    >
-      <img
-        src={
-          item.image?.url ||
-          "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
-        }
-        alt={item.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-      />
-      <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/20 to-transparent opacity-80" />
+    <ScrollReveal className="w-full mb-8">
+      <Link
+        to={`/insights/${item.id}`}
+        className="group relative w-full aspect-16/10 rounded-xl overflow-hidden block no-underline shadow-xl shadow-black/5 shrink-0"
+      >
+        <img
+          src={
+            item.image?.url ||
+            "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
+          }
+          alt={item.title}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/20 to-transparent opacity-80" />
 
-      <div className="absolute bottom-8 left-8 right-8 flex flex-col items-start gap-4">
-        {item.keywords && item.keywords.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2">
-            {item.keywords.slice(0, 3).map((kw, i) => (
-              <span
-                key={i}
-                className="bg-white/90 backdrop-blur-sm text-black text-[14px] font-black px-3 py-1.5 rounded-md uppercase"
-              >
-                {kw}
+        <div className="absolute bottom-8 left-8 right-8 flex flex-col items-start gap-4">
+          {item.keywords && item.keywords.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2">
+              {item.keywords.slice(0, 3).map((kw, i) => (
+                <span
+                  key={i}
+                  className="bg-white/90 backdrop-blur-sm text-black text-[14px] font-black px-3 py-1.5 rounded-md uppercase"
+                >
+                  {kw}
+                </span>
+              ))}
+
+              <span className="text-white/50 text-[14px] font-normal ml-2">
+                {item.date}
               </span>
-            ))}
-
-            <span className="text-white/50 text-[14px] font-normal ml-2">
-              {item.date}
-            </span>
+            </div>
+          )}
+          <div className="flex flex-col gap-2">
+            <h3 className="text-white text-xl md:text-2xl lg:text-[34px] font-normal leading-tight tracking-tight m-0 max-w-[800px] transition-all group-hover:text-white/90">
+              {item.title}
+            </h3>
           </div>
-        )}
-        <div className="flex flex-col gap-2">
-          <h3 className="text-white text-xl md:text-2xl lg:text-[34px] font-normal leading-tight tracking-tight m-0 max-w-[800px] transition-all group-hover:text-white/90">
-            {item.title}
-          </h3>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </ScrollReveal>
   );
 };
 

@@ -5,6 +5,7 @@ import Footer from "../components/public/Footer";
 import { getSection } from "../services/sectionApi";
 import type { ProjectCategory } from "../components/cms/ProjectCategoriesEditor";
 import type { ProjectItem } from "../components/cms/ProjectItemsEditor";
+import Skeleton from "../components/Skeleton";
 
 interface ProjectDetailData {
   categories: ProjectCategory[];
@@ -164,9 +165,23 @@ const ProjectDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center font-primary flex-col gap-4">
-        <div className="w-12 h-12 border-4 border-white/20 border-t-purple-500 rounded-full animate-spin"></div>
-        <div className="text-white/60 text-sm">Loading Project...</div>
+      <div className="project-detail-page font-primary bg-[#0A0A0A] text-white min-h-screen">
+        <Header />
+        <main className="pt-32 pb-24">
+          <div className="container mx-auto px-6 md:px-12 xl:px-20">
+            <div className="w-full mb-20 md:mb-32 mt-8 md:mt-16">
+              <Skeleton dark className="w-full aspect-video md:aspect-video lg:aspect-16/10 rounded-lg" />
+            </div>
+            <div className="self-start w-full max-w-5xl mb-20 md:mb-32 space-y-4">
+              <Skeleton dark className="w-full h-[24px]" />
+              <Skeleton dark className="w-[90%] h-[24px]" />
+              <Skeleton dark className="w-[80%] h-[24px]" />
+            </div>
+            <div className="w-full mb-16 md:mb-20">
+               <Skeleton dark className="w-full h-[calc(100vh-140px)] min-h-[400px] rounded-2xl" />
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -192,7 +207,7 @@ const ProjectDetail = () => {
           
           {/* Row 1: Main Image Only */}
           <div className="w-full mb-20 md:mb-32 mt-8 md:mt-16">
-            <div className="w-full aspect-video md:aspect-16/9 lg:aspect-16/10 rounded-lg overflow-hidden relative">
+            <div className="w-full aspect-video md:aspect-video lg:aspect-16/10 rounded-lg overflow-hidden relative">
               {currentProject.mainImage?.url ? (
                 <img
                   src={currentProject.mainImage.url}
@@ -309,7 +324,7 @@ const ProjectDetail = () => {
                   return (
                     <div
                       key={proj.id}
-                      className="w-[85%] sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-20px)] shrink-0 aspect-[16/10] rounded-lg overflow-hidden relative group snap-start cursor-pointer"
+                      className="w-[85%] sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-20px)] shrink-0 aspect-16/10 rounded-lg overflow-hidden relative group snap-start cursor-pointer"
                     >
                       {/* Background Image */}
                       {bestFallbackImage ? (
@@ -323,7 +338,7 @@ const ProjectDetail = () => {
                       )}
 
                       {/* Gradient Overlay for bottom text readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
                       {/* Dark overlay on hover */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />

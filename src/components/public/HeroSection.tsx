@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
+import Skeleton from "../Skeleton";
+import ScrollReveal from "../ScrollReveal";
 
 interface HeroData {
   brandName?: string;
@@ -99,13 +101,13 @@ const HeroSection = () => {
 
   return (
     <section
-      className={`relative w-full h-screen min-h-[600px] max-md:min-h-[85vh] flex items-end overflow-hidden bg-[#0a0a0a] transition-opacity duration-700 ease-in-out ${
-        loaded ? "opacity-100" : "opacity-0"
-      }`}
+      className={`relative w-full h-screen min-h-[600px] max-md:min-h-[85vh] flex items-end overflow-hidden bg-[#0a0a0a]`}
     >
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        {useBgVideo ? (
+        {!loaded ? (
+          <div className="w-full h-full bg-[#0a0a0a]" />
+        ) : useBgVideo ? (
           <video
             className="w-full h-full object-cover object-top"
             autoPlay
@@ -131,41 +133,64 @@ const HeroSection = () => {
       <div className="relative z-10 w-full container mx-auto px-10 md:px-12 xl:px-20 pb-[40px] md:pb-[72px]">
         <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-7 lg:gap-0 xl:gap-12">
           {/* Left: headline area */}
-          <div className="md:max-w-[680px] 2xl:max-w-[950px] shrink-0">
-            <p className="font-primary leading-tight text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white 2xl:leading-[1.1] tracking-[-0.03em] m-0">
-              {data.brandLogo?.url ? (
-                <img
-                  src={data.brandLogo.url}
-                  alt="Brand"
-                  className="inline-block h-6 md:h-10 2xl:h-8 align-middle mr-2 object-contain"
-                />
-              ) : (
-                data.brandName && (
-                  <span className="font-primary text-[16px] md:text-[20px] 2xl:text-[30px] font-light text-white tracking-[0.06em] lowercase align-middle mr-1.5">
-                    {data.brandName}
-                  </span>
-                )
-              )}{" "}
-              {renderHeadline(
-                data.headline ||
-                  "A branding agency with *one objective*: To make you _profitable._",
-              )}
-            </p>
+          <div className="md:max-w-[680px] 2xl:max-w-[950px] shrink-0 w-full">
+            {!loaded ? (
+              <div className="space-y-4 w-full">
+                <Skeleton dark className="w-[80%] h-[40px] md:h-[60px] 2xl:h-[100px]" />
+                <Skeleton dark className="w-[60%] h-[40px] md:h-[60px] 2xl:h-[100px]" />
+                <Skeleton dark className="w-[40%] h-[40px] md:h-[60px] 2xl:h-[100px]" />
+              </div>
+            ) : (
+              <ScrollReveal delay={0.1}>
+                <p className="font-primary leading-tight text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white 2xl:leading-[1.1] tracking-[-0.03em] m-0">
+                  {data.brandLogo?.url ? (
+                  <img
+                    src={data.brandLogo.url}
+                    alt="Brand"
+                    className="inline-block h-6 md:h-10 2xl:h-8 align-middle mr-2 object-contain"
+                  />
+                ) : (
+                  data.brandName && (
+                    <span className="font-primary text-[16px] md:text-[20px] 2xl:text-[30px] font-light text-white tracking-[0.06em] lowercase align-middle mr-1.5">
+                      {data.brandName}
+                    </span>
+                  )
+                )}{" "}
+                {renderHeadline(
+                  data.headline ||
+                    "A branding agency with *one objective*: To make you _profitable._",
+                )}
+                </p>
+              </ScrollReveal>
+            )}
           </div>
 
           {/* Right: subtitle + CTA */}
           <div className="flex flex-row md:flex-col items-center md:items-start gap-5 md:gap-6 md:pb-2 shrink-0 w-full md:w-auto md:max-w-[240px]">
-            {data.subtitle && (
-              <p className="flex-1 md:flex-none font-primary md:text-[20px] 2xl:text-[14px] font-normal text-[#FEFEFE] leading-[1.65] m-0 tracking-[0.01em]">
-                {data.subtitle}
-              </p>
+            {!loaded ? (
+              <>
+                <Skeleton dark className="flex-1 md:flex-none w-[150px] h-[30px]" />
+                <Skeleton dark className="min-w-[130px] md:min-w-[250px] h-[40px] md:h-[50px] rounded-xl" />
+              </>
+            ) : (
+              <>
+                {data.subtitle && (
+                  <ScrollReveal delay={0.3} direction="none" className="flex-1 md:flex-none">
+                    <p className="font-primary md:text-[20px] 2xl:text-[14px] font-normal text-[#FEFEFE] leading-[1.65] m-0 tracking-[0.01em]">
+                      {data.subtitle}
+                    </p>
+                  </ScrollReveal>
+                )}
+                <ScrollReveal delay={0.4} direction="up" className="w-full md:w-auto">
+                  <Link
+                  to={ctaButton.link}
+                  className="inline-flex items-center justify-center min-w-[130px] md:min-w-[250px] px-6 md:px-8 py-3 md:py-[14px] bg-white hover:bg-white text-black rounded-xl hover:text-[#0a0a0a] font-primary text-[12px] md:text-[17px] font-bold border border-white/25 hover:border-white transition-all duration-300 tracking-[0.02em] no-underline"
+                  >
+                    {ctaButton.text}
+                  </Link>
+                </ScrollReveal>
+              </>
             )}
-            <Link
-              to={ctaButton.link}
-              className="inline-flex items-center justify-center min-w-[130px] md:min-w-[250px] px-6 md:px-8 py-3 md:py-[14px] bg-white hover:bg-white text-black rounded-xl hover:text-[#0a0a0a] font-primary text-[12px] md:text-[17px] font-bold border border-white/25 hover:border-white transition-all duration-300 tracking-[0.02em] no-underline"
-            >
-              {ctaButton.text}
-            </Link>
           </div>
         </div>
       </div>

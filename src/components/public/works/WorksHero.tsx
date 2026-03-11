@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { getSection } from "../../../services/sectionApi";
+import ScrollReveal from "../../ScrollReveal";
 
 interface HeroData {
   title?: string;
@@ -157,13 +158,6 @@ const WorksHero = () => {
 
   return (
     <section className="relative w-full min-h-screen flex flex-col pt-32 pb-12 overflow-hidden bg-black">
-      {/* Keyframes for fade-up animation */}
-      <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(32px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
       {/* Background with gradient and optional image */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0" />
@@ -178,11 +172,11 @@ const WorksHero = () => {
 
       <div className="container relative mx-auto px-6 md:px-12 xl:px-20 z-10 w-full">
         {/* Title Section */}
-        <div className="w-full text-left opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_forwards]">
+        <ScrollReveal delay={0.1} className="w-full text-left">
           <h1 className="max-w-5xl font-primary text-[30px] md:text-[60px] lg:text-[72px] xl:text-[84px] leading-[1.1] font-light text-white tracking-[-0.02em] m-0">
             {renderStyledText(title, heroData.brandLogo?.url)}
           </h1>
-        </div>
+        </ScrollReveal>
 
         {/* Framework Section */}
         {processes.length > 0 && (
@@ -200,7 +194,7 @@ const WorksHero = () => {
 
         {/* Pannable Image (drag to scroll like Section6) */}
         {heroData.mainImage?.url && (
-          <div className="mt-2 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.5s_forwards]">
+          <ScrollReveal delay={0.5} className="mt-2 w-full">
             <div
               ref={scrollContainerRef}
               className={`w-full h-[350px] md:h-[600px] overflow-hidden shadow-md rounded-2xl md:rounded-3xl bg-[#EEEEEE] select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
@@ -220,7 +214,7 @@ const WorksHero = () => {
                 />
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         )}
       </div>
 

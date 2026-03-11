@@ -4,6 +4,7 @@ import { getSection } from "../../../services/sectionApi";
 
 import { MoreInsightsSlider, SuccessModal } from "./InsightsComponents";
 import type { InsightItem } from "../../cms/InsightsItemsEditor";
+import Skeleton from "../../Skeleton";
 
 interface SocialLink {
   id: string;
@@ -46,7 +47,23 @@ export const InsightsFooter = ({
     fetchData();
   }, []);
 
-  if (!loaded) return null;
+  if (!loaded) {
+    return (
+      <footer className="w-full relative bg-black xl:mt-32 pb-32">
+         <div className="container relative mx-auto px-6 md:px-12 xl:px-20 w-full z-10 xl:pt-16">
+            <div className="mb-24 md:mb-32 hidden md:block">
+               <Skeleton dark className="w-[200px] h-[40px] mb-8" />
+               <div className="flex gap-4">
+                  <Skeleton dark className="w-[300px] h-[400px] rounded-xl" />
+                  <Skeleton dark className="w-[300px] h-[400px] rounded-xl" />
+                  <Skeleton dark className="w-[300px] h-[400px] rounded-xl" />
+               </div>
+            </div>
+            <Skeleton dark className="w-full h-[300px] rounded-[32px] mt-24 mb-24 md:mb-32" />
+         </div>
+      </footer>
+    );
+  }
 
   const email = footerData.email || "reach_us@sanxin.com";
 

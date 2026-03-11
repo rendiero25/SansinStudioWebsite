@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 import type { InsightItem } from "../cms/InsightsItemsEditor";
 import type { InsightCategory } from "../cms/InsightCategoriesEditor";
+import Skeleton from "../Skeleton";
 
 const InsightsSliderSection = () => {
   const [posts, setPosts] = useState<InsightItem[]>([]);
@@ -48,7 +49,28 @@ const InsightsSliderSection = () => {
     return () => clearInterval(timer);
   }, [handleNext, posts.length]);
 
-  if (!loaded || posts.length === 0) return null;
+  if (!loaded) {
+    return (
+      <section className="relative w-full h-[500px] md:h-[600px] xl:h-[700px] bg-black overflow-hidden flex flex-col justify-end pb-16 md:pb-24">
+         <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 h-full flex flex-col justify-end">
+            <div className="flex flex-row w-full justify-between items-center mb-8">
+               <Skeleton dark className="w-8 h-8 md:w-12 md:h-12 rounded-full" />
+               <Skeleton dark className="w-8 h-8 md:w-12 md:h-12 rounded-full" />
+            </div>
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+               <Skeleton dark className="w-[80px] h-[24px] rounded-md" />
+               <Skeleton dark className="w-[120px] h-[24px] rounded-md" />
+            </div>
+            <div className="max-w-[900px] space-y-3">
+               <Skeleton dark className="w-full h-[35px] md:h-[50px]" />
+               <Skeleton dark className="w-[80%] h-[35px] md:h-[50px]" />
+            </div>
+         </div>
+      </section>
+    );
+  }
+
+  if (posts.length === 0) return null;
 
   const currentPost = posts[currentIndex];
   
@@ -87,7 +109,7 @@ const InsightsSliderSection = () => {
         <div className="flex flex-row w-full justify-between items-center gap-4 mb-8">
           <button
             onClick={handlePrev}
-            className="w-8 h-8 md:w-12 md:h-12 bg-white/15 rounded-full flex items-center justify-center text-white bg-black/10 backdrop-blur-sm hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
+            className="w-8 h-8 md:w-12 md:h-12 bg-white/15 rounded-full flex items-center justify-center text-white backdrop-blur-sm hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
             aria-label="Previous slide"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" color="black" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -97,7 +119,7 @@ const InsightsSliderSection = () => {
 
           <button
             onClick={handleNext}
-            className="w-8 h-8 md:w-12 md:h-12 bg-white/15 rounded-full flex items-center justify-center text-white bg-black/10 backdrop-blur-sm hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
+            className="w-8 h-8 md:w-12 md:h-12 bg-white/15 rounded-full flex items-center justify-center text-white backdrop-blur-sm hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
             aria-label="Next slide"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" color="black" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

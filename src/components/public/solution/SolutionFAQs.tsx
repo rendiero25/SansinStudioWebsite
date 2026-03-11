@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { getSection } from "../../../services/sectionApi";
 import type { ListItem } from "../../cms/ItemListEditor";
 import { Link } from "react-router-dom";
+import Skeleton from "../../Skeleton";
+import ScrollReveal from "../../ScrollReveal";
 
 interface FaqData {
   title?: string;
@@ -48,7 +50,25 @@ const SolutionFAQs = () => {
     fetchData();
   }, []);
 
-  if (!loaded) return null;
+  if (!loaded) {
+    return (
+       <footer className="w-full relative bg-black pt-20 pb-32">
+          <div className="container relative mx-auto px-6 md:px-12 xl:px-20 w-full z-10">
+             <div className="w-full flex flex-col bg-white rounded-xl border border-black/20 overflow-hidden shadow-xl mb-24 md:mb-32">
+                <div className="w-full flex flex-col md:flex-row items-center justify-between gap-8 p-8 md:p-12 pb-6 border-b border-black/20">
+                   <Skeleton className="w-[150px] h-[40px]" />
+                   <Skeleton className="w-full max-w-[550px] h-[40px]" />
+                </div>
+                <div className="w-full px-8 md:px-12 py-12 space-y-4">
+                   <Skeleton className="w-full h-[60px]" />
+                   <Skeleton className="w-full h-[60px]" />
+                   <Skeleton className="w-full h-[60px]" />
+                </div>
+             </div>
+          </div>
+       </footer>
+    );
+  }
   const faqs = data.faqs || [];
   if (faqs.length === 0) return null;
 
@@ -79,7 +99,7 @@ const SolutionFAQs = () => {
 
       <div className="container relative mx-auto px-6 md:px-12 xl:px-20 w-full z-10">
         {/* FAQ Container Box (Acting as CTA in Footer) */}
-        <div className="w-full flex flex-col bg-white rounded-xl border border-black/20 overflow-hidden shadow-xl mb-24 md:mb-32 relative z-20">
+        <ScrollReveal direction="up" className="w-full flex flex-col bg-white rounded-xl border border-black/20 overflow-hidden shadow-xl mb-24 md:mb-32 relative z-20">
           {/* FAQ Header & Intro */}
           <div className="w-full flex flex-col md:flex-row items-center justify-between gap-8 p-8 md:p-12 pb-6 border-b border-black/20">
             <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0 shrink-0">
@@ -141,10 +161,10 @@ const SolutionFAQs = () => {
               );
             })}
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Middle: Links & Contact */}
-        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-16 lg:gap-8 border-b border-white/10 pb-24 md:pb-32">
+        <ScrollReveal delay={0.2} direction="up" className="w-full flex flex-col xl:flex-row justify-between items-start gap-16 lg:gap-8 border-b border-white/10 pb-24 md:pb-32">
           {/* Left: Want to discover... */}
           <div className="flex flex-col gap-4">
             <p className="font-primary text-[15px] md:text-[16px] text-white/80 m-0 leading-[1.3] max-w-[200px]">
@@ -205,10 +225,10 @@ const SolutionFAQs = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Bottom: Logo, Socials */}
-        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-12 py-16">
+        <ScrollReveal delay={0.4} direction="up" className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-12 py-16">
           <div className="w-full md:w-auto h-auto max-w-[300px] shrink-0">
             {/* Logo using text or image */}
             {footerData.logo?.url ? (
@@ -253,7 +273,7 @@ const SolutionFAQs = () => {
               )}
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
 
       {/* Very Bottom Strip */}

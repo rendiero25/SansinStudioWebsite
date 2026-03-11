@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getSection } from "../../../services/sectionApi";
+import ScrollReveal from "../../ScrollReveal";
 
 interface HeroData {
   bgImage?: { url: string };
@@ -163,7 +164,7 @@ const SolutionHero = () => {
         style={{ overflow: "visible" }}
       >
         {/* Brand Logo and Title */}
-        <div className="w-full text-left opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_forwards]">
+        <ScrollReveal delay={0.1} className="w-full text-left">
           <h1 className="max-w-4xl font-primary text-[40px] md:text-[64px] lg:text-[76px] xl:text-[88px] leading-[1.1] font-light text-white tracking-[-0.02em] m-0">
             <span className="block md:inline-block md:align-middle mb-4 md:mb-0 mr-0 md:mr-6 md:-translate-y-[8px]">
               {data.brandLogo?.url ? (
@@ -178,11 +179,12 @@ const SolutionHero = () => {
             </span>
             {renderStyledText(title)}
           </h1>
-        </div>
+        </ScrollReveal>
 
         {/* Project Cards — breaks out of container to right edge */}
-        <div
-          className="mt-16 md:mt-24 w-full opacity-0 translate-y-8 animate-[fadeUp_1s_ease-out_0.3s_forwards]"
+        <ScrollReveal
+          delay={0.3}
+          className="mt-16 md:mt-24 w-full"
           style={{ overflow: "visible" }}
         >
           <div
@@ -292,21 +294,8 @@ const SolutionHero = () => {
               <div className="w-1 md:w-2 shrink-0"></div>
             )}
           </div>
-        </div>
+        </ScrollReveal>
       </div>
-
-      <style>{`
-        @keyframes fadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </section>
   );
 };

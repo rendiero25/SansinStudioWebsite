@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSection } from "../../../services/sectionApi";
+import Skeleton from "../../Skeleton";
+import ScrollReveal from "../../ScrollReveal";
 
 interface ProcessDetail {
   id: string;
@@ -117,7 +119,36 @@ const WorksProcess = () => {
     };
   }, [activeProcessId]);
 
-  if (!loaded) return null;
+  if (!loaded) {
+    return (
+      <section className="w-full bg-white py-20 md:py-32 relative">
+        <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-16">
+          <Skeleton className="w-[200px] h-[40px] md:h-[50px]" />
+          
+          <div className="flex flex-col xl:flex-row xl:gap-16 w-full">
+            <div className="flex flex-col justify-between gap-8 w-full xl:w-[280px] shrink-0">
+              <div className="flex flex-col gap-3">
+                <Skeleton className="w-full h-[48px] rounded-xl" />
+                <Skeleton className="w-full h-[48px] rounded-xl" />
+                <Skeleton className="w-full h-[48px] rounded-xl" />
+              </div>
+              <Skeleton className="w-full h-[80px] rounded-xl" />
+            </div>
+            
+            <div className="flex-1 flex gap-5 overflow-hidden mt-15 xl:mt-0">
+              <Skeleton className="w-[300px] md:w-[380px] shrink-0 min-h-[280px] rounded-2xl" />
+              <Skeleton className="w-[300px] md:w-[380px] shrink-0 min-h-[280px] rounded-2xl" />
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
+            <Skeleton className="w-[180px] h-[48px] rounded-xl" />
+            <Skeleton className="w-[180px] h-[48px] rounded-xl" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const processes = timeline.processes || [];
   if (processes.length === 0) return null;
@@ -138,14 +169,16 @@ const WorksProcess = () => {
         style={{ overflow: "visible" }}
       >
         {/* Section Title */}
-        <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0">
-          {timeline.sectionTitle || "Our Process"}
-        </h2>
+        <ScrollReveal>
+          <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0">
+            {timeline.sectionTitle || "Our Process"}
+          </h2>
+        </ScrollReveal>
 
         {/* Main Content: Left Tabs + Right Cards */}
         <div className="flex flex-col xl:flex-row xl:gap-16 w-full">
           {/* Left Side: Tabs + Delivery Time */}
-          <div className="flex flex-col justify-between gap-8 w-full xl:w-[280px] shrink-0 self-stretch">
+          <ScrollReveal delay={0.2} direction="right" className="flex flex-col justify-between gap-8 w-full xl:w-[280px] shrink-0 self-stretch">
             {/* Process Tabs */}
             <div className="flex flex-col gap-3 w-full xl:w-[280px]">
               {processes.map((process) => {
@@ -184,7 +217,7 @@ const WorksProcess = () => {
                 </span>
               </div>
             )}
-          </div>
+          </ScrollReveal>
 
           {/* Right Side: Detail Cards (horizontal scroll) */}
           <div
@@ -202,8 +235,10 @@ const WorksProcess = () => {
               }}
             >
               {activeProcess.details?.map((detail, i) => (
-                <div
+                <ScrollReveal
                   key={detail.id}
+                  delay={0.3 + i * 0.1}
+                  direction="up"
                   className="bg-white p-8 md:p-10 rounded-2xl w-[300px] md:w-[380px] shrink-0 border border-black/8 shadow-sm flex flex-col justify-between min-h-[280px] transition-shadow duration-300 hover:shadow-md"
                 >
                   {/* Icon */}
@@ -249,7 +284,7 @@ const WorksProcess = () => {
                       ))}
                     </div>
                   )}
-                </div>
+                </ScrollReveal>
               ))}
 
               {/* Next card arrow indicator */}
@@ -276,7 +311,7 @@ const WorksProcess = () => {
         </div>
 
         {/* Bottom Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
+        <ScrollReveal delay={0.4} direction="up" className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
           <button 
             onClick={handleApproach}
             className="cursor-pointer px-12 py-3 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 min-w-[180px]"
@@ -289,7 +324,7 @@ const WorksProcess = () => {
           >
             {btn2.text}
           </a>
-        </div>
+        </ScrollReveal>
       </div>
 
       <style>{`

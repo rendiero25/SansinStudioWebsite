@@ -3,6 +3,8 @@ import Header from "../components/public/Header";
 import Footer from "../components/public/Footer";
 import { getSection } from "../services/sectionApi";
 import { SuccessModal } from "../components/public/insights/InsightsComponents";
+import Skeleton from "../components/Skeleton";
+import ScrollReveal from "../components/ScrollReveal";
 
 interface ProcessItem {
   id: string;
@@ -195,7 +197,43 @@ const Contact = () => {
     }
   };
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <div className="contact-page bg-white font-primary flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1 flex flex-col lg:flex-row">
+           <div className="w-full lg:w-[55%] relative flex flex-col py-20 lg:py-0 bg-black/5">
+              <div className="container mx-auto px-6 md:px-12 xl:px-20 z-10 w-full pt-20 lg:pt-32 flex flex-col justify-center">
+                 <div className="flex flex-col gap-12 lg:gap-16">
+                    <Skeleton dark className="w-[90%] max-w-2xl h-[40px] md:h-[60px]" />
+                    <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12">
+                       <Skeleton dark className="w-[150px] h-[30px]" />
+                       <div className="flex flex-col items-center gap-6 w-full lg:max-w-[420px]">
+                          <Skeleton className="w-full h-[180px] rounded-2xl" />
+                          <Skeleton className="w-10 h-10 rounded-full" />
+                          <Skeleton className="w-full h-[180px] rounded-2xl" />
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <div className="w-full lg:flex-1 p-8 md:p-20 xl:p-32 bg-white flex flex-col justify-center">
+              <div className="max-w-3xl lg:max-w-full flex flex-col gap-12 w-full">
+                 <Skeleton className="w-[60%] h-[40px]" />
+                 <div className="flex flex-col gap-8 w-full">
+                    <div className="flex flex-col gap-x-8 gap-y-8">
+                       <Skeleton className="w-full h-[54px] rounded-lg" />
+                       <Skeleton className="w-full h-[54px] rounded-lg" />
+                       <Skeleton className="w-full h-[54px] rounded-lg" />
+                    </div>
+                    <Skeleton className="w-full h-[120px] rounded-lg" />
+                 </div>
+              </div>
+           </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="contact-page bg-white font-primary flex flex-col">
@@ -216,20 +254,26 @@ const Contact = () => {
           {/* Container for Content */}
           <div className="container mx-auto px-6 md:px-12 xl:px-20 z-10 w-full pt-20 lg:pt-32 flex flex-col justify-center">
             <div className="flex flex-col gap-12 lg:gap-16">
-              <h1 className="text-[30px] md:text-[42px] lg:text-[48px] xl:text-[54px] font-normal tracking-[-0.03em] leading-[1.1] m-0 text-white max-w-2xl">
-                {data?.title ||
-                  "Let's discover more about your creative needs!"}
-              </h1>
+              <ScrollReveal delay={0.1}>
+                <h1 className="text-[30px] md:text-[42px] lg:text-[48px] xl:text-[54px] font-normal tracking-[-0.03em] leading-[1.1] m-0 text-white max-w-2xl">
+                  {data?.title ||
+                    "Let's discover more about your creative needs!"}
+                </h1>
+              </ScrollReveal>
 
               <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12">
-                <h2 className="text-[20px] md:text-[24px] font-normal tracking-[-0.02em] leading-tight m-0 text-white/90 w-full lg:w-[200px] shrink-0">
-                  {data?.processTitle}
-                </h2>
+                <ScrollReveal delay={0.2} direction="right" className="w-full lg:w-[200px] shrink-0">
+                  <h2 className="text-[20px] md:text-[24px] font-normal tracking-[-0.02em] leading-tight m-0 text-white/90">
+                    {data?.processTitle}
+                  </h2>
+                </ScrollReveal>
 
                 <div className="flex flex-col items-center gap-6 w-full lg:max-w-[420px]">
                   {data?.processes?.map((process, index) => (
-                    <div
+                    <ScrollReveal
                       key={process.id}
+                      delay={0.2 + index * 0.1}
+                      direction="right"
                       className="w-full flex flex-col items-center gap-6"
                     >
                       {/* Process Card */}
@@ -270,7 +314,7 @@ const Contact = () => {
                           </svg>
                         </div>
                       )}
-                    </div>
+                    </ScrollReveal>
                   ))}
                 </div>
               </div>
@@ -280,7 +324,7 @@ const Contact = () => {
 
         {/* Right Column: Contact Form */}
         <div className="w-full lg:flex-1 p-8 md:p-20 xl:p-32 bg-white flex flex-col justify-center">
-          <div className="max-w-3xl lg:max-w-full flex flex-col gap-12">
+          <ScrollReveal delay={0.3} className="max-w-3xl lg:max-w-full flex flex-col gap-12">
             <h2 className="text-[28px] md:text-[36px] font-normal tracking-[-0.02em] leading-tight max-w-lg">
               {data?.formTitle || "Tell us about your project"}
             </h2>
@@ -345,7 +389,7 @@ const Contact = () => {
                   <input
                     type="text"
                     placeholder="Phone numbers (please enter '-' if you're not willing to share)"
-                    className="bg-[#F2F2F2] border-none rounded-lg px-5 py-4 text-[15px] focus:outline-none focus:ring-1 focus:ring-black/5 transition-all placeholder:text-black/25 text-[12px]"
+                    className="bg-[#F2F2F2] border-none rounded-lg px-5 py-4 text-[15px] focus:outline-none focus:ring-1 focus:ring-black/5 transition-all placeholder:text-black/25"
                   />
                 </div>
               </div>
@@ -572,7 +616,7 @@ const Contact = () => {
                     </button>
 
                     {showCalendar && (
-                      <div className="absolute top-full left-0 mt-2 p-4 bg-white border border-black/10 rounded-2xl shadow-2xl z-[100] w-[300px]">
+                      <div className="absolute top-full left-0 mt-2 p-4 bg-white border border-black/10 rounded-2xl shadow-2xl z-100 w-[300px]">
                         <div className="flex items-center justify-between mb-4">
                           <button
                             type="button"
@@ -686,7 +730,7 @@ const Contact = () => {
                 </button>
               </div>
             </form>
-          </div>
+          </ScrollReveal>
         </div>
       </main>
 

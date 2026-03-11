@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
+import Skeleton from "../Skeleton";
+import ScrollReveal from "../ScrollReveal";
 
 interface SocialLink {
   id: string;
@@ -71,8 +73,6 @@ const Footer = ({
     fetchData();
   }, []);
 
-  if (!loaded) return null;
-
   const email = emailProp || data.email || "reach_us@sanxin.com";
   const ctaBtn = data.ctaButton || {
     text: "Set a discovery meet",
@@ -97,46 +97,66 @@ const Footer = ({
 
         <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 pt-20">
           {/* 1. Floating CTA Card (unchanged internal content) */}
-          <div className="relative w-full bg-[#D3B4F6] rounded-[30px] overflow-hidden flex flex-col mb-24 shadow-2xl">
+          <ScrollReveal direction="up" className="relative w-full bg-[#D3B4F6] rounded-[30px] overflow-hidden flex flex-col mb-24 shadow-2xl">
             {/* Top: Image Area */}
-            <div className="w-full h-[300px] md:h-[450px] relative">
-              <img
-                src={
-                  data.ctaImage?.url ||
-                  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
-                }
-                alt="Discovery meeting"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {!loaded ? (
+              <Skeleton className="w-full h-[300px] md:h-[450px]" />
+            ) : (
+              <div className="w-full h-[300px] md:h-[450px] relative">
+                <img
+                  src={
+                    data.ctaImage?.url ||
+                    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
+                  }
+                  alt="Discovery meeting"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
 
             {/* Bottom: Text Area */}
             <div className="w-full p-8 md:p-12 flex flex-col md:flex-row justify-between items-center lg:items-end gap-10">
-              <h2 className="text-[16px] md:text-[42px] font-light leading-[1.1] text-black m-0 max-w-[800px]">
-                {renderStyledText(
-                  data.ctaHeading ||
-                    "Lets create your _profitable plan_ through our _discovery meet_ session.",
-                )}
-              </h2>
+              {!loaded ? (
+                <div className="w-full max-w-[800px] space-y-3">
+                  <Skeleton className="w-[90%] h-[30px] md:h-[50px]" />
+                  <Skeleton className="w-[70%] h-[30px] md:h-[50px]" />
+                </div>
+              ) : (
+                <h2 className="text-[16px] md:text-[42px] font-light leading-[1.1] text-black m-0 max-w-[800px]">
+                  {renderStyledText(
+                    data.ctaHeading ||
+                      "Lets create your _profitable plan_ through our _discovery meet_ session.",
+                  )}
+                </h2>
+              )}
 
               <div className="flex flex-col items-center lg:items-end gap-4 shrink-0">
-                {data.ctaNote && (
-                  <p className="text-[11px] md:text-[13px] font-medium text-black/60 m-0 italic text-center lg:text-right max-w-[200px]">
-                    {data.ctaNote}
-                  </p>
+                {!loaded ? (
+                  <>
+                    <Skeleton className="w-[150px] h-[16px]" />
+                    <Skeleton className="w-[200px] h-[55px] rounded-xl" />
+                  </>
+                ) : (
+                  <>
+                    {data.ctaNote && (
+                      <p className="text-[11px] md:text-[13px] font-medium text-black/60 m-0 italic text-center lg:text-right max-w-[200px]">
+                        {data.ctaNote}
+                      </p>
+                    )}
+                    <Link
+                      to={ctaBtn.link}
+                      className="bg-white text-black px-10 py-4 rounded-xl font-bold text-[15px] md:text-[17px] no-underline shadow-sm hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
+                    >
+                      {ctaBtn.text}
+                    </Link>
+                  </>
                 )}
-                <Link
-                  to={ctaBtn.link}
-                  className="bg-white text-black px-10 py-4 rounded-xl font-bold text-[15px] md:text-[17px] no-underline shadow-sm hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
-                >
-                  {ctaBtn.text}
-                </Link>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* 2. Reach Us Section */}
-          <div className="flex flex-col lg:flex-row justify-between items-start xl:items-end gap-12 lg:gap-8 mb-32">
+          <ScrollReveal delay={0.2} direction="up" className="flex flex-col lg:flex-row justify-between items-start xl:items-end gap-12 lg:gap-8 mb-32">
             {/* Left: Contact Info */}
             <div className="flex flex-col gap-6">
               <p className="text-[14px] md:text-[15px] font-medium text-white/80 m-0 leading-tight w-[180px]">
@@ -196,10 +216,10 @@ const Footer = ({
                 </Link>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* 3. Branding and Socials */}
-          <div className="w-full flex flex-col md:flex-row justify-between items-start xl:items-end gap-12 mb-16">
+          <ScrollReveal delay={0.4} direction="up" className="w-full flex flex-col md:flex-row justify-between items-start xl:items-end gap-12 mb-16">
             <div className="shrink-0 max-w-[300px] md:max-w-[400px] lg:max-w-[500px]">
               {data.logo?.url ? (
                 <img
@@ -313,7 +333,7 @@ const Footer = ({
                 )}
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
 
