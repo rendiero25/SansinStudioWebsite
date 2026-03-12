@@ -121,7 +121,7 @@ const WorksProcess = () => {
 
   if (!loaded) {
     return (
-      <section className="w-full bg-white py-20 md:py-32 relative">
+      <section className="w-full bg-white mt-20 md:mt-32 relative">
         <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-16">
           <Skeleton className="w-[200px] h-[40px] md:h-[50px]" />
           
@@ -161,7 +161,7 @@ const WorksProcess = () => {
 
   return (
     <section
-      className="w-full bg-white py-20 md:py-32 relative"
+      className="w-full bg-white mt-20 md:mt-30 relative"
       style={{ overflowX: "clip", overflowY: "visible" }}
     >
       <div
@@ -189,15 +189,15 @@ const WorksProcess = () => {
                     onClick={() => setActiveProcessId(process.id)}
                     className={`cursor-pointer flex items-center gap-3 px-6 py-3 rounded-xl font-primary text-[14px] md:text-[15px] font-medium transition-all duration-200 focus:outline-none border w-full ${
                       isActive
-                        ? "bg-black text-white border-black shadow-md"
-                        : "bg-white text-black/70 border-black/10 hover:border-black/30 hover:bg-black/5"
+                        ? "bg-[#e0e0e0] text-black"
+                        : "bg-transparent text-black/50 hover:text-black/80 hover:bg-black/5"
                     }`}
                   >
                     {process.processIcon?.url && (
                       <img
                         src={process.processIcon.url}
                         alt=""
-                        className={`w-5 h-5 object-contain ${isActive ? "brightness-0 invert" : "opacity-70"}`}
+                        className={`w-5 h-5 object-contain ${isActive ? "opacity-100" : "opacity-60"}`}
                       />
                     )}
                     {process.processTitle}

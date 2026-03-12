@@ -11,6 +11,8 @@ interface Section4Data {
   button1Link?: string;
   button2Text?: string;
   button2Link?: string;
+  sideImage?: { url: string; publicId: string };
+  sideImageTitle?: string;
 }
 
 const renderStyledText = (text: string) => {
@@ -52,14 +54,11 @@ const Section4 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [homeS4, worksS1] = await Promise.all([
-          getSection("home", "section4"),
-          getSection("works", "section1"),
-        ]);
+        const homeS4 = await getSection("home", "section4");
         
         setData(homeS4.content || {});
-        if (worksS1.content?.mainImage?.url) {
-          setFrameworkImg(worksS1.content.mainImage.url);
+        if (homeS4.content?.sideImage?.url) {
+          setFrameworkImg(homeS4.content.sideImage.url);
         }
       } catch (err) {
         console.error("Failed to load Section 4 data:", err);
@@ -71,7 +70,7 @@ const Section4 = () => {
   }, []);
 
   return (
-    <section className="relative w-full mt-30 mb-30 overflow-hidden">
+    <section className="relative w-full pt-15 xl:pt-30 mb-30 overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col items-center">
         
         {/* Title Section */}
@@ -84,6 +83,12 @@ const Section4 = () => {
         {/* Black Framework Card */}
         <ScrollReveal delay={0.1} className="relative w-full bg-[#111] rounded-2xl overflow-hidden flex flex-col p-4 md:p-10 shadow-2xl">
           
+          {data.sideImageTitle && (
+            <div className="font-primary text-white/90 text-[18px] sm:text-[24px] md:text-[28px] font-medium mb-6 px-1 side-image-title-quill">
+              {renderStyledText(data.sideImageTitle)}
+            </div>
+          )}
+
           {/* Vertical & Horizontal Scroll Area for Image */}
           <div className="relative w-full h-[300px] md:h-[450px] bg-[#d9d9d9] scrollbar-hide rounded-xl overflow-y-auto overflow-x-auto mb-5 lg:mb-9 cursor-grab active:cursor-grabbing">
             <div className="w-fit lg:w-full flex flex-col items-center px-4 lg:px-8 pt-4 lg:pt-16 min-w-full">
@@ -157,6 +162,9 @@ const Section4 = () => {
         }
         .description-quill-content span {
           display: inline;
+        }
+        .side-image-title-quill p {
+          margin: 0;
         }
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

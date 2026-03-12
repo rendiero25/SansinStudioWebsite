@@ -58,19 +58,19 @@ const ProjectDetail = () => {
     return data.categories.find((c) => c.id === catId)?.categoryIcon || null;
   };
 
-  // Extract paragraphs from description
-  const descriptionLines = currentProject?.description
-    ? currentProject.description.split("\n\n").filter(Boolean)
-    : [];
-  
-  // Decide how to split the description if there are multiple paragraphs.
-  // The mockup shows one paragraph below the main image.
-  const topDescription = descriptionLines.length > 0 ? descriptionLines[0] : "";
 
   // Extract categories for the specific project
   const projectCategories = currentProject
     ? (currentProject.categoryIds || (currentProject.categoryId ? [currentProject.categoryId] : []))
     : [];
+
+  const renderStyledText = (text: string) => {
+    if (!text) return null;
+    if (text.includes("<") && text.includes(">")) {
+      return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    }
+    return text;
+  };
 
   // Drag-to-scroll logic for horizontal More Projects
   useEffect(() => {
@@ -169,16 +169,16 @@ const ProjectDetail = () => {
         <Header />
         <main className="pt-32 pb-24">
           <div className="container mx-auto px-6 md:px-12 xl:px-20">
-            <div className="w-full mb-20 md:mb-32 mt-8 md:mt-16">
-              <Skeleton dark className="w-full aspect-video md:aspect-video lg:aspect-16/10 rounded-lg" />
-            </div>
-            <div className="self-start w-full max-w-5xl mb-20 md:mb-32 space-y-4">
-              <Skeleton dark className="w-full h-[24px]" />
-              <Skeleton dark className="w-[90%] h-[24px]" />
-              <Skeleton dark className="w-[80%] h-[24px]" />
-            </div>
-            <div className="w-full mb-16 md:mb-20">
-               <Skeleton dark className="w-full h-[calc(100vh-140px)] min-h-[400px] rounded-2xl" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20 md:mb-32 mt-8 md:mt-16">
+               <div className="flex flex-col gap-8">
+                  <Skeleton dark className="w-full h-[60px]" />
+                  <Skeleton dark className="w-full h-[150px]" />
+                  <div className="flex gap-4">
+                     <Skeleton dark className="w-[120px] h-[40px] rounded-lg" />
+                     <Skeleton dark className="w-[120px] h-[40px] rounded-lg" />
+                  </div>
+               </div>
+               <Skeleton dark className="w-full aspect-video rounded-3xl" />
             </div>
           </div>
         </main>
@@ -188,7 +188,7 @@ const ProjectDetail = () => {
 
   if (!currentProject) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center font-primary text-white">
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center font-primary text-white">
         <h1 className="text-4xl font-bold mb-4">Project Not Found</h1>
         <p className="text-white/60 mb-8">The project you are looking for does not exist.</p>
         <Link to="/projects" className="bg-white text-black px-6 py-3 rounded-lg font-medium">
@@ -199,72 +199,82 @@ const ProjectDetail = () => {
   }
 
   return (
-    <div className="project-detail-page font-primary bg-[#0A0A0A] text-white min-h-screen">
+    <div className="project-detail-page font-primary bg-black text-white min-h-screen">
       <Header />
 
-      <main className="pt-32 pb-24">
+      <main className="pt-15 xl:pt-32 pb-24">
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
           
-          {/* Row 1: Main Image Only */}
-          <div className="w-full mb-20 md:mb-32 mt-8 md:mt-16">
-            <div className="w-full aspect-video md:aspect-video lg:aspect-16/10 rounded-lg overflow-hidden relative">
-              {currentProject.mainImage?.url ? (
-                <img
-                  src={currentProject.mainImage.url}
-                  alt={`${currentProject.projectName} Main`}
-                  className="absolute inset-0 w-full h-full xl:object-cover"
-                />
-              ) : currentProject.thumbnail?.url ? (
-                <img
-                  src={currentProject.thumbnail.url}
-                  alt={`${currentProject.projectName} Thumbnail`}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-white/20">No Main Image</div>
-              )}
+          {/* Header Layout: Text Details Left, Image Right */}
+          <div className="flex flex-col xl:flex-row justify-between gap-10 mb-20 md:mb-32 mt-8 md:mt-16">
+            
+            {/* Left Column: Title, Brand, Summary, Badges */}
+            <div className="flex flex-col justify-between pt-4">
+              <div className="flex flex-col gap-10">
+                {/* Project Title */}
+                <h1 className="text-[32px] md:text-[48px] lg:text-[56px] font-normal leading-[1.1] tracking-[-0.03em] m-0">
+                  {renderStyledText(currentProject.projectName)}
+                </h1>
 
-              {/* Category Tags at Bottom Left */}
-              {projectCategories.length > 0 && (
-                <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 flex flex-wrap gap-2 md:gap-3 z-10">
-                  {projectCategories.map((catId, index) => (
-                    <div
+                {/* Details Section */}
+                <div className="flex flex-col gap-8">
+                  {/* Brand Row */}
+                  <div className="flex flex-row items-start gap-6 md:gap-12">
+                    <span className="text-[10px] md:text-[11px] font-bold text-white uppercase w-24 shrink-0 pt-1.5">
+                      Brand
+                    </span>
+                    <div className="text-[16px] md:text-[23px] text-white font-medium">
+                      {renderStyledText(currentProject.brand || "—")}
+                    </div>
+                  </div>
+
+                  {/* Summary Row */}
+                  <div className="flex flex-row items-start gap-6 md:gap-12">
+                    <span className="text-[10px] md:text-[11px] font-bold text-white uppercase w-24 shrink-0 pt-1.5">
+                      Project Summary
+                    </span>
+                    <div className="text-[16px] md:text-[23px] text-white leading-relaxed max-w-md">
+                      {renderStyledText(currentProject.projectSummary || "—")}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Badges */}
+              <div className="flex flex-wrap items-center gap-3 mt-12 md:mt-20">
+                {/* Static Production Badge */}
+                {projectCategories.map((catId) => (
+                   <div
                       key={catId}
-                      className={`${index === 0 ? "bg-white text-black" : "bg-white/80 backdrop-blur-md text-black"} px-4 py-2 md:px-5 md:py-2.5 rounded-md flex items-center shadow-lg`}
+                      className="bg-white text-black px-5 py-2.5 rounded-lg flex items-center shadow-lg"
                     >
                       <span className="text-[11px] md:text-[12px] font-bold uppercase tracking-widest leading-none mt-px flex items-center gap-2">
-                        {index === 0 && (
-                          <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 0H10V1.5L6 6L10 10.5V12H0V10.5L4 6L0 1.5V0Z" fill="currentColor"/>
-                          </svg>
-                        )}
+                        <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0H10V1.5L6 6L10 10.5V12H0V10.5L4 6L0 1.5V0Z" fill="currentColor"/>
+                        </svg>
                         {getCategoryName(catId)}
                       </span>
                     </div>
-                  ))}
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Row 2: Top Description Text */}
-          {/* We only render this if topDescription is long enough to not be used as the service summary, 
-              or we render the first long chunk. Let's just render the full description cleanly. */}
-          {topDescription && topDescription.length >= 100 && (
-            <div className="self-start w-full max-w-5xl mb-20 md:mb-32">
-              <p className="text-[18px] md:text-[24px] leading-[1.6] md:leading-[1.8] text-white/80 font-normal m-0 tracking-[-0.01em]">
-                {topDescription}
-              </p>
+            {/* Right Column: Main Image */}
+            <div className="w-full">
+              <div className="w-full h-[650px] rounded-xl overflow-hidden relative shadow-2xl border border-white/5">
+                {currentProject.mainImage?.url ? (
+                  <img
+                    src={currentProject.mainImage.url}
+                    alt={`${currentProject.projectName} Main`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-white/20 bg-white/5 italic">No Main Image Available</div>
+                )}
+              </div>
             </div>
-          )}
-          {/* Fallback if logic above skips it and there's only one description part provided */}
-          {topDescription && topDescription.length < 100 && descriptionLines.length === 1 && (
-            <div className="self-start w-full max-w-5xl mb-20 md:mb-32">
-               <p className="text-[18px] md:text-[24px] leading-[1.6] md:leading-[1.8] text-white/80 font-normal m-0 tracking-[-0.01em]">
-                {topDescription}
-              </p>
-            </div>
-          )}
+
+          </div>
 
           {/* Row 3: Secondary Image with Window Scroll Sync */}
           {currentProject.image2?.url && (
@@ -406,7 +416,7 @@ const ProjectDetail = () => {
       </main>
 
       {/* Footer with forced black background, overriding default CMS image as requested */}
-      <Footer hideCta={true} backgroundImageOverride="none" />
+      <Footer showCTA={false} showBackgroundImage={false} />
 
       <style>
         {`
@@ -419,7 +429,7 @@ const ProjectDetail = () => {
         }
         
         .project-detail-page {
-           background-color: #0A0A0A;
+           background-color: #0d0d0d;
         }
       `}
       </style>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ImageUploader from "./ImageUploader";
+import QuillFieldEditor from "./QuillFieldEditor";
 import type { ProjectCategory } from "./ProjectCategoriesEditor";
 
 const generateId = () => Math.random().toString(36).substring(2, 10);
@@ -17,7 +18,8 @@ export interface ProjectItem {
   keywords: string;
 
   // Section below
-  thumbnail: { url: string; publicId: string } | null;
+  brand: string;
+  projectSummary: string;
   mainImage: { url: string; publicId: string } | null;
   description: string;
   image2: { url: string; publicId: string } | null;
@@ -30,6 +32,12 @@ interface ProjectItemsEditorProps {
   onChange: (projects: ProjectItem[]) => void;
   availableCategories: ProjectCategory[]; // Passed dynamically from Section 1 Content
 }
+
+const stripHtml = (html: string) => {
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+};
 
 const ProjectItemsEditor = ({
   projects = [],
@@ -44,7 +52,8 @@ const ProjectItemsEditor = ({
       projectName: "",
       categoryIds: [],
       keywords: "",
-      thumbnail: null,
+      brand: "",
+      projectSummary: "",
       mainImage: null,
       description: "",
       image2: null,
@@ -85,7 +94,7 @@ const ProjectItemsEditor = ({
         </label>
         <button
           type="button"
-          className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer inline-flex items-center gap-1.5 bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)]"
+          className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer inline-flex items-center gap-1.5 bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20_rgba(99,102,241,0.4)]"
           onClick={handleAddProject}
         >
           + Add Project
@@ -111,8 +120,8 @@ const ProjectItemsEditor = ({
                 <span className="text-xs text-white/25 font-semibold min-w-7">
                   #{index + 1}
                 </span>
-                <span className="flex-1 text-sm text-white/80 font-medium">
-                  {proj.projectName || "Untitled Project"}
+                <span className="flex-1 text-sm text-white/80 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                  {stripHtml(proj.projectName) || "Untitled Project"}
                 </span>
                 <div className="flex gap-1 shrink-0">
                   <button
@@ -161,15 +170,14 @@ const ProjectItemsEditor = ({
                         <label className="text-xs font-medium text-white/50">
                           Project Name
                         </label>
-                        <input
-                          type="text"
-                          className={INPUT_CLASS}
+                        <QuillFieldEditor
+                          label=""
                           value={proj.projectName}
-                          onChange={(e) =>
+                          onChange={(val) =>
                             handleUpdateProject(
                               proj.id,
                               "projectName",
-                              e.target.value,
+                              val,
                             )
                           }
                           placeholder="e.g. Acme Website Redesign"
@@ -266,21 +274,32 @@ const ProjectItemsEditor = ({
 
                   {/* Part 2: Media and Additional Project Details */}
                   <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
+                       <label className="text-xs font-medium text-white/50">
+                        Brand
+                      </label>
+                      <QuillFieldEditor
+                        label=""
+                        value={proj.brand}
+                        onChange={(val) => handleUpdateProject(proj.id, "brand", val)}
+                        placeholder="Project brand name..."
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                       <label className="text-xs font-medium text-white/50">
+                        Project Summary
+                      </label>
+                      <QuillFieldEditor
+                        label=""
+                        value={proj.projectSummary}
+                        onChange={(val) => handleUpdateProject(proj.id, "projectSummary", val)}
+                        placeholder="Brief project summary..."
+                      />
+                    </div>
+
                     {/* Images Row */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-medium text-white/50">
-                          Thumbnail Image
-                        </label>
-                        <ImageUploader
-                          label=""
-                          value={proj.thumbnail}
-                          onChange={(val) =>
-                            handleUpdateProject(proj.id, "thumbnail", val)
-                          }
-                          folder="sanxinstudio/projects"
-                        />
-                      </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-medium text-white/50">
                           Main Image

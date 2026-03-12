@@ -70,7 +70,7 @@ const Section2 = () => {
   };
 
   return (
-    <section className="relative w-full bg-white pt-30 overflow-hidden">
+    <section className="relative w-full bg-white pt-15 xl:pt-30 overflow-hidden">
       <div className="container mx-auto px-5 md:px-10 xl:px-20">
         <ScrollReveal>
           {/* Section Label Pill */}

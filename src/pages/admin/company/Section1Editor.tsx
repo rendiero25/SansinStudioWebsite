@@ -1,7 +1,7 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
-import TextFieldEditor from "../../../components/cms/TextFieldEditor";
 import ImageUploader from "../../../components/cms/ImageUploader";
 import ItemListEditor from "../../../components/cms/ItemListEditor";
+import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const Section1Editor = () => {
   return (
@@ -14,39 +14,35 @@ const Section1Editor = () => {
               Part 1: Basic Information
             </h3>
             <div className="flex flex-col gap-4">
-              <TextFieldEditor
+              <QuillFieldEditor
                 label="Title"
                 value={(content.title as string) || ""}
                 onChange={(val) => updateContent("title", val)}
-                placeholder="Section Title"
               />
-              <TextFieldEditor
+              <QuillFieldEditor
                 label="Description 1"
                 value={(content.description1 as string) || ""}
                 onChange={(val) => updateContent("description1", val)}
-                multiline
-                placeholder="First description paragraph"
               />
-              <TextFieldEditor
-                label="Description 2"
-                value={(content.description2 as string) || ""}
-                onChange={(val) => updateContent("description2", val)}
-                multiline
-                placeholder="Second description paragraph"
-              />
-              <TextFieldEditor
+              <QuillFieldEditor
                 label="Vision"
                 value={(content.vision as string) || ""}
                 onChange={(val) => updateContent("vision", val)}
-                multiline
-                placeholder="Company Vision"
               />
-              <TextFieldEditor
+              <QuillFieldEditor
                 label="Mission"
                 value={(content.mission as string) || ""}
                 onChange={(val) => updateContent("mission", val)}
-                multiline
-                placeholder="Company Mission"
+              />
+              <QuillFieldEditor
+                label="Details Title"
+                value={(content.detailsTitle as string) || ""}
+                onChange={(val) => updateContent("detailsTitle", val)}
+              />
+              <QuillFieldEditor
+                label="Details Description"
+                value={(content.detailsDescription as string) || ""}
+                onChange={(val) => updateContent("detailsDescription", val)}
               />
               <ImageUploader
                 label="Section Image"

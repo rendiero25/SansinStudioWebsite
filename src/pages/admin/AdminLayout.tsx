@@ -55,26 +55,26 @@ const AdminLayout = () => {
           path: "/admin/home/section4",
           icon: "❓",
         },
-        {
-          label: "Section 5",
-          path: "/admin/home/section5",
-          icon: "💡",
-        },
-        {
-          label: "Section 6",
-          path: "/admin/home/section6",
-          icon: "🎯",
-        },
-        {
-          label: "Section 7",
-          path: "/admin/home/section7",
-          icon: "⚡",
-        },
-        {
-          label: "Section 8",
-          path: "/admin/home/section8",
-          icon: "🖼️",
-        },
+        // {
+        //   label: "Section 5",
+        //   path: "/admin/home/section5",
+        //   icon: "💡",
+        // },
+        // {
+        //   label: "Section 6",
+        //   path: "/admin/home/section6",
+        //   icon: "🎯",
+        // },
+        // {
+        //   label: "Section 7",
+        //   path: "/admin/home/section7",
+        //   icon: "⚡",
+        // },
+        // {
+        //   label: "Section 8",
+        //   path: "/admin/home/section8",
+        //   icon: "🖼️",
+        // },
       ],
     },
     {
@@ -102,7 +102,7 @@ const AdminLayout = () => {
       subItems: [
         { label: "Section 1", path: "/admin/projects/section1", icon: "🎬" },
         { label: "Section 2", path: "/admin/projects/section2", icon: "🚀" },
-        { label: "Section 3", path: "/admin/projects/section3", icon: "🎯" },
+        // { label: "Section 3", path: "/admin/projects/section3", icon: "🎯" },
       ],
     },
     {

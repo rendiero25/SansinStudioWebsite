@@ -9,8 +9,9 @@ import Solution from "./pages/Solution";
 import Works from "./pages/Works";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
-import Insights from "./pages/Insights";
+// import Insights from "./pages/Insights";
 import DetailInsights from "./pages/DetailInsights";
+import ComingSoon from "./pages/ComingSoon";
 import Company from "./pages/Company";
 import Contact from "./pages/Contact";
 
@@ -66,7 +67,7 @@ function App() {
           <Route path="/works" element={<Works />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetail />} />
-          <Route path="/insights" element={<Insights />} />
+          <Route path="/insights" element={<ComingSoon />} />
           <Route path="/insights/:id" element={<DetailInsights />} />
           <Route path="/company" element={<Company />} />
           <Route path="/contact" element={<Contact />} />
