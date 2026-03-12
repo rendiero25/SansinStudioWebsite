@@ -1,6 +1,5 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
-import ImageUploader from "../../../components/cms/ImageUploader";
-import ItemListEditor from "../../../components/cms/ItemListEditor";
+
 import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const Section3Editor = () => {
@@ -12,79 +11,78 @@ const Section3Editor = () => {
     >
       {({ content, updateContent }) => (
         <>
-          {/* Title */}
-          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+          {/* Section Label */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
             <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
-              Title
+              Section Label
+            </h3>
+            <input
+              type="text"
+              className="px-4 py-3 bg-white/[0.04] border border-white/10 rounded-[10px] text-white text-sm font-[IBM_Plex_Sans,sans-serif] outline-none transition-colors w-full box-border focus:border-indigo-500/50 focus:bg-white/[0.06]"
+              value={(content.sectionLabel as string) || ""}
+              onChange={(e) => updateContent("sectionLabel", e.target.value)}
+              placeholder="e.g. SOLUTIONS"
+            />
+          </div>
+
+          {/* Section Description */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Section Description
+            </h3>
+            <textarea
+              className="px-4 py-3 bg-white/4 border border-white/10 rounded-[10px] text-white text-sm font-[IBM_Plex_Sans,sans-serif] outline-none transition-colors w-full box-border focus:border-indigo-500/50 focus:bg-white/6 resize-y min-h-[80px]"
+              value={(content.description as string) || ""}
+              onChange={(e) => updateContent("description", e.target.value)}
+              placeholder="e.g. See how our solutions maximize your brand/company performance"
+            />
+          </div>
+
+          {/* Title */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Section Title
             </h3>
             <QuillFieldEditor
               className="mt-4"
               label="Title"
               value={(content.title as string) || ""}
               onChange={(val) => updateContent("title", val)}
-              placeholder="Most companies might face these specific roadblocks for years."
+              placeholder="We make it happen for you through our creative solutions"
             />
           </div>
 
-          {/* Background */}
-          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+          {/* Action Button */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
             <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
-              Background
+              Action Button
             </h3>
-            <ImageUploader
-              label="Background Image"
-              value={
-                content.bgImage as { url: string; publicId: string } | null
-              }
-              onChange={(val) => updateContent("bgImage", val)}
-              folder="sanxinstudio/section3"
-            />
-          </div>
-
-          {/* Roadblock Cards */}
-          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
-              Roadblock Cards
-            </h3>
-            <ItemListEditor
-              label="Cards"
-              items={
-                (content.cards as Array<{
-                  id: string;
-                  category: string;
-                  title: string;
-                  description: string;
-                  image: { url: string; publicId: string } | null;
-                }>) || []
-              }
-              onChange={(items) => updateContent("cards", items)}
-              fields={[
-                {
-                  key: "category",
-                  label: "Category",
-                  type: "text",
-                  placeholder: "e.g. Marketing",
-                },
-                {
-                  key: "title",
-                  label: "Title",
-                  type: "text",
-                  placeholder: "e.g. Customer bounce rate",
-                },
-                {
-                  key: "description",
-                  label: "Description",
-                  type: "textarea",
-                  placeholder: "Description text...",
-                },
-                {
-                  key: "image",
-                  label: "Image",
-                  type: "image",
-                  folder: "sanxinstudio/section3",
-                },
-              ]}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-medium text-white/50">
+                  Button Text
+                </label>
+                <input
+                  type="text"
+                  className="px-4 py-3 bg-white/[0.04] border border-white/10 rounded-[10px] text-white text-sm font-[IBM_Plex_Sans,sans-serif] outline-none transition-colors w-full box-border focus:border-indigo-500/50 focus:bg-white/[0.06]"
+                  value={(content.buttonText as string) || ""}
+                  onChange={(e) => updateContent("buttonText", e.target.value)}
+                  placeholder="e.g. Solutions"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-medium text-white/50">
+                  Button Link
+                </label>
+                <input
+                  type="text"
+                  className="px-4 py-3 bg-white/[0.04] border border-white/10 rounded-[10px] text-white text-sm font-[IBM_Plex_Sans,sans-serif] outline-none transition-colors w-full box-border focus:border-indigo-500/50 focus:bg-white/[0.06]"
+                  value={(content.buttonLink as string) || ""}
+                  onChange={(e) => updateContent("buttonLink", e.target.value)}
+                  placeholder="e.g. /solution"
+                />
+              </div>
+            </div>
           </div>
         </>
       )}

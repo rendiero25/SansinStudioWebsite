@@ -3,11 +3,11 @@ import HeroSection from "../components/public/HeroSection";
 import Section2 from "../components/public/Section2";
 import Section3 from "../components/public/Section3";
 import Section4 from "../components/public/Section4";
-import Section5 from "../components/public/Section5";
-import Section6 from "../components/public/Section6";
-import Section7 from "../components/public/Section7";
-import InsightsSliderSection from "../components/public/InsightsSliderSection";
-import Section8 from "../components/public/Section8";
+// import Section5 from "../components/public/Section5";
+// import Section6 from "../components/public/Section6";
+// import Section7 from "../components/public/Section7";
+// import InsightsSliderSection from "../components/public/InsightsSliderSection";
+// import Section8 from "../components/public/Section8";
 import Footer from "../components/public/Footer";
 
 const Home = () => {
@@ -18,11 +18,11 @@ const Home = () => {
       <Section2 />
       <Section3 />
       <Section4 />
-      <Section5 />
+      {/* <Section5 />
       <Section6 />
       <Section7 />
       <InsightsSliderSection />
-      <Section8 />
+      <Section8 /> */}
 
       {/* Footer */}
       <Footer />

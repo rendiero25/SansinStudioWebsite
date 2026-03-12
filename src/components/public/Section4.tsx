@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
+import { Link } from "react-router-dom";
 import ScrollReveal from "../ScrollReveal";
 
 interface Section4Data {
   title?: string;
   description?: string;
-  bgImage?: { url: string; publicId: string };
+  button1Text?: string;
+  button1Link?: string;
+  button2Text?: string;
+  button2Link?: string;
 }
 
 const renderStyledText = (text: string) => {
@@ -42,15 +46,23 @@ const renderStyledText = (text: string) => {
 
 const Section4 = () => {
   const [data, setData] = useState<Section4Data>({});
+  const [frameworkImg, setFrameworkImg] = useState<string>("");
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const section = await getSection("home", "section4");
-        setData(section.content || {});
+        const [homeS4, worksS1] = await Promise.all([
+          getSection("home", "section4"),
+          getSection("works", "section1"),
+        ]);
+        
+        setData(homeS4.content || {});
+        if (worksS1.content?.mainImage?.url) {
+          setFrameworkImg(worksS1.content.mainImage.url);
+        }
       } catch (err) {
-        console.error("Failed to load section4:", err);
+        console.error("Failed to load Section 4 data:", err);
       } finally {
         setLoaded(true);
       }
@@ -59,59 +71,101 @@ const Section4 = () => {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden h-[500px] flex items-center">
-      {/* Background: dark top fading to purple bottom */}
-      <div className="absolute inset-0 z-0" />
+    <section className="relative w-full mt-30 mb-30 overflow-hidden">
+      <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col items-center">
+        
+        {/* Title Section */}
+        <ScrollReveal className="text-center mb-16">
+          <h2 className="font-primary text-[30px] sm:text-[40px] lg:text-[48px] font-medium text-[#111] leading-[1.1] tracking-tight m-0">
+            {loaded ? renderStyledText(data.title || "") : <Skeleton className="w-[80%] h-12 mx-auto" />}
+          </h2>
+        </ScrollReveal>
 
-      {/* Optional BG image */}
-      {data.bgImage?.url && (
-        <div className="absolute inset-0 z-0">
-          <img
-            src={data.bgImage.url}
-            alt=""
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0" />
-        </div>
-      )}
-
-      <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 py-20 md:py-28">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-12">
-          {/* Title */}
-          {!loaded ? (
-            <div className="w-[80%] md:w-[60%] space-y-3">
-              <Skeleton dark className="w-full h-[30px] md:h-[45px]" />
-              <Skeleton dark className="w-[80%] h-[30px] md:h-[45px]" />
+        {/* Black Framework Card */}
+        <ScrollReveal delay={0.1} className="relative w-full bg-[#111] rounded-2xl overflow-hidden flex flex-col p-4 md:p-10 shadow-2xl">
+          
+          {/* Vertical & Horizontal Scroll Area for Image */}
+          <div className="relative w-full h-[300px] md:h-[450px] bg-[#d9d9d9] scrollbar-hide rounded-xl overflow-y-auto overflow-x-auto mb-5 lg:mb-9 cursor-grab active:cursor-grabbing">
+            <div className="w-fit lg:w-full flex flex-col items-center px-4 lg:px-8 pt-4 lg:pt-16 min-w-full">
+              {!loaded ? (
+                <Skeleton className="w-full h-80" dark />
+              ) : frameworkImg ? (
+                <img 
+                  src={frameworkImg} 
+                  alt="Our Framework" 
+                  className="w-auto h-auto lg:w-full block min-h-[300px] lg:min-h-[700px] object-contain max-w-none lg:max-w-full"
+                />
+              ) : (
+                <div className="text-black/20 text-sm font-primary flex items-center justify-center p-8">
+                  Image not found in Works Section 1
+                </div>
+              )}
             </div>
-          ) : (
-            <ScrollReveal className="w-[80%] md:w-[60%]">
-              <h2 className="font-primary text-[23px] md:text-[35px] font-light text-white leading-[1.15] tracking-[-0.02em] m-0">
-                {renderStyledText(
-                  data.title ||
-                    "Got _similar problems_? we'll help you to _fix it._",
-                )}
-              </h2>
-            </ScrollReveal>
-          )}
+            {/* Scroll Indicator Gradient */}
+            <div className="sticky bottom-0 left-0 right-0 h-16 bg-linear-to-t from-[#d9d9d9] to-transparent pointer-events-none opacity-50" />
+          </div>
 
-          {/* Description text on the right */}
+          {/* Description Text */}
+          <div className="flex flex-col items-start gap-4">
+            {!loaded ? (
+              <div className="w-full space-y-3">
+                <Skeleton dark className="w-full h-4" />
+                <Skeleton dark className="w-[80%] h-4" />
+              </div>
+            ) : (
+              <div className="font-primary text-white text-[13px] sm:text-[20px] md:text-[23px] leading-normal lg:leading-tight max-w-4xl wrap-break-word description-quill-content">
+                {renderStyledText(data.description || "")}
+              </div>
+            )}
+          </div>
+        </ScrollReveal>
+
+        {/* Action Buttons */}
+        <ScrollReveal delay={0.2} direction="up" className="mt-16 flex flex-wrap items-center justify-center gap-4">
           {!loaded ? (
-            <div className="w-full max-w-[330px] space-y-2 mt-4 md:mt-0">
-              <Skeleton dark className="w-[90%] h-[16px]" />
-              <Skeleton dark className="w-full h-[16px]" />
-              <Skeleton dark className="w-[70%] h-[16px]" />
-            </div>
+            <>
+              <Skeleton className="w-32 h-14 rounded-xl" />
+              <Skeleton className="w-32 h-14 rounded-xl" />
+            </>
           ) : (
-            data.description && (
-              <ScrollReveal delay={0.2} direction="right" className="w-full max-w-[330px] mt-4 md:mt-0">
-                <p className="font-primary text-[14px] text-white leading-[1.7] m-0 max-w-[330px]">
-                  {data.description}
-                </p>
-              </ScrollReveal>
-            )
+            <>
+              {data.button1Text && (
+                <Link 
+                  to={data.button1Link || "/works"}
+                  className="px-15 py-4 bg-[#111] text-white font-primary font-bold text-[16px] rounded-xl hover:bg-black transition-all hover:scale-[1.02]"
+                >
+                  {data.button1Text}
+                </Link>
+              )}
+              {data.button2Text && (
+                <Link 
+                  to={data.button2Link || "/projects"}
+                  className="px-15 py-4 bg-white border border-[#111]/10 text-[#111] font-primary font-bold text-[16px] rounded-xl hover:bg-gray-50 transition-all hover:scale-[1.02] shadow-sm"
+                >
+                  {data.button2Text}
+                </Link>
+              )}
+            </>
           )}
-        </div>
+        </ScrollReveal>
+
       </div>
+
+      <style>{`
+        .description-quill-content p {
+          margin: 0;
+        }
+        .description-quill-content span {
+          display: inline;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 };

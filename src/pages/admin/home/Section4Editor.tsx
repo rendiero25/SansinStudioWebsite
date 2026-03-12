@@ -1,6 +1,5 @@
 import SectionWrapper from "../../../components/cms/SectionWrapper";
 import TextFieldEditor from "../../../components/cms/TextFieldEditor";
-import ImageUploader from "../../../components/cms/ImageUploader";
 import QuillFieldEditor from "../../../components/cms/QuillFieldEditor";
 
 const Section4Editor = () => {
@@ -12,8 +11,8 @@ const Section4Editor = () => {
     >
       {({ content, updateContent }) => (
         <>
-          {/* Title */}
-          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+          {/* Title & Description */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
             <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
               Text Content
             </h3>
@@ -24,29 +23,55 @@ const Section4Editor = () => {
               onChange={(val) => updateContent("title", val)}
               placeholder="Got similar problems? We'll help you to solve it."
             />
-            <TextFieldEditor
+            <QuillFieldEditor
               className="mt-4"
               label="Description"
               value={(content.description as string) || ""}
               onChange={(val) => updateContent("description", val)}
-              multiline
               placeholder="Optional description..."
             />
           </div>
 
-          {/* Background */}
-          <div className="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
+          {/* Button 1 */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
             <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
-              Background
+              Button 1
             </h3>
-            <ImageUploader
-              label="Background Image"
-              value={
-                content.bgImage as { url: string; publicId: string } | null
-              }
-              onChange={(val) => updateContent("bgImage", val)}
-              folder="sanxinstudio/section4"
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TextFieldEditor
+                label="Button 1 Text"
+                value={(content.button1Text as string) || ""}
+                onChange={(val) => updateContent("button1Text", val)}
+                placeholder="e.g. Get Started"
+              />
+              <TextFieldEditor
+                label="Button 1 Link"
+                value={(content.button1Link as string) || ""}
+                onChange={(val) => updateContent("button1Link", val)}
+                placeholder="e.g. /contact"
+              />
+            </div>
+          </div>
+
+          {/* Button 2 */}
+          <div className="p-6 bg-white/3 border border-white/6 rounded-2xl">
+            <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
+              Button 2
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TextFieldEditor
+                label="Button 2 Text"
+                value={(content.button2Text as string) || ""}
+                onChange={(val) => updateContent("button2Text", val)}
+                placeholder="e.g. Learn More"
+              />
+              <TextFieldEditor
+                label="Button 2 Link"
+                value={(content.button2Link as string) || ""}
+                onChange={(val) => updateContent("button2Link", val)}
+                placeholder="e.g. /about"
+              />
+            </div>
           </div>
         </>
       )}

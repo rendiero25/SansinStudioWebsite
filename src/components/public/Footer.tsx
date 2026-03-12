@@ -50,10 +50,12 @@ const renderStyledText = (text: string) => {
 };
 
 const Footer = ({
+  showCTA = true,
+  customCTA,
   email: emailProp,
 }: {
-  hideCta?: boolean;
-  backgroundImageOverride?: string;
+  showCTA?: boolean;
+  customCTA?: React.ReactNode;
   email?: string;
 }) => {
   const [data, setData] = useState<FooterData>({});
@@ -91,69 +93,74 @@ const Footer = ({
               className="w-full h-full object-cover object-top"
             />
           </div>
-        ) : (
-          <div className="absolute inset-0 z-0 bg-linear-to-b from-[#3D1A60] via-black to-black opacity-30 pointer-events-none" />
-        )}
+        ) : ("")}
 
         <div className="relative z-10 container mx-auto px-10 md:px-12 xl:px-20 pt-20">
-          {/* 1. Floating CTA Card (unchanged internal content) */}
-          <ScrollReveal direction="up" className="relative w-full bg-[#D3B4F6] rounded-[30px] overflow-hidden flex flex-col mb-24 shadow-2xl">
-            {/* Top: Image Area */}
-            {!loaded ? (
-              <Skeleton className="w-full h-[300px] md:h-[450px]" />
-            ) : (
-              <div className="w-full h-[300px] md:h-[450px] relative">
-                <img
-                  src={
-                    data.ctaImage?.url ||
-                    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
-                  }
-                  alt="Discovery meeting"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-
-            {/* Bottom: Text Area */}
-            <div className="w-full p-8 md:p-12 flex flex-col md:flex-row justify-between items-center lg:items-end gap-10">
-              {!loaded ? (
-                <div className="w-full max-w-[800px] space-y-3">
-                  <Skeleton className="w-[90%] h-[30px] md:h-[50px]" />
-                  <Skeleton className="w-[70%] h-[30px] md:h-[50px]" />
-                </div>
-              ) : (
-                <h2 className="text-[16px] md:text-[42px] font-light leading-[1.1] text-black m-0 max-w-[800px]">
-                  {renderStyledText(
-                    data.ctaHeading ||
-                      "Lets create your _profitable plan_ through our _discovery meet_ session.",
-                  )}
-                </h2>
-              )}
-
-              <div className="flex flex-col items-center lg:items-end gap-4 shrink-0">
+          
+          {/* CTA */}
+          {customCTA ? (
+            <div className="mb-24">{customCTA}</div>
+          ) : (
+            showCTA && (
+              <ScrollReveal direction="up" className="relative w-full bg-[#D3B4F6] rounded-2xl overflow-hidden flex flex-col mb-24 shadow-2xl">
+                {/* Top: Image Area */}
                 {!loaded ? (
-                  <>
-                    <Skeleton className="w-[150px] h-[16px]" />
-                    <Skeleton className="w-[200px] h-[55px] rounded-xl" />
-                  </>
+                  <Skeleton className="w-full h-[300px] md:h-[450px]" />
                 ) : (
-                  <>
-                    {data.ctaNote && (
-                      <p className="text-[11px] md:text-[13px] font-medium text-black/60 m-0 italic text-center lg:text-right max-w-[200px]">
-                        {data.ctaNote}
-                      </p>
-                    )}
-                    <Link
-                      to={ctaBtn.link}
-                      className="bg-white text-black px-10 py-4 rounded-xl font-bold text-[15px] md:text-[17px] no-underline shadow-sm hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
-                    >
-                      {ctaBtn.text}
-                    </Link>
-                  </>
+                  <div className="w-full h-[300px] md:h-[450px] relative">
+                    <img
+                      src={
+                        data.ctaImage?.url ||
+                        "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
+                      }
+                      alt="Discovery meeting"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 )}
-              </div>
-            </div>
-          </ScrollReveal>
+
+                {/* Bottom: Text Area */}
+                <div className="w-full p-8 flex flex-col xl:flex-row justify-between items-center gap-10">
+                  {!loaded ? (
+                    <div className="w-full max-w-[800px] space-y-3">
+                      <Skeleton className="w-[90%] h-[30px] md:h-[50px]" />
+                      <Skeleton className="w-[70%] h-[30px] md:h-[50px]" />
+                    </div>
+                  ) : (
+                    <h2 className="text-[16px] sm:text-[30px] md:text-[38px] lg:text-[42px] font-light leading-[1.1] text-black m-0 max-w-[800px]">
+                      {renderStyledText(
+                        data.ctaHeading ||
+                          "",
+                      )}
+                    </h2>
+                  )}
+
+                  <div className="flex flex-col items-center lg:items-end gap-4 shrink-0">
+                    {!loaded ? (
+                      <>
+                        <Skeleton className="w-[150px] h-[16px]" />
+                        <Skeleton className="w-[200px] h-[55px] rounded-xl" />
+                      </>
+                    ) : (
+                      <>
+                        {data.ctaNote && (
+                          <p className="text-[12px] md:text-[13px] font-medium text-black/60 m-0 italic text-center lg:text-right max-w-[250px]">
+                            {data.ctaNote}
+                          </p>
+                        )}
+                        <Link
+                          to={ctaBtn.link}
+                          className="bg-white text-black px-10 py-4 rounded-xl font-bold text-[15px] md:text-[17px] no-underline shadow-sm hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
+                        >
+                          {ctaBtn.text}
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </ScrollReveal>
+            )
+          )}
 
           {/* 2. Reach Us Section */}
           <ScrollReveal delay={0.2} direction="up" className="flex flex-col lg:flex-row justify-between items-start xl:items-end gap-12 lg:gap-8 mb-32">

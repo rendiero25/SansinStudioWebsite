@@ -46,11 +46,6 @@ const AdminLayout = () => {
       subItems: [
         { label: "Hero", path: "/admin/home/hero", icon: "🎬" },
         {
-          label: "Section 2",
-          path: "/admin/home/section2",
-          icon: "🚀",
-        },
-        {
           label: "Section 3",
           path: "/admin/home/section3",
           icon: "🧱",
@@ -80,7 +75,6 @@ const AdminLayout = () => {
           path: "/admin/home/section8",
           icon: "🖼️",
         },
-        { label: "Footer", path: "/admin/home/footer", icon: "📋" },
       ],
     },
     {
@@ -129,6 +123,7 @@ const AdminLayout = () => {
     },
     { label: "Contact", icon: "📞", path: "/admin/contact" },
     { label: "FAQ", icon: "❓", path: "/admin/faq" },
+    { label: "Footer", path: "/admin/home/footer", icon: "📋" },
   ];
 
   const isSubItemActive = (item: MenuItem) => {

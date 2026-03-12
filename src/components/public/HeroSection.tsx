@@ -13,6 +13,7 @@ interface HeroData {
   bgImage?: { url: string; publicId: string };
   bgVideo?: { url: string; publicId: string };
   ctaButton?: { text: string; link: string };
+  secondaryButton?: { text: string; link: string };
 }
 
 const HeroSection = () => {
@@ -98,100 +99,97 @@ const HeroSection = () => {
     text: "Get Started",
     link: "/solutions",
   };
+  const secondaryButton = data.secondaryButton || {
+    text: "Projects",
+    link: "/projects",
+  };
 
   return (
-    <section
-      className={`relative w-full h-screen min-h-[600px] max-md:min-h-[85vh] flex items-end overflow-hidden bg-[#0a0a0a]`}
-    >
-      {/* Background */}
-      <div className="absolute inset-0 z-0">
-        {!loaded ? (
-          <div className="w-full h-full bg-[#0a0a0a]" />
-        ) : useBgVideo ? (
-          <video
-            className="w-full h-full object-cover object-top"
-            autoPlay
-            muted
-            loop
-            playsInline
-            src={bgVideoUrl}
-          />
-        ) : bgUrl ? (
-          <img
-            className="w-full h-full object-cover object-top"
-            src={bgUrl}
-            alt=""
-            loading="eager"
-          />
-        ) : (
-          <div className="w-full h-full bg-[#0a0a0a]" />
-        )}
-        <div className="absolute inset-0 bg-linear-to-b from-[#0a0a0a]/15 via-[#0a0a0a]/5 via-30% to-[#0a0a0a]/85" />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 w-full container mx-auto px-10 md:px-12 xl:px-20 pb-[40px] md:pb-[72px]">
-        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-7 lg:gap-0 xl:gap-12">
-          {/* Left: headline area */}
-          <div className="md:max-w-[680px] 2xl:max-w-[950px] shrink-0 w-full">
-            {!loaded ? (
-              <div className="space-y-4 w-full">
-                <Skeleton dark className="w-[80%] h-[40px] md:h-[60px] 2xl:h-[100px]" />
-                <Skeleton dark className="w-[60%] h-[40px] md:h-[60px] 2xl:h-[100px]" />
-                <Skeleton dark className="w-[40%] h-[40px] md:h-[60px] 2xl:h-[100px]" />
-              </div>
-            ) : (
-              <ScrollReveal delay={0.1}>
-                <p className="font-primary leading-tight text-[32px] md:text-[54px] 2xl:text-[95px] font-light text-white 2xl:leading-[1.1] tracking-[-0.03em] m-0">
-                  {data.brandLogo?.url ? (
-                  <img
-                    src={data.brandLogo.url}
-                    alt="Brand"
-                    className="inline-block h-6 md:h-10 2xl:h-8 align-middle mr-2 object-contain"
-                  />
-                ) : (
-                  data.brandName && (
-                    <span className="font-primary text-[16px] md:text-[20px] 2xl:text-[30px] font-light text-white tracking-[0.06em] lowercase align-middle mr-1.5">
-                      {data.brandName}
-                    </span>
-                  )
-                )}{" "}
-                {renderHeadline(
-                  data.headline ||
-                    "A branding agency with *one objective*: To make you _profitable._",
-                )}
-                </p>
-              </ScrollReveal>
-            )}
+    <section className="relative w-full pt-[120px] md:pt-[160px] bg-white flex flex-col items-center justify-center overflow-hidden">
+      {/* Top Content Box */}
+      <div className="relative z-10 w-full container mx-auto px-5 md:px-10 xl:px-20 flex flex-col items-center">
+        {/* Pills */}
+        <ScrollReveal delay={0.1}>
+          <div className="flex items-center justify-center gap-2 mb-8 mt-4">
+            <span className="bg-[#1a1a1a] text-white text-[10px] md:text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider">
+              4 PROJECTS ON PROGRESS
+            </span>
+            <span className="bg-[#f0f0f0] text-[#1a1a1a] text-[10px] md:text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider">
+              AVAILABLE IN JUNE
+            </span>
           </div>
+        </ScrollReveal>
 
-          {/* Right: subtitle + CTA */}
-          <div className="flex flex-row md:flex-col items-center md:items-start gap-5 md:gap-6 md:pb-2 shrink-0 w-full md:w-auto md:max-w-[240px]">
-            {!loaded ? (
-              <>
-                <Skeleton dark className="flex-1 md:flex-none w-[150px] h-[30px]" />
-                <Skeleton dark className="min-w-[130px] md:min-w-[250px] h-[40px] md:h-[50px] rounded-xl" />
-              </>
-            ) : (
-              <>
-                {data.subtitle && (
-                  <ScrollReveal delay={0.3} direction="none" className="flex-1 md:flex-none">
-                    <p className="font-primary md:text-[20px] 2xl:text-[14px] font-normal text-[#FEFEFE] leading-[1.65] m-0 tracking-[0.01em]">
-                      {data.subtitle}
-                    </p>
-                  </ScrollReveal>
-                )}
-                <ScrollReveal delay={0.4} direction="up" className="w-full md:w-auto">
-                  <Link
-                  to={ctaButton.link}
-                  className="inline-flex items-center justify-center min-w-[130px] md:min-w-[250px] px-6 md:px-8 py-3 md:py-[14px] bg-white hover:bg-white text-black rounded-xl hover:text-[#0a0a0a] font-primary text-[12px] md:text-[17px] font-bold border border-white/25 hover:border-white transition-all duration-300 tracking-[0.02em] no-underline"
-                  >
-                    {ctaButton.text}
-                  </Link>
-                </ScrollReveal>
-              </>
-            )}
+        {/* Headline */}
+        <ScrollReveal delay={0.2} className="w-full relative z-10">
+          <div className="text-center w-full max-w-[1000px] mx-auto mb-6">
+            <h1 className="font-primary text-[30px] sm:text-[50px] md:text-[60px] lg:text-[50px] 2xl:text-[84px] font-medium text-[#111111] leading-[1.1] tracking-[-0.03em] m-0 [&_p]:m-0">
+              {renderHeadline(
+                data.headline || ""
+              )}
+            </h1>
           </div>
+        </ScrollReveal>
+
+        {/* Description */}
+        <ScrollReveal delay={0.3} className="w-full relative z-10">
+          <div className="text-center w-full max-w-[600px] mx-auto mb-10">
+            <div className="font-primary text-[15px] md:text-[22px] font-normal text-black leading-[1.6] [&_p]:m-0">
+              <span
+                dangerouslySetInnerHTML={{
+                  __html:
+                    data.subtitle || ""
+                }}
+              />
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Buttons */}
+        <ScrollReveal delay={0.4} className="w-full relative z-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 md:mb-24">
+            <Link
+              to={ctaButton.link}
+              className="inline-flex items-center justify-center px-15 py-4 bg-[#8E33FF] hover:bg-black text-white rounded-xl font-primary text-[15px] font-semibold transition-all shadow-[0_4px_14px_0_rgba(142,51,255,0.39)] no-underline w-full sm:w-auto"
+            >
+              {ctaButton.text}
+            </Link>
+            <Link
+              to={secondaryButton.link}
+              className="inline-flex items-center justify-center px-15 py-4 bg-white border border-black/50 hover:bg-black text-black hover:text-white rounded-xl font-primary text-[15px] font-semibold transition-all no-underline w-full sm:w-auto"
+            >
+              {secondaryButton.text}
+            </Link>
+          </div>
+        </ScrollReveal>
+
+        {/* Background Video/Image Block */}
+        <div className="w-full relative z-10">
+          <ScrollReveal delay={0.5} className="w-full">
+            <div className="w-full rounded-3xl overflow-hidden h-[750px] relative flex items-center justify-center shadow-2xl bg-[#0a0a0a]">
+              {!loaded ? (
+                <Skeleton dark className="w-full h-full" />
+              ) : useBgVideo ? (
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  src={bgVideoUrl}
+                />
+              ) : bgUrl ? (
+                <img
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src={bgUrl}
+                  alt="Hero Background"
+                  loading="eager"
+                />
+              ) : (
+                <div className="w-full h-full bg-[#0a0a0a]" />
+              )}
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

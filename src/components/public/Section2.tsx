@@ -1,59 +1,54 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
 
-interface Section2Data {
-  title?: string;
-  description?: string;
-  items?: Array<{
-    id: string;
-    title: string;
-  }>;
+interface ProjectCategory {
+  id: string;
+  categoryName: string;
+  categoryIcon?: { url: string; publicId: string } | null;
 }
 
-const renderStyledText = (text: string) => {
-  if (!text) return null;
-
-  // If it looks like HTML (from Quill), render it directly
-  if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
-  }
-
-  const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith("_") && part.endsWith("_")) {
-      return (
-        <span
-          key={i}
-          className="italic underline underline-offset-4 decoration-1"
-        >
-          {part.slice(1, -1)}
-        </span>
-      );
-    }
-    if (part.startsWith("*") && part.endsWith("*")) {
-      return (
-        <span key={i} className="italic">
-          {part.slice(1, -1)}
-        </span>
-      );
-    }
-    return <span key={i}>{part}</span>;
-  });
-};
+interface ProjectItem {
+  id: string;
+  projectName: string;
+  categoryIds?: string[];
+  categoryId?: string;
+  thumbnail: { url: string; publicId: string } | null;
+  mainImage: { url: string; publicId: string } | null;
+  keywords: string;
+  buttonLink: string;
+}
 
 const Section2 = () => {
-  const [data, setData] = useState<Section2Data>({});
+  const [title, setTitle] = useState("PROJECTS");
+  const [categories, setCategories] = useState<ProjectCategory[]>([]);
+  const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const section = await getSection("home", "section2");
-        setData(section.content || {});
+        const [section1Res, section2Res] = await Promise.all([
+          getSection("projects", "section1"),
+          getSection("projects", "section2"),
+        ]);
+
+        if (section1Res?.content?.sectionTitle) {
+          setTitle(section1Res.content.sectionTitle);
+        }
+
+        if (section1Res?.content?.categories) {
+          setCategories(section1Res.content.categories as ProjectCategory[]);
+        }
+
+        if (section2Res?.content?.projects) {
+          // Get the latest 2 projects
+          setProjects((section2Res.content.projects as ProjectItem[]).slice(0, 2));
+        }
       } catch (err) {
-        console.error("Failed to load section2:", err);
+        console.error("Failed to load projects for section2:", err);
       } finally {
         setLoaded(true);
       }
@@ -61,66 +56,125 @@ const Section2 = () => {
     fetchData();
   }, []);
 
-  return (
-    <section className="relative w-full bg-white py-20 md:py-28 overflow-hidden">
-      <div className="container mx-auto px-10 md:px-12 xl:px-20">
-        {/* Title */}
-        {!loaded ? (
-          <div className="w-full lg:max-w-[600px] space-y-3">
-            <Skeleton className="w-[90%] h-[30px] md:h-[50px]" />
-            <Skeleton className="w-[70%] h-[30px] md:h-[50px]" />
-          </div>
-        ) : (
-          <ScrollReveal>
-            <h2 className="font-primary text-[23px] md:text-[42px] font-light text-black leading-[1.15] tracking-[-0.03em] m-0 w-full lg:max-w-[600px]">
-              {renderStyledText(data.title || "")}
-            </h2>
-          </ScrollReveal>
-        )}
+  const getCategoriesForProject = (proj: ProjectItem): ProjectCategory[] => {
+    if (proj.categoryIds && proj.categoryIds.length > 0) {
+      return proj.categoryIds
+        .map((cid) => categories.find((c) => c.id === cid))
+        .filter(Boolean) as ProjectCategory[];
+    }
+    if (proj.categoryId) {
+      const cat = categories.find((c) => c.id === proj.categoryId);
+      return cat ? [cat] : [];
+    }
+    return [];
+  };
 
-        {/* Description label + Feature items */}
-        <div className="mt-14 md:mt-20 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-20 -mx-5 px-5 md:mx-0 md:px-0">
+  return (
+    <section className="relative w-full bg-white pt-30 overflow-hidden">
+      <div className="container mx-auto px-5 md:px-10 xl:px-20">
+        <ScrollReveal>
+          {/* Section Label Pill */}
+          {!loaded ? (
+            <Skeleton className="w-[100px] h-[30px] rounded-md mb-8" />
+          ) : (
+            <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-[#111111] text-[16px] font-bold uppercase rounded-md mb-6 font-primary">
+              {title}
+            </div>
+          )}
+        </ScrollReveal>
+
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           {!loaded ? (
             <>
-              {/* Small label on the left */}
-              <div className="flex items-center pt-0 md:pt-3 shrink-0 w-full md:w-[70px]">
-                <Skeleton className="w-[60px] h-[16px]" />
-              </div>
-
-              {/* Feature item cards - horizontal row */}
-              <div className="flex-1 w-full flex gap-4 md:gap-5 overflow-x-auto pb-8 md:p-3 scrollbar-hide snap-x">
-                {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} className="snap-start min-w-[200px] md:min-w-[180px] h-[200px] md:h-[130px] flex-1 rounded-[20px]" />
-                ))}
-              </div>
+              <Skeleton className="w-full aspect-4/3 rounded-3xl" />
+              <Skeleton className="w-full aspect-4/3 rounded-3xl" />
             </>
           ) : (
-            <>
-              {/* Small label on the left */}
-              {data.description && (
-                <ScrollReveal delay={0.2} direction="right" className="flex items-center pt-0 md:pt-3 shrink-0">
-                  <p className="text-[12px] md:text-[13px] font-semibold text-black/60 md:text-black uppercase m-0 md:max-w-[70px] font-primary tracking-wider">
-                    {data.description}
-                  </p>
-                </ScrollReveal>
-              )}
+            projects.map((project, index) => {
+              // Parse keywords into an array, e.g. "Production, Interaction" -> ["Production", "Interaction"]
+              const keywordList = project.keywords
+                ? project.keywords.split(",").map((k) => k.trim()).filter(Boolean)
+                : [];
+                
+              const projCategories = getCategoriesForProject(project);
 
-              {/* Feature item cards - horizontal row */}
-              {data.items && data.items.length > 0 && (
-                <div className="flex-1 w-full flex gap-4 md:gap-5 overflow-x-auto pb-8 md:p-3 scrollbar-hide snap-x">
-                  {data.items.map((item, index) => (
-                    <ScrollReveal
-                      key={item.id}
-                      delay={0.3 + index * 0.1}
-                      direction="right"
-                      className="snap-start min-w-[200px] md:min-w-[180px] flex-1 bg-white shadow-md border-2 border-black/5 rounded-[20px] px-8 md:px-8 py-20 md:py-12 flex items-center justify-center text-center text-[18px] md:text-[17px] font-bold text-black font-primary leading-[1.4] hover:bg-[#eaeaea] transition-all duration-300 overflow-hidden"
-                    >
-                      {item.title}
-                    </ScrollReveal>
-                  ))}
-                </div>
-              )}
-            </>
+              const imageUrl = project.thumbnail?.url || project.mainImage?.url || "";
+
+              return (
+                <ScrollReveal
+                  key={project.id}
+                  delay={0.2 + index * 0.1}
+                  className="w-full"
+                >
+                  <Link
+                    to={`/projects/${project.id}`}
+                    className="group relative block w-full rounded-xl overflow-hidden aspect-4/3 md:aspect-auto md:h-[350px] bg-[#f5f5f5] no-underline"
+                  >
+                    {/* Background Image */}
+                    {imageUrl && (
+                      <img
+                        src={imageUrl}
+                        alt={project.projectName}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    )}
+                    
+                    {/* Bottom Gradient Overlay */}
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 to-transparent pointer-events-none z-10" />
+
+                    {/* Dark overlay on hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 z-10" />
+
+                    {/* See Project Button — center */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                      <span className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors">
+                        See Project
+                      </span>
+                    </div>
+
+                    {/* Content */}
+                    <div className="absolute inset-x-0 bottom-0 p-8 md:p-10 flex flex-col justify-end z-20 pointer-events-none">
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-2 mb-4 pointer-events-auto">
+                        {projCategories.length > 0 ? (
+                          projCategories.map((cat) => (
+                            <span
+                              key={cat.id}
+                              className="inline-flex items-center gap-1.5 bg-white text-black text-[10px] md:text-[16px] font-bold px-3 md:px-10 py-1.5 md:py-1 rounded-[4px] shadow-sm font-primary"
+                            >
+                              {cat.categoryIcon?.url && (
+                                <img
+                                  src={cat.categoryIcon.url}
+                                  alt=""
+                                  className="w-3.5 h-3.5 object-contain"
+                                />
+                              )}
+                              {cat.categoryName}
+                            </span>
+                          ))
+                        ) : (
+                          // Fallback to keywords if no category
+                          keywordList.map((kw, i) => (
+                            <span
+                              key={i}
+                              className="inline-flex items-center gap-1.5 bg-white text-black text-[10px] md:text-[11px] font-bold tracking-wider px-3 md:px-4 py-1.5 md:py-2 rounded-[4px] shadow-sm uppercase font-primary"
+                            >
+                              {kw}
+                            </span>
+                          ))
+                        )}
+                      </div>
+
+                      {/* Project Name */}
+                      <h3 className="text-white text-2xl md:text-3xl font-normal font-primary m-0 pr-10 pointer-events-auto">
+                        {project.projectName}
+                      </h3>
+                    </div>
+                  </Link>
+                </ScrollReveal>
+              );
+            })
           )}
         </div>
       </div>

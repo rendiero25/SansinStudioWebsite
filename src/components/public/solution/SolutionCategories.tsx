@@ -164,7 +164,7 @@ const SolutionCategories = () => {
 
   return (
     <section
-      className="w-full bg-white text-black py-15 md:py-25 relative"
+      className="w-full bg-white text-black mt-30 relative"
       style={{ overflowX: "clip", overflowY: "visible" }}
     >
       <div

@@ -1,7 +1,9 @@
 import Header from "../components/public/Header";
-import SolutionHero from "../components/public/solution/SolutionHero";
+// import SolutionHero from "../components/public/solution/SolutionHero";
 import SolutionCategories from "../components/public/solution/SolutionCategories";
+import Section2 from "../components/public/Section2";
 import SolutionFAQs from "../components/public/solution/SolutionFAQs";
+import Footer from "../components/public/Footer";
 
 const Solution = () => {
   return (
@@ -9,10 +11,10 @@ const Solution = () => {
       <Header />
 
       <main>
-        <SolutionHero />
+        {/* <SolutionHero /> */}
         <SolutionCategories />
-        {/* FAQs section and global Footer */}
-        <SolutionFAQs />
+        <Section2/>
+        <Footer customCTA={<SolutionFAQs />} />
       </main>
 
       <style>{`

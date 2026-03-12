@@ -145,7 +145,7 @@ const SolutionHero = () => {
 
   return (
     <section
-      className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 bg-black"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 bg-black"
       style={{ overflowX: "clip", overflowY: "visible" }}
     >
       {/* Background */}
