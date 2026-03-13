@@ -7,7 +7,7 @@ import Footer from "../components/public/Footer";
 
 const Solution = () => {
   return (
-    <div className="solution-page">
+    <div className="solution-page font-primary">
       <Header />
 
       <main>

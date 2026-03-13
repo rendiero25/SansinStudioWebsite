@@ -274,7 +274,6 @@ const AdminLayout = () => {
         }}
       >
         <div style={styles.sidebarHeader}>
-          <div style={styles.logoIcon}>S</div>
           <div>
             <div style={styles.logoText}>Sanxin Studio</div>
             <div style={styles.logoSub}>CMS</div>
@@ -284,13 +283,6 @@ const AdminLayout = () => {
         <nav style={styles.nav}>{menuItems.map(renderNavItem)}</nav>
 
         <div style={styles.sidebarFooter}>
-          <div style={styles.adminInfo}>
-            <div style={styles.avatar}>{admin?.name?.charAt(0) || "A"}</div>
-            <div>
-              <div style={styles.adminName}>{admin?.name}</div>
-              <div style={styles.adminRole}>{admin?.role}</div>
-            </div>
-          </div>
           <button onClick={handleLogout} style={styles.logoutBtn}>
             Logout
           </button>

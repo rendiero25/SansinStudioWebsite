@@ -15,6 +15,37 @@ interface ProjectsData {
   footerBg: string;
 }
 
+const renderStyledText = (text: string) => {
+  if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
+  const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("_") && part.endsWith("_")) {
+      return (
+        <span
+          key={i}
+          className="italic underline underline-offset-4 decoration-1"
+        >
+          {part.slice(1, -1)}
+        </span>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <span key={i} className="italic">
+          {part.slice(1, -1)}
+        </span>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+};
+
 const Projects = () => {
   const [data, setData] = useState<ProjectsData>({
     categories: [],
@@ -130,12 +161,12 @@ const Projects = () => {
                     : "opacity-100 visible h-auto w-auto"
                 }`}
               >
-                {data.title}
+                {renderStyledText(data.title)}
               </h1>
             </ScrollReveal>
 
             {/* Row 2: Sticky Category Filter Pills */}
-            <ScrollReveal delay={0.2} direction="left" className="py-4 -mx-4 lg:px-4 sm:mx-0 sm:px-0 w-full xl:w-auto">
+            <ScrollReveal delay={0.2} direction="left" className="py-4 sm:mx-0 sm:px-0 w-full xl:w-auto">
               <div className="flex justify-start lg:justify-end">
                 <div className="flex flex-col lg:flex-row w-full lg:w-auto items-center bg-white shadow-md border border-black/5 rounded-xl p-4 m-2 xl:m-0 xl:p-2 gap-2 overflow-x-auto max-w-full hide-scrollbar">
                   <span className="text-sm uppercase text-black/50 px-3 shrink-0 mb-4 lg:mb-0">
@@ -215,10 +246,10 @@ const Projects = () => {
                       className="group relative w-full aspect-16/10 md:aspect-4/3 lg:aspect-16/10 rounded-xl overflow-hidden cursor-pointer"
                     >
                       {/* Background Image */}
-                      {project.thumbnail?.url ? (
+                      {project.mainImage?.url ? (
                         <img
-                          src={project.thumbnail.url}
-                          alt={project.projectName}
+                          src={project.mainImage.url}
+                          alt={stripHtml(project.projectName)}
                           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                       ) : (
@@ -235,7 +266,7 @@ const Projects = () => {
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
                         <Link
                           to={`/projects/${project.id}`}
-                          className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline"
+                          className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-lg bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline"
                         >
                           See Project
                         </Link>
@@ -275,7 +306,7 @@ const Projects = () => {
 
                         {/* Project Title */}
                         <h3 className="text-white text-[24px] md:text-[28px] font-normal tracking-[-0.02em] m-0 leading-[1.2]">
-                          {project.projectName}
+                          {renderStyledText(project.projectName)}
                         </h3>
                       </div>
                     </ScrollReveal>
@@ -314,7 +345,7 @@ const Projects = () => {
         </div>
       </main>
 
-      <Footer hideCta={true} backgroundImageOverride={data.footerBg} />
+      <Footer showCTA={false} backgroundImageOverride={data.footerBg} />
 
       <style>
         {`
@@ -335,6 +366,13 @@ const Projects = () => {
       </style>
     </div>
   );
+};
+
+const stripHtml = (html: string) => {
+  if (!html) return "";
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
 };
 
 export default Projects;

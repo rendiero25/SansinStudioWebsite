@@ -167,7 +167,7 @@ const Company = () => {
           </div>
 
           {/* 3. Details Section (Gray Background) */}
-          <ScrollReveal delay={0.4} className="bg-[#A7A7A7] rounded-3xl p-8 md:p-10 mb-15 xl:mb-24 overflow-hidden">
+          <ScrollReveal delay={0.4} className="bg-[#A7A7A7] rounded-xl p-8 md:p-10 mb-15 xl:mb-24 overflow-hidden">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 lg:gap-24 items-stretch">
               <div className="flex flex-col justify-between items-start gap-8">
                 {/* Details Label */}
@@ -268,11 +268,11 @@ const Company = () => {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2} className="relative overflow-hidden">
-                <div className="max-h-[450px] overflow-y-auto custom-scrollbar rounded-2xl md:rounded-[32px] scrollbar-hide">
+                <div className="bg-linear-to-b from-[#D9D9D9] to-transparant max-h-[450px] overflow-y-auto custom-scrollbar rounded-xl scrollbar-hide">
                   <img 
                     src={section2.image.url} 
                     alt="Privacy Policy" 
-                    className="w-full h-auto object-contain block"
+                    className="w-full h-auto object-contain block rounded-lg"
                   />
                 </div>
               </ScrollReveal>

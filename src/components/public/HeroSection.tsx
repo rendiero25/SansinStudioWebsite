@@ -166,7 +166,7 @@ const HeroSection = () => {
         {/* Background Video/Image Block */}
         <div className="w-full relative z-10">
           <ScrollReveal delay={0.5} className="w-full">
-            <div className="w-full rounded-3xl overflow-hidden h-[750px] relative flex items-center justify-center shadow-2xl bg-[#0a0a0a]">
+            <div className="w-full rounded-2xl overflow-hidden h-[750px] relative flex items-center justify-center shadow-2xl bg-[#0a0a0a]">
               {!loaded ? (
                 <Skeleton dark className="w-full h-full" />
               ) : useBgVideo ? (

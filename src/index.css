@@ -7,6 +7,10 @@
 }
 @custom-variant 3xl (@media (min-width: 1920px));
 
+body {
+  font-family: var(--font-primary);
+}
+
 /* Keyframes used by CMS components */
 @keyframes fadeIn {
   from {

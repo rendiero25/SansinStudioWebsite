@@ -49,11 +49,17 @@ const Contact = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
+  const [footerBg, setFooterBg] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getSection("contact", "main");
-        setData(res.content || {});
+        const [contactRes, projSection3Res] = await Promise.all([
+          getSection("contact", "main"),
+          getSection("projects", "section3"),
+        ]);
+        setData(contactRes.content || {});
+        setFooterBg(projSection3Res?.content?.backgroundImage?.url || "");
       } catch (err) {
         console.error("Failed to fetch contact data:", err);
       } finally {
@@ -202,34 +208,37 @@ const Contact = () => {
       <div className="contact-page bg-white font-primary flex flex-col min-h-screen">
         <Header />
         <main className="flex-1 flex flex-col lg:flex-row">
-           <div className="w-full lg:w-[55%] relative flex flex-col py-20 lg:py-0 bg-black/5">
-              <div className="container mx-auto px-6 md:px-12 xl:px-20 z-10 w-full pt-20 lg:pt-32 flex flex-col justify-center">
-                 <div className="flex flex-col gap-12 lg:gap-16">
-                    <Skeleton dark className="w-[90%] max-w-2xl h-[40px] md:h-[60px]" />
-                    <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12">
-                       <Skeleton dark className="w-[150px] h-[30px]" />
-                       <div className="flex flex-col items-center gap-6 w-full lg:max-w-[420px]">
-                          <Skeleton className="w-full h-[180px] rounded-2xl" />
-                          <Skeleton className="w-10 h-10 rounded-full" />
-                          <Skeleton className="w-full h-[180px] rounded-2xl" />
-                       </div>
-                    </div>
-                 </div>
+          <div className="w-full lg:w-[55%] relative flex flex-col py-20 lg:py-0 bg-black/5">
+            <div className="container mx-auto px-6 md:px-12 xl:px-20 z-10 w-full pt-20 lg:pt-32 flex flex-col justify-center">
+              <div className="flex flex-col gap-12 lg:gap-16">
+                <Skeleton
+                  dark
+                  className="w-[90%] max-w-2xl h-[40px] md:h-[60px]"
+                />
+                <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12">
+                  <Skeleton dark className="w-[150px] h-[30px]" />
+                  <div className="flex flex-col items-center gap-6 w-full lg:max-w-[420px]">
+                    <Skeleton className="w-full h-[180px] rounded-2xl" />
+                    <Skeleton className="w-10 h-10 rounded-full" />
+                    <Skeleton className="w-full h-[180px] rounded-2xl" />
+                  </div>
+                </div>
               </div>
-           </div>
-           <div className="w-full lg:flex-1 p-8 md:p-20 xl:p-32 bg-white flex flex-col justify-center">
-              <div className="max-w-3xl lg:max-w-full flex flex-col gap-12 w-full">
-                 <Skeleton className="w-[60%] h-[40px]" />
-                 <div className="flex flex-col gap-8 w-full">
-                    <div className="flex flex-col gap-x-8 gap-y-8">
-                       <Skeleton className="w-full h-[54px] rounded-lg" />
-                       <Skeleton className="w-full h-[54px] rounded-lg" />
-                       <Skeleton className="w-full h-[54px] rounded-lg" />
-                    </div>
-                    <Skeleton className="w-full h-[120px] rounded-lg" />
-                 </div>
+            </div>
+          </div>
+          <div className="w-full lg:flex-1 p-8 md:p-20 xl:p-32 bg-white flex flex-col justify-center">
+            <div className="max-w-3xl lg:max-w-full flex flex-col gap-12 w-full">
+              <Skeleton className="w-[60%] h-[40px]" />
+              <div className="flex flex-col gap-8 w-full">
+                <div className="flex flex-col gap-x-8 gap-y-8">
+                  <Skeleton className="w-full h-[54px] rounded-lg" />
+                  <Skeleton className="w-full h-[54px] rounded-lg" />
+                  <Skeleton className="w-full h-[54px] rounded-lg" />
+                </div>
+                <Skeleton className="w-full h-[120px] rounded-lg" />
               </div>
-           </div>
+            </div>
+          </div>
         </main>
       </div>
     );
@@ -262,7 +271,11 @@ const Contact = () => {
               </ScrollReveal>
 
               <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12">
-                <ScrollReveal delay={0.2} direction="right" className="w-full lg:w-[200px] shrink-0">
+                <ScrollReveal
+                  delay={0.2}
+                  direction="right"
+                  className="w-full lg:w-[200px] shrink-0"
+                >
                   <h2 className="text-[20px] md:text-[24px] font-normal tracking-[-0.02em] leading-tight m-0 text-white/90">
                     {data?.processTitle}
                   </h2>
@@ -324,7 +337,10 @@ const Contact = () => {
 
         {/* Right Column: Contact Form */}
         <div className="w-full lg:flex-1 p-8 md:p-20 xl:p-32 bg-white flex flex-col justify-center">
-          <ScrollReveal delay={0.3} className="max-w-3xl lg:max-w-full flex flex-col gap-12">
+          <ScrollReveal
+            delay={0.3}
+            className="max-w-3xl lg:max-w-full flex flex-col gap-12"
+          >
             <h2 className="text-[28px] md:text-[36px] font-normal tracking-[-0.02em] leading-tight max-w-lg">
               {data?.formTitle || "Tell us about your project"}
             </h2>
@@ -724,7 +740,7 @@ const Contact = () => {
                 <button
                   type="submit"
                   disabled={!isFormValid()}
-                  className={`px-12 py-4.5 text-[16px] font-bold rounded-2xl transition-all shadow-xl shadow-black/10 hover:shadow-black/20 ${submitButtonStyle}`}
+                  className={`px-12 py-4.5 text-[16px] font-bold rounded-lg transition-all shadow-xl shadow-black/10 hover:shadow-black/20 ${submitButtonStyle}`}
                 >
                   Submit Project
                 </button>
@@ -734,7 +750,7 @@ const Contact = () => {
         </div>
       </main>
 
-      <Footer hideCta={true} />
+      <Footer showCTA={false} backgroundImageOverride={footerBg} />
       <SuccessModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}

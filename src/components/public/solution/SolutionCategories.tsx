@@ -139,14 +139,14 @@ const SolutionCategories = () => {
           </div>
           <div className="flex flex-col xl:flex-row items-start gap-16 w-full">
             <div className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0">
-               <Skeleton className="w-[80%] h-[40px] md:h-[50px]" />
-               <Skeleton className="w-full h-[60px]" />
-               <Skeleton className="w-full xl:w-[500px] h-[300px] rounded-xl" />
+              <Skeleton className="w-[80%] h-[40px] md:h-[50px]" />
+              <Skeleton className="w-full h-[60px]" />
+              <Skeleton className="w-full xl:w-[500px] h-[300px] rounded-xl" />
             </div>
             <div className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0">
-               <Skeleton className="w-full h-[80px] rounded-xl" />
-               <Skeleton className="w-full h-[80px] rounded-xl" />
-               <Skeleton className="w-full h-[80px] rounded-xl" />
+              <Skeleton className="w-full h-[80px] rounded-xl" />
+              <Skeleton className="w-full h-[80px] rounded-xl" />
+              <Skeleton className="w-full h-[80px] rounded-xl" />
             </div>
           </div>
         </div>
@@ -182,8 +182,8 @@ const SolutionCategories = () => {
 
           {/* Right Tabs */}
           <div className="w-full xl:w-auto pb-4 xl:pb-0 scrollbar-hide">
-            <div className="inline-flex w-full flex-col xl:flex-row items-center p-4 m-2 bg-white rounded-xl shadow-md border border-black/5 min-w-max gap-5">
-              <span className="uppercase text-black/50 text-sm xl:ml-2 xl:mr-12">
+            <div className="inline-flex w-full flex-col xl:flex-row items-center p-3 m-2 bg-white rounded-xl shadow-md border border-black/5 min-w-max gap-5">
+              <span className="uppercase text-black text-sm xl:ml-2 xl:mr-12">
                 Category
               </span>
 
@@ -214,7 +214,11 @@ const SolutionCategories = () => {
         {/* Content Area for Active Category */}
         <div className="flex flex-col xl:flex-row items-start gap-16 w-full animate-[fadeIn_0.5s_ease-out]">
           {/* Left side: Category Details */}
-          <ScrollReveal delay={0.2} direction="right" className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0">
+          <ScrollReveal
+            delay={0.2}
+            direction="right"
+            className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0"
+          >
             {/* Category Header */}
             <div className="flex items-center gap-4">
               {activeCategory.categoryIcon?.url && (
@@ -234,7 +238,7 @@ const SolutionCategories = () => {
             </p>
 
             {activeCategory.categoryImage?.url && (
-              <div className="w-full xl:w-[500px] h-[300px] overflow-hidden drop-shadow-md relative bg-white mt-4">
+              <div className="w-full xl:w-[500px] h-[300px] rounded-xl overflow-hidden drop-shadow-md relative bg-white mt-4">
                 <img
                   src={activeCategory.categoryImage.url}
                   alt={activeCategory.categoryName}
@@ -245,7 +249,11 @@ const SolutionCategories = () => {
           </ScrollReveal>
 
           {/* Right side: Methods */}
-          <ScrollReveal delay={0.3} direction="up" className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0">
+          <ScrollReveal
+            delay={0.3}
+            direction="up"
+            className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0"
+          >
             {activeCategory.methods && activeCategory.methods.length > 0 && (
               <div className="flex flex-col gap-4 w-full min-w-0">
                 {activeCategory.methods.map((method) => {
@@ -363,7 +371,11 @@ const SolutionCategories = () => {
 
         <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-20 mt-10">
           {/* Approach / Section Title underneath Image */}
-          <ScrollReveal delay={0.4} direction="up" className="flex flex-col gap-4 mt-4 xl:mt-8 w-full xl:w-[450px] shrink-0">
+          <ScrollReveal
+            delay={0.4}
+            direction="up"
+            className="flex flex-col gap-4 mt-4 xl:mt-8 w-full xl:w-[450px] shrink-0"
+          >
             <span className="border-t-3 border-black/50 w-[100px] "></span>
             <h4 className="uppercase font-primary text-[12px] font-medium leading-tight tracking-tight m-0 max-w-[450px]">
               {activeCategory.sectionTitle}
@@ -376,7 +388,7 @@ const SolutionCategories = () => {
             {activeCategory.buttonText && activeCategory.buttonLink && (
               <a
                 href={activeCategory.buttonLink}
-                className="mt-4 inline-flex items-center justify-center px-16 py-2.5 border border-black/30 rounded-xl text-[17px] font-primary font-medium hover:bg-black hover:text-white transition-colors w-max"
+                className="mt-4 inline-flex items-center justify-center px-16 py-2.5 border border-black/30 rounded-lg text-[17px] font-primary font-medium hover:bg-black hover:text-white transition-colors w-max"
               >
                 {activeCategory.buttonText}
               </a>
@@ -416,7 +428,7 @@ const SolutionCategories = () => {
                   return (
                     <div
                       key={(feature.id as string) || `feature-${i}`}
-                      className="flex flex-col gap-10 bg-white rounded-2xl md:rounded-[32px] p-8 md:p-12 shadow-md transition-shadow duration-300 border border-black/5 w-full xl:w-[420px] shrink-0"
+                      className="flex flex-col gap-10 bg-white rounded-2xl md:rounded-xl p-8 md:p-12 shadow-md transition-shadow duration-300 border border-black/5 w-full xl:w-[420px] shrink-0"
                     >
                       <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shrink-0">
                         {featureIcon?.url ? (
@@ -469,10 +481,14 @@ const SolutionCategories = () => {
 
       {/* Category overall get started button - placed below features matching design */}
       {globalButton && (
-        <ScrollReveal delay={0.5} direction="up" className="flex justify-center xl:justify-end mt-8 container mx-auto px-6 md:px-12 xl:px-20">
+        <ScrollReveal
+          delay={0.5}
+          direction="up"
+          className="flex justify-center xl:justify-end mt-8 container mx-auto px-6 md:px-12 xl:px-20"
+        >
           <a
             href={globalButton.link}
-            className="inline-flex items-center justify-center px-16 py-4 bg-[#8B5CF6] text-white rounded-xl text-[17px] font-primary font-bold hover:bg-[#7C3AED] transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300"
+            className="inline-flex items-center justify-center px-16 py-4 bg-[#8B5CF6] text-white rounded-lg text-[17px] font-primary font-bold hover:bg-[#7C3AED] transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300"
           >
             {globalButton.text}
           </a>

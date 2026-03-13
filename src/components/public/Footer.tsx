@@ -54,11 +54,13 @@ const Footer = ({
   customCTA,
   email: emailProp,
   showBackgroundImage = true,
+  backgroundImageOverride,
 }: {
   showCTA?: boolean;
   customCTA?: React.ReactNode;
   email?: string;
   showBackgroundImage?: boolean;
+  backgroundImageOverride?: string;
 }) => {
   const [data, setData] = useState<FooterData>({});
   const [loaded, setLoaded] = useState(false);
@@ -87,10 +89,10 @@ const Footer = ({
     <footer className="w-full font-primary bg-black">
       <div className="relative overflow-hidden w-full">
         {/* Background Image/Gradient Layer */}
-        {showBackgroundImage && data.backgroundImage?.url ? (
+        {showBackgroundImage && (backgroundImageOverride || data.backgroundImage?.url) ? (
           <div className="absolute inset-0 z-0 pointer-events-none">
             <img
-              src={data.backgroundImage.url}
+              src={backgroundImageOverride || data.backgroundImage?.url}
               alt=""
               className="w-full h-full object-cover object-top"
             />
@@ -104,7 +106,7 @@ const Footer = ({
             <div className="mb-24">{customCTA}</div>
           ) : (
             showCTA && (
-              <ScrollReveal direction="up" className="relative w-full bg-[#D3B4F6] rounded-2xl overflow-hidden flex flex-col mb-24 shadow-2xl">
+              <ScrollReveal direction="up" className="relative w-full bg-[#D3B4F6] rounded-xl overflow-hidden flex flex-col mb-24 shadow-2xl">
                 {/* Top: Image Area */}
                 {!loaded ? (
                   <Skeleton className="w-full h-[300px] md:h-[450px]" />

@@ -81,7 +81,7 @@ const Section4 = () => {
         </ScrollReveal>
 
         {/* Black Framework Card */}
-        <ScrollReveal delay={0.1} className="relative w-full bg-[#111] rounded-2xl overflow-hidden flex flex-col p-4 md:p-10 shadow-2xl">
+        <ScrollReveal delay={0.1} className="relative w-full bg-[#111] rounded-xl overflow-hidden flex flex-col p-4 md:p-10 shadow-2xl">
           
           {data.sideImageTitle && (
             <div className="font-primary text-white/90 text-[18px] sm:text-[24px] md:text-[28px] font-medium mb-6 px-1 side-image-title-quill">

@@ -76,7 +76,7 @@ const SectionWrapper = ({
   }
 
   return (
-    <div className="max-w-[960px]">
+    <div className="max-w-full">
       <div className="flex justify-between items-start gap-4 mb-8 flex-wrap">
         <div>
           <h2 className="text-2xl font-bold text-white m-0 mb-1 tracking-tight">{title}</h2>

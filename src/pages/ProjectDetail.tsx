@@ -66,10 +66,40 @@ const ProjectDetail = () => {
 
   const renderStyledText = (text: string) => {
     if (!text) return null;
+
+    // If it looks like HTML (from Quill), render it directly
     if (text.includes("<") && text.includes(">")) {
       return <span dangerouslySetInnerHTML={{ __html: text }} />;
     }
-    return text;
+
+    const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("_") && part.endsWith("_")) {
+        return (
+          <span
+            key={i}
+            className="italic underline underline-offset-4 decoration-1"
+          >
+            {part.slice(1, -1)}
+          </span>
+        );
+      }
+      if (part.startsWith("*") && part.endsWith("*")) {
+        return (
+          <span key={i} className="italic">
+            {part.slice(1, -1)}
+          </span>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
+  const stripHtml = (html: string) => {
+    if (!html) return "";
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
   };
 
   // Drag-to-scroll logic for horizontal More Projects
@@ -265,7 +295,7 @@ const ProjectDetail = () => {
                 {currentProject.mainImage?.url ? (
                   <img
                     src={currentProject.mainImage.url}
-                    alt={`${currentProject.projectName} Main`}
+                    alt={`${stripHtml(currentProject.projectName)} Main`}
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 ) : (
@@ -301,7 +331,7 @@ const ProjectDetail = () => {
                 href={currentProject.buttonLink || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-[#8A2BE2] hover:bg-white text-white hover:text-black px-10 py-4 md:px-12 md:py-4 rounded-xl font-bold text-[15px] md:text-[16px] tracking-wide transition-colors duration-300"
+                className="inline-flex items-center justify-center bg-[#8A2BE2] hover:bg-white text-white hover:text-black px-10 py-4 md:px-12 md:py-4 rounded-lg font-bold text-[15px] md:text-[16px] tracking-wide transition-colors duration-300"
               >
                 {currentProject.buttonText || "View Project"}
               </a>
@@ -340,7 +370,7 @@ const ProjectDetail = () => {
                       {bestFallbackImage ? (
                         <img
                           src={bestFallbackImage}
-                          alt={proj.projectName}
+                          alt={stripHtml(proj.projectName)}
                           className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-700"
                         />
                       ) : (
@@ -398,7 +428,7 @@ const ProjectDetail = () => {
 
                         {/* Project Title */}
                         <h3 className="text-white text-[24px] md:text-[28px] font-normal tracking-[-0.02em] m-0 leading-[1.2] w-[90%] truncate">
-                          {proj.projectName}
+                          {renderStyledText(proj.projectName)}
                         </h3>
                       </div>
                     </div>

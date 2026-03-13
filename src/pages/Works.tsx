@@ -7,7 +7,7 @@ import Footer from "../components/public/Footer";
 
 const Works = () => {
   return (
-    <div className="works-page">
+    <div className="works-page font-primary">
       <Header />
 
       <main>

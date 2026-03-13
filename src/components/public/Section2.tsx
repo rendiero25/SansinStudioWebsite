@@ -21,6 +21,44 @@ interface ProjectItem {
   buttonLink: string;
 }
 
+const renderStyledText = (text: string) => {
+  if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
+  if (text.includes("<") && text.includes(">")) {
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
+  const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("_") && part.endsWith("_")) {
+      return (
+        <span
+          key={i}
+          className="italic underline underline-offset-4 decoration-1"
+        >
+          {part.slice(1, -1)}
+        </span>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <span key={i} className="italic">
+          {part.slice(1, -1)}
+        </span>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+};
+
+const stripHtml = (html: string) => {
+  if (!html) return "";
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+};
+
 const Section2 = () => {
   const [title, setTitle] = useState("PROJECTS");
   const [categories, setCategories] = useState<ProjectCategory[]>([]);
@@ -78,7 +116,7 @@ const Section2 = () => {
             <Skeleton className="w-[100px] h-[30px] rounded-md mb-8" />
           ) : (
             <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-[#111111] text-[16px] font-bold uppercase rounded-md mb-6 font-primary">
-              {title}
+              {renderStyledText(title)}
             </div>
           )}
         </ScrollReveal>
@@ -115,7 +153,7 @@ const Section2 = () => {
                     {imageUrl && (
                       <img
                         src={imageUrl}
-                        alt={project.projectName}
+                        alt={stripHtml(project.projectName)}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     )}
@@ -128,7 +166,7 @@ const Section2 = () => {
 
                     {/* See Project Button — center */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                      <span className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors">
+                      <span className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-md bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors">
                         See Project
                       </span>
                     </div>
@@ -168,7 +206,7 @@ const Section2 = () => {
 
                       {/* Project Name */}
                       <h3 className="text-white text-2xl md:text-3xl font-normal font-primary m-0 pr-10 pointer-events-auto">
-                        {project.projectName}
+                        {renderStyledText(project.projectName)}
                       </h3>
                     </div>
                   </Link>

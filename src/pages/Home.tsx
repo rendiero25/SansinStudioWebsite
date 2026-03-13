@@ -12,7 +12,7 @@ import Footer from "../components/public/Footer";
 
 const Home = () => {
   return (
-    <div className="home-page">
+    <div className="home-page font-primary">
       <Header />
       <HeroSection />
       <Section2 />

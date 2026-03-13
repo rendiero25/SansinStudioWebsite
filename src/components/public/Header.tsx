@@ -70,7 +70,7 @@ const Header = () => {
               <Link
                 key={link.label}
                 to={link.href}
-                className="text-black hover:text-[#1a1a1a] no-underline text-[17px] font-medium font-primary transition-colors tracking-tight"
+                className="text-black hover:font-black no-underline text-[17px] font-medium font-primary transition-colors tracking-tight"
               >
                 {link.label}
               </Link>

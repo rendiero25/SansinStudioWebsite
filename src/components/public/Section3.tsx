@@ -24,7 +24,7 @@ const CategoryCard = ({
 }) => {
   return (
     <div
-      className={`relative shrink-0 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-2xl overflow-hidden ${
+      className={`relative shrink-0 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-xl overflow-hidden ${
         isExpanded
           ? "w-[350px] md:w-[450px] bg-[#d9d9d9] cursor-pointer"
           : "w-[280px] md:w-[350px] cursor-pointer hover:shadow-lg bg-white"
@@ -310,7 +310,7 @@ const Section3 = () => {
                   {data.buttonText && (
                     <Link
                       to={data.buttonLink || "/solution"}
-                      className="inline-flex items-center justify-center px-10 py-3.5 bg-white text-[#111] font-primary font-bold text-[16px] rounded-xl hover:bg-[#111] hover:text-white transition-colors duration-300 w-max shadow-sm"
+                      className="inline-flex items-center justify-center px-10 py-3.5 bg-white text-[#111] font-primary font-bold text-[16px] rounded-lg hover:bg-[#111] hover:text-white transition-colors duration-300 w-max shadow-sm"
                     >
                       {data.buttonText}
                     </Link>

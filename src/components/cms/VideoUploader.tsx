@@ -59,11 +59,11 @@ const VideoUploader = ({
         {label}
       </label>
       {value?.url ? (
-        <div className="rounded-[14px] overflow-hidden border border-white/[0.08]">
+        <div className="rounded-[14px] overflow-hidden border border-white/[0.08] w-fit max-w-[320px]">
           <video
             src={value.url}
             controls
-            className="w-full max-h-[300px] block bg-black"
+            className="w-full max-h-[160px] block bg-black"
           />
           <div className="flex gap-2 p-3 bg-black/60">
             <button

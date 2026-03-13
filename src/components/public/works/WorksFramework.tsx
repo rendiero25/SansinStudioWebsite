@@ -57,7 +57,7 @@ const WorksFramework = () => {
         </ScrollReveal>
 
         {/* Framework Image Container */}
-        <ScrollReveal delay={0.2} className="relative w-full bg-[#EBEBEB] rounded-3xl overflow-hidden border border-black/5 h-[270px] sm:h-[430px] md:h-[510px] shadow-sm">
+        <ScrollReveal delay={0.2} className="relative w-full bg-[#EBEBEB] rounded-xl overflow-hidden border border-black/5 h-[270px] sm:h-[430px] md:h-[510px] shadow-sm">
           <div className="w-full h-full overflow-y-auto scrollbar-hide py-10 md:py-20 px-8 md:px-15">
             <div className="w-full flex justify-center">
               {data.sideImage?.url ? (
