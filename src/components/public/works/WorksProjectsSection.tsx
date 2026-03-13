@@ -125,9 +125,9 @@ const WorksProjectsSection = () => {
                 className="group relative min-w-[300px] md:min-w-[450px] lg:min-w-[600px] aspect-video rounded-xl overflow-hidden cursor-pointer shadow-sm border border-black/5"
               >
                 {/* Background Image */}
-                {project.thumbnail?.url ? (
+                {project.mainImage?.url ? (
                   <img
-                    src={project.thumbnail.url}
+                    src={project.mainImage.url}
                     alt={project.projectName}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

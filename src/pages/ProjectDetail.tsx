@@ -357,7 +357,7 @@ const ProjectDetail = () => {
                 }}
               >
                 {moreProjects.map((proj) => {
-                  const bestFallbackImage = proj.thumbnail?.url || proj.mainImage?.url || "";
+                  const bestFallbackImage = proj.mainImage?.url || "";
                   const firstKey = proj.keywords ? proj.keywords.split(",")[0].trim() : "";
                   const pCats = proj.categoryIds || (proj.categoryId ? [proj.categoryId] : []);
 

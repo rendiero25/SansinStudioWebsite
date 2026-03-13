@@ -16,7 +16,7 @@ interface MenuItem {
 }
 
 const AdminLayout = () => {
-  const { admin, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
