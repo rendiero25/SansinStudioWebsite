@@ -154,7 +154,7 @@ const Footer = ({
                         )}
                         <Link
                           to={ctaBtn.link}
-                          className="bg-white text-black px-10 py-4 rounded-xl font-bold text-[15px] md:text-[17px] no-underline shadow-sm hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
+                          className="bg-white text-black px-6 py-2 rounded-xl font-bold text-[15px] no-underline shadow-sm hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
                         >
                           {ctaBtn.text}
                         </Link>

@@ -105,7 +105,7 @@ const Section8 = () => {
               <ScrollReveal delay={0.2}>
                 <Link
                   to={btn.link}
-                  className="inline-flex items-center justify-center px-8 py-2.5 bg-transparent text-black font-primary text-[14px] font-bold border border-black/20 rounded-xl hover:bg-black hover:text-white transition-all duration-300 no-underline"
+                  className="inline-flex items-center justify-center px-6 py-2 bg-transparent text-black font-primary text-[15px] font-bold border border-black/20 rounded-xl hover:bg-black hover:text-white transition-all duration-300 no-underline"
                 >
                   {btn.text}
                 </Link>

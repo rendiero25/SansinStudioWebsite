@@ -81,7 +81,7 @@ const Header = () => {
           <div className="hidden lg:block shrink-0">
             <Link
               to={ctaButton.link}
-              className="inline-flex items-center justify-center px-8 py-2 bg-black hover:bg-[#333] text-white no-underline text-[17px] font-medium font-primary rounded-lg transition-all hover:-translate-y-[px] tracking-tight"
+              className="inline-flex items-center justify-center px-6 py-2 bg-black hover:bg-[#333] text-white no-underline text-[15px] font-medium font-primary rounded-xl transition-all hover:-translate-y-[px] tracking-tight"
             >
               {ctaButton.text}
             </Link>

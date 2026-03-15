@@ -75,7 +75,7 @@ const Section4 = () => {
         
         {/* Title Section */}
         <ScrollReveal className="text-center mb-16">
-          <h2 className="font-primary text-[30px] sm:text-[40px] lg:text-[48px] font-medium text-[#111] leading-[1.1] tracking-tight m-0">
+          <h2 className="font-primary text-[30px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
             {loaded ? renderStyledText(data.title || "") : <Skeleton className="w-[80%] h-12 mx-auto" />}
           </h2>
         </ScrollReveal>
@@ -84,7 +84,7 @@ const Section4 = () => {
         <ScrollReveal delay={0.1} className="relative w-full bg-[#111] rounded-xl overflow-hidden flex flex-col p-4 md:p-10 shadow-2xl">
           
           {data.sideImageTitle && (
-            <div className="font-primary text-white/90 text-[18px] sm:text-[24px] md:text-[28px] font-medium mb-6 px-1 side-image-title-quill">
+            <div className="inline-flex w-fit items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
               {renderStyledText(data.sideImageTitle)}
             </div>
           )}
@@ -137,7 +137,7 @@ const Section4 = () => {
               {data.button1Text && (
                 <Link 
                   to={data.button1Link || "/works"}
-                  className="px-15 py-4 bg-[#111] text-white font-primary font-bold text-[16px] rounded-xl hover:bg-black transition-all hover:scale-[1.02]"
+                  className="px-6 py-2 bg-[#111] text-white font-primary font-bold text-[15px] rounded-xl hover:bg-black transition-all hover:scale-[1.02]"
                 >
                   {data.button1Text}
                 </Link>
@@ -145,7 +145,7 @@ const Section4 = () => {
               {data.button2Text && (
                 <Link 
                   to={data.button2Link || "/projects"}
-                  className="px-15 py-4 bg-white border border-[#111]/10 text-[#111] font-primary font-bold text-[16px] rounded-xl hover:bg-gray-50 transition-all hover:scale-[1.02] shadow-sm"
+                  className="px-6 py-2 bg-white border border-[#111]/10 text-[#111] font-primary font-bold text-[15px] rounded-xl hover:bg-gray-50 transition-all hover:scale-[1.02] shadow-sm"
                 >
                   {data.button2Text}
                 </Link>

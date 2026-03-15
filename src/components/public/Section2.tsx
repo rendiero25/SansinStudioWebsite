@@ -82,8 +82,9 @@ const Section2 = () => {
         }
 
         if (section2Res?.content?.projects) {
-          // Get the latest 2 projects
-          setProjects((section2Res.content.projects as ProjectItem[]).slice(0, 2));
+          // Get the latest 5 projects from the list provided by CMS
+          const allProjects = section2Res.content.projects as ProjectItem[];
+          setProjects(allProjects.slice(0, 5));
         }
       } catch (err) {
         console.error("Failed to load projects for section2:", err);
@@ -107,6 +108,23 @@ const Section2 = () => {
     return [];
   };
 
+  // Wheel horizontal scroll for the projects container
+  useEffect(() => {
+    const container = document.getElementById("section2-projects-scroll");
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (container.scrollWidth <= container.clientWidth) return;
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+    };
+  }, [projects]);
+
   return (
     <section className="relative w-full bg-white pt-15 xl:pt-30 overflow-hidden">
       <div className="container mx-auto px-5 md:px-10 xl:px-20">
@@ -115,97 +133,74 @@ const Section2 = () => {
           {!loaded ? (
             <Skeleton className="w-[100px] h-[30px] rounded-md mb-8" />
           ) : (
-            <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-[#111111] text-[16px] font-bold uppercase rounded-md mb-6 font-primary">
+            <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
               {renderStyledText(title)}
             </div>
           )}
         </ScrollReveal>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        {/* Projects Horizontal Scroll Container */}
+        <div 
+          id="section2-projects-scroll"
+          className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide cursor-grab active:cursor-grabbing"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {!loaded ? (
             <>
-              <Skeleton className="w-full aspect-4/3 rounded-3xl" />
-              <Skeleton className="w-full aspect-4/3 rounded-3xl" />
+              <Skeleton className="min-w-[300px] md:min-w-[450px] aspect-4/3 rounded-xl shrink-0" />
+              <Skeleton className="min-w-[300px] md:min-w-[450px] aspect-4/3 rounded-xl shrink-0" />
             </>
           ) : (
             projects.map((project, index) => {
-              // Parse keywords into an array, e.g. "Production, Interaction" -> ["Production", "Interaction"]
-              const keywordList = project.keywords
-                ? project.keywords.split(",").map((k) => k.trim()).filter(Boolean)
-                : [];
-                
               const projCategories = getCategoriesForProject(project);
-
               const imageUrl = project.thumbnail?.url || project.mainImage?.url || "";
 
               return (
                 <ScrollReveal
                   key={project.id}
                   delay={0.2 + index * 0.1}
-                  className="w-full"
+                  direction="left"
+                  className="shrink-0 w-[300px] md:w-[450px]"
                 >
                   <Link
                     to={`/projects/${project.id}`}
-                    className="group relative block w-full rounded-xl overflow-hidden aspect-4/3 md:aspect-auto md:h-[350px] bg-[#f5f5f5] no-underline"
+                    className="group relative block w-full rounded-xl overflow-hidden aspect-4/3 md:h-[275px] bg-[#f5f5f5] no-underline border border-black/5"
                   >
                     {/* Background Image */}
                     {imageUrl && (
                       <img
                         src={imageUrl}
                         alt={stripHtml(project.projectName)}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     )}
                     
-                    {/* Bottom Gradient Overlay */}
-                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 to-transparent pointer-events-none z-10" />
+                    {/* Bottom Gradient Overlay - Always there but deepens on hover */}
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 to-transparent pointer-events-none z-10 transition-opacity duration-300" />
 
-                    {/* Dark overlay on hover */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 z-10" />
-
-                    {/* See Project Button — center */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                      <span className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-md bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors">
-                        See Project
-                      </span>
-                    </div>
-
-                    {/* Content */}
-                    <div className="absolute inset-x-0 bottom-0 p-8 md:p-10 flex flex-col justify-end z-20 pointer-events-none">
+                    {/* Content Layer (Hidden by default, shows on hover) */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
                       {/* Badges */}
-                      <div className="flex flex-wrap gap-2 mb-4 pointer-events-auto">
-                        {projCategories.length > 0 ? (
-                          projCategories.map((cat) => (
-                            <span
-                              key={cat.id}
-                              className="inline-flex items-center gap-1.5 bg-white text-black text-[10px] md:text-[16px] font-bold px-3 md:px-10 py-1.5 md:py-1 rounded-[4px] shadow-sm font-primary"
-                            >
-                              {cat.categoryIcon?.url && (
-                                <img
-                                  src={cat.categoryIcon.url}
-                                  alt=""
-                                  className="w-3.5 h-3.5 object-contain"
-                                />
-                              )}
-                              {cat.categoryName}
-                            </span>
-                          ))
-                        ) : (
-                          // Fallback to keywords if no category
-                          keywordList.map((kw, i) => (
-                            <span
-                              key={i}
-                              className="inline-flex items-center gap-1.5 bg-white text-black text-[10px] md:text-[11px] font-bold tracking-wider px-3 md:px-4 py-1.5 md:py-2 rounded-[4px] shadow-sm uppercase font-primary"
-                            >
-                              {kw}
-                            </span>
-                          ))
-                        )}
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {projCategories.map((cat) => (
+                          <span
+                            key={cat.id}
+                            className="inline-flex items-center gap-1.5 bg-white text-black text-[10px] md:text-[12px] font-bold px-3 py-1.5 rounded-md shadow-sm font-primary uppercase"
+                          >
+                            {cat.categoryIcon?.url && (
+                              <img
+                                src={cat.categoryIcon.url}
+                                alt=""
+                                className="w-3 h-3 object-contain"
+                              />
+                            )}
+                            {cat.categoryName}
+                          </span>
+                        ))}
                       </div>
 
                       {/* Project Name */}
-                      <h3 className="text-white text-2xl md:text-3xl font-normal font-primary m-0 pr-10 pointer-events-auto">
+                      <h3 className="text-white text-xl md:text-2xl font-normal font-primary m-0 leading-tight">
                         {renderStyledText(project.projectName)}
                       </h3>
                     </div>

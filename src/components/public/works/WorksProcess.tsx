@@ -314,13 +314,13 @@ const WorksProcess = () => {
         <ScrollReveal delay={0.4} direction="up" className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
           <button 
             onClick={handleApproach}
-            className="cursor-pointer px-12 py-3 border border-black/20 rounded-lg font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 min-w-[180px]"
+            className="cursor-pointer px-12 py-3 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 min-w-[180px]"
           >
             {btn1}
           </button>
           <a
             href={btn2.link}
-            className="inline-flex items-center justify-center px-12 py-3 bg-[#8B5CF6] text-white rounded-lg font-primary text-[15px] font-bold hover:bg-[#7C3AED] transition-all duration-300 min-w-[180px] text-center"
+            className="inline-flex items-center justify-center px-12 py-3 bg-[#8B5CF6] text-white rounded-xl font-primary text-[15px] font-bold hover:bg-[#7C3AED] transition-all duration-300 min-w-[180px] text-center"
           >
             {btn2.text}
           </a>

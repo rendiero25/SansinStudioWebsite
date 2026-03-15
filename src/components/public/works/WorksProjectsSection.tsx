@@ -143,7 +143,7 @@ const WorksProjectsSection = () => {
                 <div className="absolute inset-0 flex items-center justify-center translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-20">
                   <Link
                     to={`/projects/${project.id}`}
-                    className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline"
+                    className="px-6 py-2 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline"
                   >
                     See Project
                   </Link>
@@ -186,7 +186,7 @@ const WorksProjectsSection = () => {
         <ScrollReveal delay={0.4} direction="up" className="flex justify-end mt-5">
           <Link
             to="/projects"
-            className="group flex items-center gap-4 px-15 py-2.5 border border-black/20 rounded-lg font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 shadow-sm"
+            className="group flex items-center gap-4 px-6 py-2 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 shadow-sm"
           >
             Projects
           </Link>

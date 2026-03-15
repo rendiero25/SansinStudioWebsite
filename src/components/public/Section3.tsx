@@ -26,13 +26,13 @@ const CategoryCard = ({
     <div
       className={`relative shrink-0 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-xl overflow-hidden ${
         isExpanded
-          ? "w-[350px] md:w-[450px] bg-[#d9d9d9] cursor-pointer"
-          : "w-[280px] md:w-[350px] cursor-pointer hover:shadow-lg bg-white"
-      } h-[450px] md:h-[550px] flex flex-col p-8`}
+          ? "w-[300px] md:w-[350px] bg-[#d9d9d9] cursor-pointer"
+          : "w-[300px] md:w-[350px] cursor-pointer hover:shadow-lg bg-white"
+      } h-[450px] flex flex-col p-8`}
       onClick={!isExpanded ? onToggle : undefined}
     >
-      {/* Shared Header: Icon + Title */}
-      <div className="flex items-center gap-3 z-10 transition-all duration-300">
+      {/* Shared Header: Icon + Title - Hidden when expanded to avoid double title */}
+      <div className={`flex items-center gap-3 z-10 transition-all duration-300 ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
         {cat.categoryIcon?.url && (
           <img
             src={cat.categoryIcon.url}
@@ -46,12 +46,12 @@ const CategoryCard = ({
       </div>
 
       {/* Cross-fade Content Container */}
-      <div className="relative flex-1 mt-6">
+      <div className="relative flex-1">
         {/* UNEXPANDED CONTENT */}
         <div
           className={`absolute inset-0 flex flex-col transition-all duration-400 ${isExpanded ? "opacity-0 pointer-events-none translate-x-[-20px]" : "opacity-100 translate-x-0"}`}
         >
-          <div className="flex flex-col gap-3 mt-4">
+          <div className="flex flex-col justify-center gap-3 h-full">
             {cat.methods?.slice(0, 3).map((method) => (
               <div
                 key={method.id}
@@ -97,60 +97,74 @@ const CategoryCard = ({
 
         {/* EXPANDED CONTENT */}
         <div
-          className={`absolute inset-0 flex flex-col transition-all duration-400 delay-100 ${!isExpanded ? "opacity-0 pointer-events-none translate-x-[20px]" : "opacity-100 translate-x-0"}`}
+          className={`absolute -top-[70px] inset-x-0 bottom-0 flex flex-col transition-all duration-400 delay-100 ${!isExpanded ? "opacity-0 pointer-events-none translate-x-[20px]" : "opacity-100 translate-x-0"}`}
         >
-          <p className="font-primary text-[14px] font-medium leading-[1.4] text-black w-full m-0 mb-8">
-            {cat.categoryDesc}
-          </p>
+          {/* Scrollable Container for everything: Title, Description, and Methods */}
+          <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar scrollbar-hide min-h-0">
+            {/* Expanded Header: Icon + Title */}
+            <div className="flex items-center gap-3 mb-6 shrink-0">
+              {cat.categoryIcon?.url && (
+                <img
+                  src={cat.categoryIcon.url}
+                  alt=""
+                  className="w-8 h-8 object-contain"
+                />
+              )}
+              <h3 className="font-primary text-[28px] md:text-[32px] font-medium tracking-tight text-[#111] m-0">
+                {cat.categoryName}
+              </h3>
+            </div>
 
-          <div
-            className="flex flex-col gap-4 overflow-y-auto mb-4 scrollbar-hide"
-            
-          >
-            {cat.methods?.map((method) => (
-              <div
-                key={method.id}
-                className="bg-white rounded-lg p-4 flex flex-col shadow-sm"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  {method.methodIcon?.url && (
-                    <img
-                      src={method.methodIcon.url}
-                      alt=""
-                      className="w-4 h-4 object-contain"
-                    />
-                  )}
-                  <span className="font-primary text-[16px] md:text-[18px] font-medium text-[#111]">
-                    {method.methodName}
-                  </span>
-                </div>
-                {method.details && method.details.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {method.details.slice(0, 2).map((detail) => (
-                      <div
-                        key={detail.id}
-                        className="bg-[#EAEAEA] text-[#111] text-[10px] md:text-[11px] font-bold px-3 py-1.5 rounded uppercase tracking-wide"
-                      >
-                        {detail.detailName}
-                      </div>
-                    ))}
+            <p className="font-primary text-[14px] font-medium leading-[1.4] text-black w-full m-0 mb-6 shrink-0">
+              {cat.categoryDesc}
+            </p>
+
+            <div className="flex flex-col gap-4 pb-4">
+              {cat.methods?.map((method) => (
+                <div
+                  key={method.id}
+                  className="bg-white rounded-lg p-4 flex flex-col shadow-sm border border-black/5"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    {method.methodIcon?.url && (
+                      <img
+                        src={method.methodIcon.url}
+                        alt=""
+                        className="w-4 h-4 object-contain"
+                      />
+                    )}
+                    <span className="font-primary text-[16px] md:text-[18px] font-medium text-[#111]">
+                      {method.methodName}
+                    </span>
                   </div>
-                )}
-              </div>
-            ))}
+                  {method.details && method.details.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {method.details.slice(0, 3).map((detail) => (
+                        <div
+                          key={detail.id}
+                          className="bg-[#EAEAEA] text-[#111] text-[8px] font-bold px-2 py-1.5 rounded uppercase"
+                        >
+                          {detail.detailName}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-auto flex flex-row justify-between items-center gap-4 z-20">
+          <div className="shrink-0 flex flex-row justify-between items-center gap-4 z-20 pt-4 border-t border-black/5 mt-auto">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onToggle();
               }}
-              className="w-12 h-12 shrink-0 bg-[#111] rounded-full flex items-center justify-center text-white cursor-pointer hover:bg-black transition-colors"
+              className="w-10 h-10 bg-black hover:bg-blue-500 rounded-full flex items-center justify-center text-white cursor-pointer transition-colors shrink-0"
             >
               <svg
-                width="24"
-                height="24"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -165,7 +179,7 @@ const CategoryCard = ({
             {cat.buttonLink ? (
               <a
                 href={cat.buttonLink}
-                className="self-end bg-white hover:bg-white/90 text-[#111] font-primary font-bold text-[16px] py-3 px-15 rounded-lg flex flex-col items-center justify-center transition-colors shadow-sm"
+                className="bg-white hover:bg-white/90 text-[#111] font-primary font-bold text-[14px] md:text-[15px] py-2 px-6 rounded-lg transition-colors shadow-sm whitespace-nowrap"
               >
                 {cat.buttonText || "Approach"}
               </a>
@@ -245,6 +259,17 @@ const Section3 = () => {
       if (!container) return;
 
       const handleWheel = (e: WheelEvent) => {
+        // Check if we are hovering over a vertical scrollable area
+        const target = e.target as HTMLElement;
+        const isInfoScroll = target.closest(".custom-scrollbar");
+        
+        if (isInfoScroll) {
+          // Check if it's actually scrollable vertically
+          if (isInfoScroll.scrollHeight > isInfoScroll.clientHeight) {
+            return; // Let it scroll vertically normally
+          }
+        }
+
         if (container.scrollWidth <= container.clientWidth) return;
         e.preventDefault();
         container.scrollLeft += e.deltaY;
@@ -277,7 +302,7 @@ const Section3 = () => {
       className="container mx-auto px-6 md:px-12 xl:px-20 mt-6 relative overflow-hidden rounded-3xl"
       style={{ overflowX: "clip" }}
     >
-      <div className="bg-[#E1C6FF] p-10 rounded-2xl" style={{ overflow: "visible" }}>
+      <div className="bg-[#E1C6FF] p-10 rounded-xl" style={{ overflow: "visible" }}>
         <div className="flex flex-col xl:flex-row items-stretch justify-between gap-16 xl:gap-24 w-full h-full">
           {/* LEFT PANEL */}
           <ScrollReveal className="flex flex-col justify-between xl:w-[425px] shrink-0 xl:sticky z-10 self-stretch">
@@ -291,7 +316,7 @@ const Section3 = () => {
             ) : (
               <>
                 <div className="flex flex-col xl:flex-row gap-4 md:gap-10 items-start mb-16 md:mb-24">
-                  <div className="inline-flex items-center px-3 py-1 bg-white text-[#111111] text-[12px] font-bold uppercase rounded-md font-primary shrink-0 shadow-sm">
+                  <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
                     {data.sectionLabel || ""}
                   </div>
                   <p className="font-primary text-[14px] text-[#111] leading-tight max-w-[280px] m-0 font-medium">
@@ -301,7 +326,7 @@ const Section3 = () => {
                 </div>
 
                 <div className="flex flex-col justify-between items-start gap-10">
-                  <h2 className="font-primary text-[30px] lg:text-[42px] font-medium text-[#111] leading-[1.1] tracking-[-0.02em] m-0">
+                  <h2 className="font-primary text-[30px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
                     {renderStyledText(
                       data.title || "",
                     )}
@@ -310,7 +335,7 @@ const Section3 = () => {
                   {data.buttonText && (
                     <Link
                       to={data.buttonLink || "/solution"}
-                      className="inline-flex items-center justify-center px-10 py-3.5 bg-white text-[#111] font-primary font-bold text-[16px] rounded-lg hover:bg-[#111] hover:text-white transition-colors duration-300 w-max shadow-sm"
+                      className="inline-flex items-center justify-center px-6 py-2 bg-white text-[#111] font-primary font-bold text-[15px] rounded-lg hover:bg-[#111] hover:text-white transition-colors duration-300 w-max shadow-sm"
                     >
                       {data.buttonText}
                     </Link>
@@ -361,5 +386,29 @@ const Section3 = () => {
     </section>
   );
 };
+
+// Add styles for the scrollable method list
+const styles = `
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+`;
+
+// Inject styles once
+if (typeof document !== 'undefined') {
+  const styleTag = document.createElement('style');
+  styleTag.textContent = styles;
+  document.head.appendChild(styleTag);
+}
 
 export default Section3;

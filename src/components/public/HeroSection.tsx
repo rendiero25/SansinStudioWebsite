@@ -105,36 +105,36 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full pt-[120px] md:pt-[160px] bg-white flex flex-col items-center justify-center overflow-hidden">
+    <section className="relative w-full pt-[100px] bg-white flex flex-col items-center justify-center overflow-hidden">
       {/* Top Content Box */}
       <div className="relative z-10 w-full container mx-auto px-5 md:px-10 xl:px-20 flex flex-col items-center">
         {/* Pills */}
         <ScrollReveal delay={0.1}>
           <div className="flex items-center justify-center gap-2 mb-8 mt-4">
-            <span className="bg-[#1a1a1a] text-white text-[10px] md:text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider">
+            <span className="bg-blue-300 text-black text-[10px] md:text-[11px] uppercase font-bold px-3 py-1.5 rounded-full">
               4 PROJECTS ON PROGRESS
             </span>
-            <span className="bg-[#f0f0f0] text-[#1a1a1a] text-[10px] md:text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider">
-              AVAILABLE IN JUNE
+            <span className="bg-black/80 text-white/50 text-[10px] md:text-[11px] uppercase font-bold px-3 py-1.5 rounded-full">
+              AVAILABLE IN MAY
             </span>
           </div>
         </ScrollReveal>
 
         {/* Headline */}
         <ScrollReveal delay={0.2} className="w-full relative z-10">
-          <div className="text-center w-full max-w-[1000px] mx-auto mb-6">
-            <h1 className="font-primary text-[30px] sm:text-[50px] md:text-[60px] lg:text-[50px] 2xl:text-[84px] font-medium text-[#111111] leading-[1.1] tracking-[-0.03em] m-0 [&_p]:m-0">
+          <div className="text-center w-full mb-6">
+            <p className="font-primary text-[30px] sm:text-[50px] md:text-[60px] lg:text-[50px] xl:text-6xl uppercase font-normal text-black leading-[1.1]">
               {renderHeadline(
                 data.headline || ""
               )}
-            </h1>
+            </p>
           </div>
         </ScrollReveal>
 
         {/* Description */}
         <ScrollReveal delay={0.3} className="w-full relative z-10">
           <div className="text-center w-full max-w-[600px] mx-auto mb-10">
-            <div className="font-primary text-[15px] md:text-[22px] font-normal text-black leading-[1.6] [&_p]:m-0">
+            <div className="font-primary text-[15px] md:text-[18px] font-normal text-black leading-[1.6] [&_p]:m-0">
               <span
                 dangerouslySetInnerHTML={{
                   __html:
@@ -147,16 +147,16 @@ const HeroSection = () => {
 
         {/* Buttons */}
         <ScrollReveal delay={0.4} className="w-full relative z-10">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 md:mb-24">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <Link
               to={ctaButton.link}
-              className="inline-flex items-center justify-center px-15 py-4 bg-[#8E33FF] hover:bg-black text-white rounded-xl font-primary text-[15px] font-semibold transition-all shadow-[0_4px_14px_0_rgba(142,51,255,0.39)] no-underline w-full sm:w-auto"
+              className="inline-flex items-center justify-center px-6 py-2 bg-[#8E33FF] hover:bg-black text-white rounded-xl font-primary text-[15px] font-semibold transition-all shadow-[0_4px_14px_0_rgba(142,51,255,0.39)] no-underline w-full sm:w-auto"
             >
               {ctaButton.text}
             </Link>
             <Link
               to={secondaryButton.link}
-              className="inline-flex items-center justify-center px-15 py-4 bg-white border border-black/50 hover:bg-black text-black hover:text-white rounded-xl font-primary text-[15px] font-semibold transition-all no-underline w-full sm:w-auto"
+              className="inline-flex items-center justify-center px-6 py-2 bg-white border border-black/50 hover:bg-black text-black hover:text-white rounded-xl font-primary text-[15px] font-semibold transition-all no-underline w-full sm:w-auto"
             >
               {secondaryButton.text}
             </Link>
@@ -166,12 +166,12 @@ const HeroSection = () => {
         {/* Background Video/Image Block */}
         <div className="w-full relative z-10">
           <ScrollReveal delay={0.5} className="w-full">
-            <div className="w-full rounded-2xl overflow-hidden h-[750px] relative flex items-center justify-center shadow-2xl bg-[#0a0a0a]">
+            <div className="w-full p-0 rounded-2xl overflow-hidden aspect-video flex items-center justify-center bg-[#0a0a0a]">
               {!loaded ? (
-                <Skeleton dark className="w-full h-full" />
+                <Skeleton dark className="w-full h-full m-0 p-0" />
               ) : useBgVideo ? (
                 <video
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="w-full h-full object-cover"
                   autoPlay
                   muted
                   loop
@@ -180,13 +180,13 @@ const HeroSection = () => {
                 />
               ) : bgUrl ? (
                 <img
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="w-full h-full object-cover"
                   src={bgUrl}
                   alt="Hero Background"
                   loading="eager"
                 />
               ) : (
-                <div className="w-full h-full bg-[#0a0a0a]" />
+                <div className="w-full h-full bg-[#0a0a0a] m-0 p-0" />
               )}
             </div>
           </ScrollReveal>
