@@ -6,6 +6,7 @@ import { getSection } from "../services/sectionApi";
 import type { ProjectCategory } from "../components/cms/ProjectCategoriesEditor";
 import type { ProjectItem } from "../components/cms/ProjectItemsEditor";
 import Skeleton from "../components/Skeleton";
+import Section2 from "../components/public/Section2";
 
 interface ProjectDetailData {
   categories: ProjectCategory[];
@@ -46,19 +47,12 @@ const ProjectDetail = () => {
   }, [id]);
 
   const currentProject = data.projects.find((p) => p.id === id);
-  const moreProjects = data.projects.filter((p) => p.id !== id).slice(0, 6); // Up to 6 more projects
+  const moreProjects = data.projects.filter((p) => p.id !== id);
 
   // Helper to get category name by ID
   const getCategoryName = (catId: string) => {
     return data.categories.find((c) => c.id === catId)?.categoryName || "Uncategorized";
   };
-
-  // Helper to get category icon by ID
-  const getCategoryIcon = (catId: string) => {
-    return data.categories.find((c) => c.id === catId)?.categoryIcon || null;
-  };
-
-
   // Extract categories for the specific project
   const projectCategories = currentProject
     ? (currentProject.categoryIds || (currentProject.categoryId ? [currentProject.categoryId] : []))
@@ -102,36 +96,6 @@ const ProjectDetail = () => {
     return tmp.textContent || tmp.innerText || "";
   };
 
-  // Drag-to-scroll logic for horizontal More Projects
-  useEffect(() => {
-    if (moreProjects.length === 0) return;
-    
-    // Slight delay for React to render the DOM node
-    const timer = setTimeout(() => {
-      const container = document.getElementById("project-detail-more-scroll") as HTMLElement & { __wheelCleanup?: () => void } | null;
-      if (!container) return;
-
-      const handleWheel = (e: WheelEvent) => {
-        if (container.scrollWidth <= container.clientWidth) return;
-        e.preventDefault();
-        e.stopPropagation();
-        container.scrollLeft += e.deltaY;
-      };
-
-      container.addEventListener("wheel", handleWheel, { passive: false });
-      container.__wheelCleanup = () => {
-        container.removeEventListener("wheel", handleWheel);
-      };
-    }, 50);
-
-    return () => {
-      clearTimeout(timer);
-      const container = document.getElementById("project-detail-more-scroll") as (HTMLElement & { __wheelCleanup?: () => void }) | null;
-      if (container && container.__wheelCleanup) {
-        container.__wheelCleanup();
-      }
-    };
-  }, [moreProjects, loading, id]);
 
   // Window scroll sync for Secondary Image
   useEffect(() => {
@@ -232,7 +196,7 @@ const ProjectDetail = () => {
     <div className="project-detail-page font-primary bg-black text-white min-h-screen">
       <Header />
 
-      <main className="pt-15 xl:pt-32 pb-24">
+      <main className="pt-15 xl:pt-32">
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
           
           {/* Header Layout: Text Details Left, Image Right */}
@@ -308,7 +272,7 @@ const ProjectDetail = () => {
 
           {/* Row 3: Secondary Image with Window Scroll Sync */}
           {currentProject.image2?.url && (
-            <div id="project-detail-image2-parent" className="w-full mb-16 md:mb-20 relative rounded-2xl" style={{ minHeight: "100vh" }}>
+            <div id="project-detail-image2-parent" className="w-full mb-16 md:mb-10 relative rounded-2xl" style={{ minHeight: "100vh" }}>
               <div 
                 id="project-detail-image2-container"
                 className="w-full mx-auto h-[calc(100vh-140px)] min-h-[400px] rounded-2xl overflow-hidden sticky top-[100px]"
@@ -338,112 +302,17 @@ const ProjectDetail = () => {
             </div>
           )}
 
-          {/* Row 6: More Projects Module */}
-          {moreProjects.length > 0 && (
-            <div className="w-full pt-20">
-              <h2 className="font-primary text-[28px] md:text-[36px] font-normal tracking-[-0.01em] mb-12">
-                More Projects
-              </h2>
-              
-              <div
-                id="project-detail-more-scroll"
-                className="flex gap-4 overflow-x-auto cursor-grab active:cursor-grabbing pb-0 xl:pb-12"
-                style={{
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                  overscrollBehavior: "contain",
-                  marginRight: "calc(-50vw + 50%)",
-                  paddingRight: "20px",
-                }}
-              >
-                {moreProjects.map((proj) => {
-                  const bestFallbackImage = proj.mainImage?.url || "";
-                  const firstKey = proj.keywords ? proj.keywords.split(",")[0].trim() : "";
-                  const pCats = proj.categoryIds || (proj.categoryId ? [proj.categoryId] : []);
-
-                  return (
-                    <div
-                      key={proj.id}
-                      className="w-[85%] sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-20px)] shrink-0 aspect-16/10 rounded-lg overflow-hidden relative group snap-start cursor-pointer"
-                    >
-                      {/* Background Image */}
-                      {bestFallbackImage ? (
-                        <img
-                          src={bestFallbackImage}
-                          alt={stripHtml(proj.projectName)}
-                          className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-700"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 w-full h-full bg-black" />
-                      )}
-
-                      {/* Gradient Overlay for bottom text readability */}
-                      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-                      {/* Dark overlay on hover */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
-
-                      {/* See Project Button — center */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                        <Link
-                          to={`/projects/${proj.id}`}
-                          className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-[14px] bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline block"
-                        >
-                          See Project
-                        </Link>
-                      </div>
-
-                      {/* Top Left: Keyword Badge */}
-                      {firstKey && (
-                        <div className="absolute top-6 left-6 bg-black text-white text-[12px] font-semibold px-4 py-2 rounded-lg pointer-events-none z-10 uppercase">
-                          {firstKey}
-                        </div>
-                      )}
-
-                      {/* Bottom Left Content */}
-                      <div className="absolute bottom-6 left-6 flex flex-col items-start gap-3 pointer-events-none pr-6 z-10 w-full">
-                        
-                        {/* Categories Row */}
-                        {pCats.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {pCats.map((catId) => (
-                              <div
-                                key={catId}
-                                className="bg-white text-black px-3 py-1.5 rounded-md flex items-center gap-1.5 shadow-sm"
-                              >
-                                {getCategoryIcon(catId) && (
-                                  <img
-                                    src={getCategoryIcon(catId)!.url}
-                                    alt=""
-                                    className="w-3.5 h-3.5 object-contain"
-                                  />
-                                )}
-                                <span className="text-[12px] font-medium leading-none mt-px">
-                                  {getCategoryName(catId)}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Project Title */}
-                        <h3 className="text-white text-[24px] md:text-[28px] font-normal tracking-[-0.02em] m-0 leading-[1.2] w-[90%] truncate">
-                          {renderStyledText(proj.projectName)}
-                        </h3>
-                      </div>
-                    </div>
-                  );
-                })}
-                
-                {moreProjects.length >= 2 && (
-                  <div className="w-1 md:w-2 shrink-0"></div>
-                )}
-              </div>
-            </div>
-          )}
-
         </div>
       </main>
+
+      {/* Row 6: More Projects Module (Reusing Section2) */}
+      {moreProjects.length > 0 && (
+        <Section2
+          showLabel={false}
+          isDark={true}
+          customTitle="More Projects"
+        />
+      )}
 
       {/* Footer with forced black background, overriding default CMS image as requested */}
       <Footer showCTA={false} showBackgroundImage={false} />

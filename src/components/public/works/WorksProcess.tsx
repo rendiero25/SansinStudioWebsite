@@ -170,8 +170,8 @@ const WorksProcess = () => {
       >
         {/* Section Title */}
         <ScrollReveal>
-          <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0">
-            {timeline.sectionTitle || "Our Process"}
+          <h2 className="font-primary text-[32px] md:text-[42px] uppercase font-normal tracking-[-0.02em] m-0">
+            {timeline.sectionTitle || ""}
           </h2>
         </ScrollReveal>
 
@@ -233,79 +233,79 @@ const WorksProcess = () => {
                 overscrollBehavior: "contain",
                 paddingRight: "40px",
               }}
-            >
-              {activeProcess.details?.map((detail, i) => (
-                <ScrollReveal
-                  key={detail.id}
-                  delay={0.3 + i * 0.1}
-                  direction="up"
-                  className="bg-white p-8 md:p-10 rounded-2xl w-[300px] md:w-[380px] shrink-0 border border-black/8 shadow-sm flex flex-col justify-between min-h-[280px] transition-shadow duration-300 hover:shadow-md"
-                >
-                  {/* Icon */}
-                  <div className="flex flex-col gap-6">
-                    {detail.detailIcon?.url ? (
-                      <img
-                        src={detail.detailIcon.url}
-                        alt=""
-                        className="w-10 h-10 md:w-12 md:h-12 object-contain"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/5 flex items-center justify-center">
-                        <span className="text-[18px] font-bold text-black/30">
-                          {i + 1}
-                        </span>
+            >              {activeProcess.details?.map((detail, i) => (
+                <div key={detail.id} className="flex items-center gap-5 shrink-0">
+                  <ScrollReveal
+                    delay={0.3 + i * 0.1}
+                    direction="up"
+                    className="bg-white p-8 md:p-10 rounded-2xl w-[300px] md:w-[380px] shrink-0 border border-black/8 shadow-sm flex flex-col justify-between h-[300px] md:h-[360px] transition-shadow duration-300 hover:shadow-md"
+                  >
+                    {/* Icon */}
+                    <div className="flex flex-col gap-6">
+                      {detail.detailIcon?.url ? (
+                        <img
+                          src={detail.detailIcon.url}
+                          alt=""
+                          className="w-10 h-10 md:w-12 md:h-12 object-contain shrink-0"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/5 flex items-center justify-center shrink-0">
+                          <span className="text-[18px] font-bold text-black/30">
+                            {i + 1}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Title */}
+                      <h4 className="font-primary text-[22px] md:text-[26px] font-bold text-black leading-tight tracking-tight m-0 line-clamp-2">
+                        {detail.detailTitle}
+                      </h4>
+
+                      {/* Description */}
+                      <p className="font-primary text-[14px] md:text-[15px] leading-[1.6] text-black/50 m-0 line-clamp-4">
+                        {detail.detailDesc}
+                      </p>
+                    </div>
+
+                    {/* Keywords / Tags */}
+                    {detail.detailKeywords && (
+                      <div className="flex flex-wrap items-center gap-y-3 mt-8">
+                        {/* Leading separator */}
+                        <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
+                        {detail.detailKeywords.split(",").map((kw, j) => (
+                          <span
+                            key={j}
+                            className="text-[8px] font-bold text-black uppercase tracking-wide flex items-center"
+                          >
+                            {kw.trim()}
+                            <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
+                          </span>
+                        ))}
                       </div>
                     )}
+                  </ScrollReveal>
 
-                    {/* Title */}
-                    <h4 className="font-primary text-[22px] md:text-[26px] font-bold text-black leading-tight tracking-tight m-0">
-                      {detail.detailTitle}
-                    </h4>
-
-                    {/* Description */}
-                    <p className="font-primary text-[14px] md:text-[15px] leading-[1.6] text-black/50 m-0">
-                      {detail.detailDesc}
-                    </p>
-                  </div>
-
-                  {/* Keywords / Tags */}
-                  {detail.detailKeywords && (
-                    <div className="flex flex-wrap items-center gap-y-3 mt-8">
-                      {/* Leading separator */}
-                      <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
-                      {detail.detailKeywords.split(",").map((kw, j) => (
-                        <span
-                          key={j}
-                          className="text-[10px] font-bold text-black uppercase tracking-wide flex items-center"
-                        >
-                          {kw.trim()}
-                          <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
-                        </span>
-                      ))}
+                  {/* Arrow between items */}
+                  {i < (activeProcess.details?.length || 0) - 1 && (
+                    <div className="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#8B5CF6]/20 text-[#8B5CF6] shrink-0 self-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
                     </div>
                   )}
-                </ScrollReveal>
+                </div>
               ))}
 
-              {/* Next card arrow indicator */}
-              {/* {activeProcess.details && activeProcess.details.length > 1 && (
-                <div className="flex items-center shrink-0 pr-4">
-                  <div className="w-10 h-10 rounded-full bg-[#8B5CF6] flex items-center justify-center shadow-lg">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </div>
-                </div>
-              )} */}
             </div>
           </div>
         </div>
@@ -314,13 +314,13 @@ const WorksProcess = () => {
         <ScrollReveal delay={0.4} direction="up" className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
           <button 
             onClick={handleApproach}
-            className="cursor-pointer px-12 py-3 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300 min-w-[180px]"
+            className="cursor-pointer px-6 py-2 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300"
           >
             {btn1}
           </button>
           <a
             href={btn2.link}
-            className="inline-flex items-center justify-center px-12 py-3 bg-[#8B5CF6] text-white rounded-xl font-primary text-[15px] font-bold hover:bg-[#7C3AED] transition-all duration-300 min-w-[180px] text-center"
+            className="inline-flex items-center justify-center px-6 py-2 bg-[#8B5CF6] text-white rounded-xl font-primary text-[15px] font-bold hover:bg-[#7C3AED] transition-all duration-300 text-center"
           >
             {btn2.text}
           </a>

@@ -63,13 +63,19 @@ const Company = () => {
     fetchData();
   }, []);
 
+  const sanitizeHtml = (html: string) => {
+    if (!html) return "";
+    // Replace non-breaking spaces (\u00A0 or &nbsp;) with regular spaces
+    return html.replace(/\u00A0|&nbsp;/g, " ");
+  };
+
   if (loading) {
     return (
       <div className="company-page bg-white min-h-screen font-primary text-black">
         <Header />
         <main className="mt-32 pb-20 px-6 md:px-12 xl:px-20 overflow-x-hidden container mx-auto">
           {/* Top Image Skeleton */}
-          <div className="w-full aspect-video md:aspect-[21/9] rounded-[24px] overflow-hidden mb-16">
+          <div className="w-full aspect-video md:aspect-16/9 rounded-[24px] overflow-hidden mb-16">
             <Skeleton className="w-full h-full" />
           </div>
 
@@ -111,15 +117,15 @@ const Company = () => {
     <div className="company-page bg-white min-h-screen font-primary text-black">
       <Header />
 
-      <main className="pt-30 pb-20 overflow-x-hidden">
+      <main className="pt-30 pb-10 overflow-x-hidden">
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
           {/* 1. Top Image */}
-          <ScrollReveal delay={0.1} className="w-full rounded-2xl overflow-hidden mb-16">
+          <ScrollReveal delay={0.1} className="w-full aspect-video rounded-2xl overflow-hidden mb-16">
             {section1?.image?.url ? (
               <img
                 src={section1.image.url}
                 alt="Company"
-                className="w-full h-[1000px] object-cover"
+                className="w-full h-full object-cover"
               />
             ) : (
               <div className="w-full h-full bg-[#EEEEEE]" />
@@ -127,15 +133,15 @@ const Company = () => {
           </ScrollReveal>
 
           {/* 2. Middle Section: Title & Description | Vision & Mission */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 mb-15 xl:mb-24 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-15 mb-15 xl:mb-24 items-start">
             <ScrollReveal delay={0.2} className="flex flex-col gap-8">
               <h1 
-                className="text-[25px] sm:text-[32px] lg:text-[40px] xl:text-[44px] leading-[1.05] font-normal tracking-[-0.04em]"
-                dangerouslySetInnerHTML={{ __html: section1?.title || "" }}
+                className="text-[25px] sm:text-[32px] lg:text-[40px] xl:text-[42px] leading-[1.05] font-normal uppercase tracking-[-0.04em] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.title || "") }}
               />
               <div 
-                className="text-[10px] sm:text-[17px] md:text-[20px] font-normal leading-relaxed text-black/80 max-w-xl"
-                dangerouslySetInnerHTML={{ __html: section1?.description1 || "" }}
+                className="text-[10px] sm:text-[17px] md:text-[18px] font-normal leading-relaxed text-black/80 max-w-xl [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.description1 || "") }}
               />
             </ScrollReveal>
 
@@ -149,7 +155,7 @@ const Company = () => {
                   )
                 }
               >
-                <div dangerouslySetInnerHTML={{ __html: section1?.vision || "" }} className="text-[13px] sm:text-[22px] md:text-[25px] lg:text-[15px] xl:text-[18px] 2xl:text-[24px]"/>
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.vision || "") }} className="text-[13px] sm:text-[22px] md:text-[25px] lg:text-[16px] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"/>
               </Accordion>
 
               <Accordion
@@ -161,7 +167,7 @@ const Company = () => {
                   )
                 }
               >
-                <div dangerouslySetInnerHTML={{ __html: section1?.mission || "" }} className="text-[13px] sm:text-[22px] md:text-[25px] lg:text-[15px] xl:text-[18px] 2xl:text-[24px]"/>
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.mission || "") }} className="text-[13px] sm:text-[22px] md:text-[25px] lg:text-[16px] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"/>
               </Accordion>
             </ScrollReveal>
           </div>
@@ -171,17 +177,16 @@ const Company = () => {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 lg:gap-24 items-stretch">
               <div className="flex flex-col justify-between items-start gap-8">
                 {/* Details Label */}
-                <div className="bg-white/60 backdrop-blur-sm px-3 py-1 rounded-md font-normal uppercase">
-                  <h2 
-                    className="text-[16px] font-normal text-black max-w-md m-0"
-                    dangerouslySetInnerHTML={{ __html: section1?.detailsTitle || "" }}
+                <div className="inline-flex items-center gap-1.5 bg-white/50 text-black text-[10px] md:text-[12px] font-bold px-3 py-1.5 rounded-md shadow-sm font-primary uppercase">
+                  <h2
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.detailsTitle || "") }}
                   />
                 </div>
 
                 {section1?.detailsDescription && (
                   <div 
-                    className="text-[17px] md:text-[50px] leading-tight text-white max-w-2xl m-0"
-                    dangerouslySetInnerHTML={{ __html: section1.detailsDescription }}
+                    className="text-[17px] md:text-[50px] leading-tight text-white max-w-2xl m-0 [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1.detailsDescription) }}
                   />
                 )}
               </div>
@@ -268,7 +273,7 @@ const Company = () => {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2} className="relative overflow-hidden">
-                <div className="bg-linear-to-b from-[#D9D9D9] to-transparant max-h-[450px] overflow-y-auto custom-scrollbar rounded-xl scrollbar-hide">
+                <div className="bg-linear-to-b from-[#D9D9D9] to-transparant max-h-[300px] overflow-y-auto custom-scrollbar rounded-xl scrollbar-hide">
                   <img 
                     src={section2.image.url} 
                     alt="Privacy Policy" 

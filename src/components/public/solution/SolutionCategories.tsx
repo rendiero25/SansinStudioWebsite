@@ -168,14 +168,14 @@ const SolutionCategories = () => {
       style={{ overflowX: "clip", overflowY: "visible" }}
     >
       <div
-        className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-5 xl:gap-20"
+        className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col gap-12 md:gap-5 xl:gap-5"
         style={{ overflow: "visible" }}
       >
         {/* Top Header & Tabs Area */}
         <ScrollReveal className="flex flex-col xl:flex-row justify-between items-start gap-12 w-full">
           {/* Left Sticky Title "Solutions" */}
           <div className="w-full xl:w-auto shrink-0 xl:sticky xl:top-32 h-auto text-left z-10 mt-4">
-            <h2 className="font-primary text-[32px] md:text-[42px] font-normal tracking-[-0.02em] m-0">
+            <h2 className="font-primary text-[32px] md:text-[42px] uppercase font-normal tracking-[-0.02em] m-0">
               Solutions
             </h2>
           </div>
@@ -212,7 +212,7 @@ const SolutionCategories = () => {
         </ScrollReveal>
 
         {/* Content Area for Active Category */}
-        <div className="flex flex-col xl:flex-row items-start gap-16 w-full animate-[fadeIn_0.5s_ease-out]">
+        <div className="mt-10 flex flex-col xl:flex-row items-start gap-16 w-full animate-[fadeIn_0.5s_ease-out]">
           {/* Left side: Category Details */}
           <ScrollReveal
             delay={0.2}
@@ -228,7 +228,7 @@ const SolutionCategories = () => {
                   className="w-6 h-6 object-contain"
                 />
               )}
-              <h3 className="font-primary text-[28px] md:text-[36px] font-bold tracking-tight m-0">
+              <h3 className="font-primary text-[28px] md:text-[36px] uppercase font-normal tracking-tight m-0">
                 {activeCategory.categoryName}
               </h3>
             </div>
@@ -238,7 +238,7 @@ const SolutionCategories = () => {
             </p>
 
             {activeCategory.categoryImage?.url && (
-              <div className="w-full xl:w-[500px] h-[300px] rounded-xl overflow-hidden drop-shadow-md relative bg-white mt-4">
+              <div className="w-full xl:w-[400px] h-[250px] rounded-xl overflow-hidden drop-shadow-md relative bg-white mt-4">
                 <img
                   src={activeCategory.categoryImage.url}
                   alt={activeCategory.categoryName}
@@ -273,11 +273,11 @@ const SolutionCategories = () => {
                             <img
                               src={method.methodIcon.url}
                               alt=""
-                              className="w-6 h-6 object-contain opacity-90"
+                              className="w-5 h-5 object-contain opacity-90"
                             />
                           )}
                           <span
-                            className={`font-primary text-[24px] font-bold tracking-tight ${isOpen ? "text-black" : "text-black/80"}`}
+                            className={`font-primary text-[24px] font-normal tracking-tight ${isOpen ? "text-black" : "text-black/80"}`}
                           >
                             {method.methodName}
                           </span>
@@ -334,7 +334,7 @@ const SolutionCategories = () => {
                                       .map((kw, i) => (
                                         <span
                                           key={i}
-                                          className="text-[10px] font-bold text-black uppercase tracking-wide flex items-center"
+                                          className="text-[8px] font-bold text-black uppercase tracking-wide flex items-center"
                                         >
                                           {kw.trim()}
                                           <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
@@ -369,7 +369,7 @@ const SolutionCategories = () => {
           </ScrollReveal>
         </div>
 
-        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-20 mt-10">
+        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-20 mt-10 xl:mt-5">
           {/* Approach / Section Title underneath Image */}
           <ScrollReveal
             delay={0.4}

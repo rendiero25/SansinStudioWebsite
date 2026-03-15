@@ -51,7 +51,7 @@ const WorksFramework = () => {
       <div className="container mx-auto px-6 md:px-12 xl:px-20">
         {/* Framework Header */}
         <ScrollReveal>
-          <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-[#111111] text-[14px] font-bold uppercase rounded-md mb-6 font-primary">
+          <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
             {renderStyledText(data.sideImageTitle || "")}
           </div>
         </ScrollReveal>

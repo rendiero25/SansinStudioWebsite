@@ -59,7 +59,13 @@ const stripHtml = (html: string) => {
   return tmp.textContent || tmp.innerText || "";
 };
 
-const Section2 = () => {
+interface Section2Props {
+  showLabel?: boolean;
+  isDark?: boolean;
+  customTitle?: string;
+}
+
+const Section2 = ({ showLabel = true, isDark = false, customTitle }: Section2Props) => {
   const [title, setTitle] = useState("PROJECTS");
   const [categories, setCategories] = useState<ProjectCategory[]>([]);
   const [projects, setProjects] = useState<ProjectItem[]>([]);
@@ -126,18 +132,28 @@ const Section2 = () => {
   }, [projects]);
 
   return (
-    <section className="relative w-full bg-white pt-15 xl:pt-30 overflow-hidden">
-      <div className="container mx-auto px-5 md:px-10 xl:px-20">
-        <ScrollReveal>
-          {/* Section Label Pill */}
-          {!loaded ? (
-            <Skeleton className="w-[100px] h-[30px] rounded-md mb-8" />
-          ) : (
-            <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
-              {renderStyledText(title)}
-            </div>
-          )}
-        </ScrollReveal>
+    <section className={`relative w-full ${isDark ? "bg-transparent" : "bg-white"} pt-15 xl:pt-30 overflow-hidden`}>
+      <div className="container mx-auto px-6 md:px-12 xl:px-20">
+        {showLabel && (
+          <ScrollReveal>
+            {/* Section Label Pill */}
+            {!loaded ? (
+              <Skeleton className="w-[100px] h-[30px] rounded-md mb-8" />
+            ) : (
+              <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
+                {renderStyledText(title)}
+              </div>
+            )}
+          </ScrollReveal>
+        )}
+
+        {customTitle && (
+          <ScrollReveal>
+            <h2 className={`font-primary text-[28px] md:text-[36px] font-normal tracking-[-0.01em] mb-12 ${isDark ? "text-white" : "text-black"}`}>
+              {customTitle}
+            </h2>
+          </ScrollReveal>
+        )}
 
         {/* Projects Horizontal Scroll Container */}
         <div 
@@ -164,7 +180,7 @@ const Section2 = () => {
                 >
                   <Link
                     to={`/projects/${project.id}`}
-                    className="group relative block w-full rounded-xl overflow-hidden aspect-4/3 md:h-[275px] bg-[#f5f5f5] no-underline border border-black/5"
+                    className="group relative block w-full rounded-xl overflow-hidden aspect-4/3 md:h-[275px] bg-[#f5f5f5] no-underline"
                   >
                     {/* Background Image */}
                     {imageUrl && (

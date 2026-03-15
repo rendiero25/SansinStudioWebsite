@@ -243,72 +243,64 @@ const Projects = () => {
                   return (
                     <ScrollReveal
                       key={project.id}
-                      className="group relative w-full aspect-16/10 md:aspect-4/3 lg:aspect-16/10 rounded-xl overflow-hidden cursor-pointer"
+                      className="group relative w-full aspect-16/10 md:aspect-4/3 lg:aspect-16/10 rounded-xl overflow-hidden cursor-pointer border border-black/5"
                     >
-                      {/* Background Image */}
-                      {project.mainImage?.url ? (
-                        <img
-                          src={project.mainImage.url}
-                          alt={stripHtml(project.projectName)}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 w-full h-full bg-[#1A1A1A]" />
-                      )}
-
-                      {/* Gradient Overlay for bottom text readability */}
-                      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-                      {/* Dark overlay on hover */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
-
-                      {/* See Project Button — center */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                        <Link
-                          to={`/projects/${project.id}`}
-                          className="px-7 py-3.5 border-[1.5px] border-white/60 text-white font-primary font-semibold text-[14px] md:text-[15px] rounded-lg bg-black/40 backdrop-blur-md hover:bg-black/70 transition-colors no-underline"
-                        >
-                          See Project
-                        </Link>
-                      </div>
-
-                      {/* Top Left: Keyword Badge */}
-                      {firstKeyword && (
-                        <div className="absolute top-6 left-6 bg-black text-white text-[12px] font-semibold px-4 py-2 rounded-lg pointer-events-none z-10">
-                          {firstKeyword}
-                        </div>
-                      )}
-
-                      {/* Bottom Left Content */}
-                      <div className="absolute bottom-6 left-6 flex flex-col items-start gap-3 pointer-events-none pr-6 z-10">
-                        {/* Categories Row */}
-                        {projCategoryIds.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {projCategoryIds.map((catId) => (
-                              <div
-                                key={catId}
-                                className="bg-white text-black px-3 py-1.5 rounded-md flex items-center gap-1.5 shadow-sm"
-                              >
-                                {getCategoryIcon(catId) && (
-                                  <img
-                                    src={getCategoryIcon(catId)!.url}
-                                    alt=""
-                                    className="w-3.5 h-3.5 object-contain"
-                                  />
-                                )}
-                                <span className="text-[12px] font-medium leading-none mt-px">
-                                  {getCategoryName(catId)}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
+                      <Link to={`/projects/${project.id}`} className="block w-full h-full relative no-underline">
+                        {/* Background Image */}
+                        {project.mainImage?.url ? (
+                          <img
+                            src={project.mainImage.url}
+                            alt={stripHtml(project.projectName)}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 w-full h-full bg-[#1A1A1A]" />
                         )}
 
-                        {/* Project Title */}
-                        <h3 className="text-white text-[24px] md:text-[28px] font-normal tracking-[-0.02em] m-0 leading-[1.2]">
-                          {renderStyledText(project.projectName)}
-                        </h3>
-                      </div>
+                        {/* Bottom Gradient Overlay - Deepens on hover */}
+                        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 to-transparent pointer-events-none z-10 transition-opacity duration-300" />
+
+                        {/* Content Layer (Hover Overlay) */}
+                        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                          {/* Top row: Keyword if exists */}
+                          {firstKeyword && (
+                            <div className="mb-auto">
+                              <span className="bg-black/40 backdrop-blur-md text-white/90 text-[10px] md:text-[11px] font-bold px-3 py-1.5 rounded-md shadow-sm border border-white/10 uppercase tracking-wider font-primary">
+                                {firstKeyword}
+                              </span>
+                            </div>
+                          )}
+
+                          {/* Categories Row */}
+                          {projCategoryIds.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mb-3">
+                              {projCategoryIds.map((catId) => (
+                                <div
+                                  key={catId}
+                                  className="bg-white text-black px-3 py-1.5 rounded-md flex items-center gap-1.5 shadow-sm font-primary"
+                                >
+                                  {getCategoryIcon(catId) && (
+                                    <img
+                                      src={getCategoryIcon(catId)!.url}
+                                      alt=""
+                                      className="w-3.5 h-3.5 object-contain"
+                                    />
+                                  )}
+                                  <span className="text-[10px] md:text-[12px] font-bold leading-none uppercase">
+                                    {getCategoryName(catId)}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Project Name */}
+                          <h3 className="text-white text-xl md:text-2xl font-normal font-primary m-0 leading-[1.2]">
+                            {renderStyledText(project.projectName)}
+                          </h3>
+                        </div>
+
+                      </Link>
                     </ScrollReveal>
                   );
                 })}

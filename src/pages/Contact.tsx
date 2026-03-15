@@ -264,9 +264,9 @@ const Contact = () => {
           <div className="container mx-auto px-6 md:px-12 xl:px-20 z-10 w-full pt-20 lg:pt-32 flex flex-col justify-center">
             <div className="flex flex-col gap-12 lg:gap-16">
               <ScrollReveal delay={0.1}>
-                <h1 className="text-[30px] md:text-[42px] lg:text-[48px] xl:text-[54px] font-normal tracking-[-0.03em] leading-[1.1] m-0 text-white max-w-2xl">
+                <h1 className="text-[30px] uppercase md:text-[42px] lg:text-[42px] font-normal tracking-[-0.03em] leading-[1.1] m-0 text-white max-w-2xl">
                   {data?.title ||
-                    "Let's discover more about your creative needs!"}
+                    ""}
                 </h1>
               </ScrollReveal>
 
