@@ -388,7 +388,7 @@ const SolutionCategories = () => {
             {activeCategory.buttonText && activeCategory.buttonLink && (
               <a
                 href={activeCategory.buttonLink}
-                className="mt-4 inline-flex items-center justify-center px-16 py-2.5 border border-black/30 rounded-lg text-[17px] font-primary font-medium hover:bg-black hover:text-white transition-colors w-max"
+                className="mt-4 inline-flex items-center justify-center px-6 py-2 border border-black/30 rounded-lg text-[15px] font-primary font-medium hover:bg-black hover:text-white transition-colors w-max"
               >
                 {activeCategory.buttonText}
               </a>
@@ -428,33 +428,33 @@ const SolutionCategories = () => {
                   return (
                     <div
                       key={(feature.id as string) || `feature-${i}`}
-                      className="flex flex-col gap-10 bg-white rounded-2xl md:rounded-xl p-8 md:p-12 shadow-md transition-shadow duration-300 border border-black/5 w-full xl:w-[420px] shrink-0"
+                      className="flex flex-col gap-6 bg-white rounded-2xl md:rounded-xl p-8 md:p-12 shadow-md transition-shadow duration-300 border border-black/5 w-full xl:w-[400px] shrink-0"
                     >
-                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shrink-0">
+                      <div className="w-14 h-14 md:w-10 md:h-8 rounded-full flex items-center justify-center shrink-0">
                         {featureIcon?.url ? (
                           <img
                             src={featureIcon.url}
                             alt={`icon-${i}`}
-                            className="w-7 h-7 md:w-15 md:h-15 object-contain"
+                            className="w-7 h-7 md:w-10 md:h-10 object-contain"
                           />
                         ) : (
-                          <span className="text-[20px] md:text-[22px] font-bold">
+                          <span className="text-[20px] font-bold">
                             {i + 1}
                           </span>
                         )}
                       </div>
 
-                      <h5 className="font-primary text-[28px] md:text-[32px] max-w-[200px] font-bold leading-tight tracking-[-0.01em] text-black">
+                      <h5 className="font-primary text-[25px] max-w-[200px] font-bold leading-tight tracking-[-0.01em] text-black">
                         {String(feature.title || "")}
                       </h5>
 
-                      <p className="font-primary text-[15px] md:text-[20px] leading-[1.6] text-black/60 -mt-5 flex-1">
+                      <p className="font-primary text-[18px] leading-[1.6] text-black/60 flex-1">
                         {String(feature.description || "")}
                       </p>
 
                       {typeof feature.keywords === "string" &&
                         feature.keywords && (
-                          <div className="flex flex-wrap items-center gap-y-3 mt-auto pt-8">
+                          <div className="flex flex-wrap items-center gap-y-3 mt-auto">
                             {/* Leading separator */}
                             <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
                             {(feature.keywords as string)
@@ -462,7 +462,7 @@ const SolutionCategories = () => {
                               .map((kw: string, j: number) => (
                                 <span
                                   key={j}
-                                  className="text-[11px] font-bold text-black uppercase tracking-[0.05em] relative flex items-center"
+                                  className="text-[8px] font-bold text-black uppercase tracking-[0.05em] relative flex items-center"
                                 >
                                   {kw.trim()}
                                   <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
@@ -484,11 +484,11 @@ const SolutionCategories = () => {
         <ScrollReveal
           delay={0.5}
           direction="up"
-          className="flex justify-center xl:justify-end mt-8 container mx-auto px-6 md:px-12 xl:px-20"
+          className="flex justify-center xl:justify-end mt-12 container mx-auto px-6 md:px-12 xl:px-20"
         >
           <a
             href={globalButton.link}
-            className="inline-flex items-center justify-center px-16 py-4 bg-[#8B5CF6] text-white rounded-lg text-[17px] font-primary font-bold hover:bg-[#7C3AED] transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300"
+            className="inline-flex items-center justify-center px-6 py-2 bg-[#8B5CF6] text-white rounded-lg text-[15px] font-primary font-bold hover:bg-[#7C3AED] transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300"
           >
             {globalButton.text}
           </a>

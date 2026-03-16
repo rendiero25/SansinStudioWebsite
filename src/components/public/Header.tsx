@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 
 interface HeaderData {
@@ -38,7 +38,14 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const location = useLocation();
   const ctaButton = data.ctaButton || { text: "Contact us", link: "/contact" };
+
+  // Helper to check if a link is active
+  const isActivePath = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <header
@@ -66,15 +73,20 @@ const Header = () => {
 
           {/* Nav Links */}
           <nav className="hidden lg:flex items-center gap-15 absolute left-1/2 -translate-x-1/2">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.label}
-                to={link.href}
-                className="text-black hover:font-black no-underline text-[17px] font-medium font-primary transition-colors tracking-tight"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const active = isActivePath(link.href);
+              return (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className={`text-black no-underline text-[17px] font-medium font-primary transition-all tracking-tight ${
+                    active ? "opacity-100" : "opacity-35 hover:opacity-100"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* CTA Button */}
@@ -171,16 +183,21 @@ const Header = () => {
 
         {/* Centered Navigation Links */}
         <div className="flex-1 flex flex-col items-center justify-center gap-8 px-6">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              to={link.href}
-              className="text-[#4D4D4D] hover:text-black no-underline text-[22px] font-medium font-primary transition-colors tracking-tight"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const active = isActivePath(link.href);
+            return (
+              <Link
+                key={link.label}
+                to={link.href}
+                className={`no-underline text-[22px] font-medium font-primary transition-all tracking-tight ${
+                  active ? "text-black opacity-100" : "text-black opacity-50 hover:opacity-100"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Contact Button at the bottom */}

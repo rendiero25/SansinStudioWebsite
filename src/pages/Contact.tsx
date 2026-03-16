@@ -468,10 +468,10 @@ const Contact = () => {
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
-                    { label: "Foundation", icon: "📦" },
-                    { label: "Interaction", icon: "👆" },
-                    { label: "Production", icon: "🎭" },
-                    { label: "Recommend me", icon: "✨" },
+                    { label: "Foundation", icon: "https://res.cloudinary.com/dumpj5vva/image/upload/v1772672465/sanxinstudio/solution/icons/qufpeli5sfmdtjcfxydj.png" },
+                    { label: "Interaction", icon: "https://res.cloudinary.com/dumpj5vva/image/upload/v1772671883/sanxinstudio/solution/icons/pswtbbgspxsyb8l95wi0.png" },
+                    { label: "Production", icon: "https://res.cloudinary.com/dumpj5vva/image/upload/v1772604334/sanxinstudio/solution/icons/hlvlrwoerltf58xhc34c.png" },
+                    { label: "Recommend me", icon: "" },
                   ].map((choice) => (
                     <label
                       key={choice.label}
@@ -488,9 +488,15 @@ const Contact = () => {
                         className={`text-[17px] flex items-center gap-2.5 font-semibold transition-colors ${formData.solutions.includes(choice.label) ? "text-black" : "text-black/50 group-hover:text-black/80"}`}
                       >
                         <span
-                          className={`text-[16px] transition-all ${formData.solutions.includes(choice.label) ? "grayscale-0 opacity-100" : "grayscale brightness-125 opacity-60 group-hover:grayscale-0 group-hover:opacity-100"}`}
+                          className={`flex items-center justify-center transition-all ${formData.solutions.includes(choice.label) ? "grayscale-0 opacity-100" : "grayscale brightness-125 opacity-60 group-hover:grayscale-0 group-hover:opacity-100"}`}
                         >
-                          {choice.icon}
+                          {choice.icon ? (
+                            <img 
+                              src={choice.icon} 
+                              alt="" 
+                              className="w-5 h-5 object-contain" 
+                            />
+                          ) : null}
                         </span>
                         {choice.label}
                       </span>
@@ -515,19 +521,19 @@ const Contact = () => {
                         }))
                       }
                       type="number"
-                      className="w-20 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-4 py-3 text-center text-[15px] font-medium focus:outline-none appearance-none"
+                      className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none appearance-none"
                     />
-                    <div className="relative flex-1 min-h-[54px]">
+                    <div className="relative w-[54px] h-[54px] shrink-0">
                       <select
                         name="timelineUnit"
                         value={formData.timelineUnit}
                         onChange={handleInputChange}
-                        className="w-full h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none appearance-none cursor-pointer"
+                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg text-transparent focus:outline-none appearance-none cursor-pointer [&>option]:text-black p-4"
                       >
-                        <option>Weeks</option>
-                        <option>Months</option>
+                        <option value="Weeks">W</option>
+                        <option>M</option>
                       </select>
-                      <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <svg
                           width="12"
                           height="12"
@@ -545,7 +551,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="md:col-span-7 flex flex-col gap-3">
+                <div className="md:col-span-7 flex flex-col gap-3 xl:ml-10">
                   <label className="text-[17px] font-bold text-black/80">
                     Investment range
                   </label>
@@ -562,17 +568,17 @@ const Contact = () => {
                       type="number"
                       className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none placeholder:text-black/30 appearance-none"
                     />
-                    <div className="relative w-[120px] h-[54px]">
+                    <div className="relative w-[54px] h-[54px] shrink-0">
                       <select
                         name="investmentCurrency"
                         value={formData.investmentCurrency}
                         onChange={handleInputChange}
-                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none appearance-none cursor-pointer"
+                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg p-2 text-transparent focus:outline-none appearance-none cursor-pointer [&>option]:text-black"
                       >
                         <option>IDR</option>
                         <option>USD</option>
                       </select>
-                      <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <svg
                           width="12"
                           height="12"
