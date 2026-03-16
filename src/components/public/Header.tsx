@@ -9,7 +9,7 @@ interface HeaderData {
 
 const NAV_LINKS = [
   { label: "Solutions", href: "/solutions" },
-  { label: "Works", href: "/works" },
+  { label: "Process", href: "/works" },
   { label: "Projects", href: "/projects" },
   { label: "Insights", href: "/insights" },
   { label: "Company", href: "/company" },

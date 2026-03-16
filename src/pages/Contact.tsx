@@ -485,7 +485,7 @@ const Contact = () => {
                         className="w-5 h-5 rounded border-black/20 accent-black cursor-pointer"
                       />
                       <span
-                        className={`text-[17px] flex items-center gap-2.5 font-semibold transition-colors ${formData.solutions.includes(choice.label) ? "text-black" : "text-black/50 group-hover:text-black/80"}`}
+                        className={`text-[17px] lg:text-[12px] 2xl:text-[17px] flex items-center gap-2.5 lg:gap-1 2xl:gap-2 font-semibold transition-colors ${formData.solutions.includes(choice.label) ? "text-black" : "text-black/50 group-hover:text-black/80"}`}
                       >
                         <span
                           className={`flex items-center justify-center transition-all ${formData.solutions.includes(choice.label) ? "grayscale-0 opacity-100" : "grayscale brightness-125 opacity-60 group-hover:grayscale-0 group-hover:opacity-100"}`}
@@ -494,7 +494,7 @@ const Contact = () => {
                             <img 
                               src={choice.icon} 
                               alt="" 
-                              className="w-5 h-5 object-contain" 
+                              className="w-4 h-4 object-contain" 
                             />
                           ) : null}
                         </span>
