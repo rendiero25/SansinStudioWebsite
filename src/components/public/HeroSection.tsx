@@ -123,7 +123,7 @@ const HeroSection = () => {
         {/* Headline */}
         <ScrollReveal delay={0.2} className="w-full relative z-10">
           <div className="text-center w-full mb-6">
-            <p className="font-primary text-[30px] sm:text-[50px] md:text-[60px] lg:text-[50px] xl:text-6xl uppercase font-normal text-black leading-[1.1]">
+            <p className="font-primary text-center text-[25px] sm:text-[50px] md:text-[60px] lg:text-[50px] xl:text-6xl uppercase font-normal text-black leading-[1.1]">
               {renderHeadline(
                 data.headline || ""
               )}
@@ -134,7 +134,7 @@ const HeroSection = () => {
         {/* Description */}
         <ScrollReveal delay={0.3} className="w-full relative z-10">
           <div className="text-center w-full max-w-[600px] mx-auto mb-10">
-            <div className="font-primary text-[15px] md:text-[18px] font-normal text-black leading-[1.6] [&_p]:m-0">
+            <div className="font-primary text-[12px] md:text-[18px] font-normal text-black leading-[1.6] [&_p]:m-0">
               <span
                 dangerouslySetInnerHTML={{
                   __html:

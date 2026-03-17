@@ -326,7 +326,7 @@ const Section3 = () => {
                 </div>
 
                 <div className="flex flex-col justify-between items-start gap-10">
-                  <h2 className="font-primary text-[30px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
+                  <h2 className="font-primary text-[26px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
                     {renderStyledText(
                       data.title || "",
                     )}

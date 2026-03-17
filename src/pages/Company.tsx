@@ -75,7 +75,7 @@ const Company = () => {
         <Header />
         <main className="mt-32 pb-20 px-6 md:px-12 xl:px-20 overflow-x-hidden container mx-auto">
           {/* Top Image Skeleton */}
-          <div className="w-full aspect-video md:aspect-16/9 rounded-[24px] overflow-hidden mb-16">
+          <div className="w-full aspect-video rounded-[24px] overflow-hidden mb-16">
             <Skeleton className="w-full h-full" />
           </div>
 
@@ -136,11 +136,11 @@ const Company = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-15 mb-15 xl:mb-24 items-start">
             <ScrollReveal delay={0.2} className="flex flex-col gap-8">
               <h1 
-                className="text-[25px] sm:text-[32px] lg:text-[40px] xl:text-[42px] leading-[1.05] font-normal uppercase tracking-[-0.04em] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                className="text-[28px] sm:text-[32px] lg:text-[40px] xl:text-[42px] leading-[1.05] font-normal uppercase tracking-[-0.04em] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.title || "") }}
               />
               <div 
-                className="text-[10px] sm:text-[17px] md:text-[18px] font-normal leading-relaxed text-black/80 max-w-xl [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                className="text-[12px] sm:text-[17px] md:text-[18px] font-normal leading-relaxed text-black/80 max-w-xl [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.description1 || "") }}
               />
             </ScrollReveal>

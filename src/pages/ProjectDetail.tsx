@@ -314,8 +314,10 @@ const ProjectDetail = () => {
         />
       )}
 
+      <div className="mb-10 lg:mb-0"></div>
+
       {/* Footer with forced black background, overriding default CMS image as requested */}
-      <Footer showCTA={false} showBackgroundImage={false} />
+      <Footer showCTA={false} showBackgroundImage={false}/>
 
       <style>
         {`

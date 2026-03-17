@@ -75,7 +75,7 @@ const Section4 = () => {
         
         {/* Title Section */}
         <ScrollReveal className="text-center mb-16">
-          <h2 className="font-primary text-[30px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
+          <h2 className="font-primary text-[26px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
             {loaded ? renderStyledText(data.title || "") : <Skeleton className="w-[80%] h-12 mx-auto" />}
           </h2>
         </ScrollReveal>
