@@ -6,6 +6,8 @@ import type { InsightItem } from "../components/cms/InsightsItemsEditor";
 import { SuccessModal } from "../components/public/insights/InsightsComponents";
 import { InsightsFooter } from "../components/public/insights/InsightsFooter";
 import Skeleton from "../components/Skeleton";
+import { sanitizeHtml } from "../utils/sanitize";
+
 
 const DetailInsights = () => {
   const { id } = useParams<{ id: string }>();
@@ -153,8 +155,8 @@ const DetailInsights = () => {
           {/* Row 3: Content/Description */}
           <div className="max-w-full mx-auto w-full overflow-hidden">
             <div
-              className="insight-content text-[17px] md:text-[20px] leading-relaxed text-black font-normal whitespace-pre-wrap wrap-break-word"
-              dangerouslySetInnerHTML={{ __html: post.description || "" }}
+              className="quill-content-description text-[17px] md:text-[20px] text-black font-normal"
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.description || "") }}
             />
           </div>
         </div>
@@ -168,16 +170,13 @@ const DetailInsights = () => {
       <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)} />
 
       <style>{`
-        .insight-content p {
-          margin-bottom: 1.5rem;
-        }
-        .insight-content img {
+        .quill-content-description img {
           max-width: 100%;
           height: auto;
           border-radius: 16px;
           margin: 2rem 0;
         }
-        .insight-content h2, .insight-content h3 {
+        .quill-content-description h2, .quill-content-description h3 {
           font-weight: bold;
           margin-top: 3rem;
           margin-bottom: 1.5rem;

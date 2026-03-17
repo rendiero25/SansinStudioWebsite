@@ -238,10 +238,10 @@ const WorksProcess = () => {
                   <ScrollReveal
                     delay={0.3 + i * 0.1}
                     direction="up"
-                    className="bg-white p-8 md:p-10 rounded-2xl w-[300px] md:w-[380px] shrink-0 border border-black/8 shadow-sm flex flex-col justify-between h-[300px] md:h-[360px] transition-shadow duration-300 hover:shadow-md"
+                    className="bg-white p-8 md:p-10 rounded-2xl w-[260px] md:w-[380px] shrink-0 border border-black/8 shadow-sm flex flex-col justify-between h-[300px] md:h-[360px] transition-shadow duration-300 hover:shadow-md"
                   >
                     {/* Icon */}
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-3 lg:gap-6">
                       {detail.detailIcon?.url ? (
                         <img
                           src={detail.detailIcon.url}
@@ -269,16 +269,16 @@ const WorksProcess = () => {
 
                     {/* Keywords / Tags */}
                     {detail.detailKeywords && (
-                      <div className="flex flex-wrap items-center gap-y-3 mt-8">
+                      <div className="flex flex-wrap items-center gap-y-3 mt-4 lg:mt-8">
                         {/* Leading separator */}
-                        <span className="w-[1.5px] h-[14px] bg-black/30 mr-3"></span>
+                        <span className="w-[1.5px] h-[10px] lg:h-[14px] bg-black/30 mr-1.5 lg:mr-3"></span>
                         {detail.detailKeywords.split(",").map((kw, j) => (
                           <span
                             key={j}
-                            className="text-[8px] font-bold text-black uppercase tracking-wide flex items-center"
+                            className="text-[6px] lg:text-[8px] font-bold text-black uppercase tracking-wide flex items-center"
                           >
                             {kw.trim()}
-                            <span className="w-[1.5px] h-[14px] bg-black/30 mx-3"></span>
+                            <span className="w-[1.5px] h-[10px] lg:h-[14px] bg-black/30 mx-1.5 lg:mx-3"></span>
                           </span>
                         ))}
                       </div>
@@ -311,7 +311,7 @@ const WorksProcess = () => {
         </div>
 
         {/* Bottom Buttons */}
-        <ScrollReveal delay={0.4} direction="up" className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-4">
+        <ScrollReveal delay={0.4} direction="up" className="flex flex-row items-center justify-center lg:justify-end gap-4 lg:gap-8 mt-4">
           <button 
             onClick={handleApproach}
             className="cursor-pointer px-6 py-2 border border-black/20 rounded-xl font-primary text-[15px] font-bold text-black bg-white hover:bg-black hover:text-white transition-all duration-300"

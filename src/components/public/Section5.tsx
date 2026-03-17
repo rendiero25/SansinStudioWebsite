@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
+import { sanitizeHtml } from "../../utils/sanitize";
+
 
 interface SubItem {
   id: string;
@@ -28,7 +30,7 @@ const renderStyledText = (text: string) => {
 
   // If it looks like HTML (from Quill), render it directly
   if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
   }
 
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);

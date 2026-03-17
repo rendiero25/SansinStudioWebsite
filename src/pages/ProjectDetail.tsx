@@ -255,7 +255,7 @@ const ProjectDetail = () => {
 
             {/* Right Column: Main Image */}
             <div className="w-full">
-              <div className="w-full h-[650px] rounded-xl overflow-hidden relative shadow-2xl border border-white/5">
+              <div className="aspect-1/1 lg:w-full lg:h-[650px] rounded-xl overflow-hidden relative shadow-2xl border border-white/5">
                 {currentProject.mainImage?.url ? (
                   <img
                     src={currentProject.mainImage.url}

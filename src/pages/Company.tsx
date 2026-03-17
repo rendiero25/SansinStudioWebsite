@@ -6,6 +6,8 @@ import Accordion from "../components/public/company/Accordion";
 import Skeleton from "../components/Skeleton";
 import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/public/Footer";
+import { sanitizeHtml } from "../utils/sanitize";
+
 
 interface Section1Data {
   title?: string;
@@ -34,9 +36,16 @@ interface Section2Data {
   image?: { url: string };
 }
 
+interface HeroData {
+  bgType?: "image" | "video";
+  bgImage?: { url: string };
+  bgVideo?: { url: string };
+}
+
 const Company = () => {
   const [section1, setSection1] = useState<Section1Data | null>(null);
   const [section2, setSection2] = useState<Section2Data | null>(null);
+  const [heroData, setHeroData] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
   const [openSection1Accordion, setOpenSection1Accordion] = useState<
     string | null
@@ -48,12 +57,14 @@ const Company = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [s1, s2] = await Promise.all([
+        const [s1, s2, hero] = await Promise.all([
           getSection("company", "section1"),
           getSection("company", "section2"),
+          getSection("home", "hero"),
         ]);
         setSection1(s1.content || {});
         setSection2(s2.content || {});
+        setHeroData(hero.content || {});
       } catch (err) {
         console.error("Failed to fetch company data:", err);
       } finally {
@@ -63,11 +74,6 @@ const Company = () => {
     fetchData();
   }, []);
 
-  const sanitizeHtml = (html: string) => {
-    if (!html) return "";
-    // Replace non-breaking spaces (\u00A0 or &nbsp;) with regular spaces
-    return html.replace(/\u00A0|&nbsp;/g, " ");
-  };
 
   if (loading) {
     return (
@@ -117,30 +123,45 @@ const Company = () => {
     <div className="company-page bg-white min-h-screen font-primary text-black">
       <Header />
 
-      <main className="pt-30 pb-10 overflow-x-hidden">
+      <main className="pt-23 lg:pt-30 pb-10 overflow-x-hidden">
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
-          {/* 1. Top Image */}
-          <ScrollReveal delay={0.1} className="w-full aspect-video rounded-2xl overflow-hidden mb-16">
-            {section1?.image?.url ? (
+          {/* 1. Top Image/Video */}
+          <ScrollReveal delay={0.1} className="aspect-3/4 lg:aspect-video rounded-2xl overflow-hidden mb-16 relative bg-[#EEEEEE]">
+            {heroData?.bgType === "video" && heroData?.bgVideo?.url ? (
+              <video
+                src={heroData.bgVideo.url}
+                className="absolute inset-0 w-full h-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : heroData?.bgImage?.url ? (
+              <img
+                src={heroData.bgImage.url}
+                alt="Company"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : section1?.image?.url ? (
               <img
                 src={section1.image.url}
                 alt="Company"
-                className="w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-[#EEEEEE]" />
+              <div className="absolute inset-0 w-full h-full bg-[#EEEEEE]" />
             )}
           </ScrollReveal>
 
           {/* 2. Middle Section: Title & Description | Vision & Mission */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-15 mb-15 xl:mb-24 items-start">
-            <ScrollReveal delay={0.2} className="flex flex-col gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-15 mb-15 xl:mb-24 items-start">
+            <ScrollReveal delay={0.2} className="flex flex-col gap-4 lg:gap-8">
               <h1 
-                className="text-[28px] sm:text-[32px] lg:text-[40px] xl:text-[42px] leading-[1.05] font-normal uppercase tracking-[-0.04em] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                className="text-[28px] sm:text-[32px] lg:text-[40px] xl:text-[42px] font-normal quill-content-title"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.title || "") }}
               />
               <div 
-                className="text-[12px] sm:text-[17px] md:text-[18px] font-normal leading-relaxed text-black/80 max-w-xl [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                className="text-[16px] sm:text-[17px] md:text-[18px] font-normal text-black/80 max-w-xl quill-content-description"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.description1 || "") }}
               />
             </ScrollReveal>
@@ -155,7 +176,7 @@ const Company = () => {
                   )
                 }
               >
-                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.vision || "") }} className="text-[13px] sm:text-[22px] md:text-[25px] lg:text-[16px] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"/>
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.vision || "") }} className="text-[16px] sm:text-[22px] md:text-[25px] lg:text-[16px] quill-content-description"/>
               </Accordion>
 
               <Accordion
@@ -167,15 +188,15 @@ const Company = () => {
                   )
                 }
               >
-                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.mission || "") }} className="text-[13px] sm:text-[22px] md:text-[25px] lg:text-[16px] [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"/>
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.mission || "") }} className="text-[16px] sm:text-[22px] md:text-[25px] lg:text-[16px] quill-content-description"/>
               </Accordion>
             </ScrollReveal>
           </div>
 
           {/* 3. Details Section (Gray Background) */}
           <ScrollReveal delay={0.4} className="bg-[#A7A7A7] rounded-xl p-8 md:p-10 mb-15 xl:mb-24 overflow-hidden">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 lg:gap-24 items-stretch">
-              <div className="flex flex-col justify-between items-start gap-8">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-12 lg:gap-24 items-stretch">
+              <div className="flex flex-col justify-between items-start gap-4 lg:gap-8">
                 {/* Details Label */}
                 <div className="inline-flex items-center gap-1.5 bg-white/50 text-black text-[10px] md:text-[12px] font-bold px-3 py-1.5 rounded-md shadow-sm font-primary uppercase">
                   <h2
@@ -185,7 +206,7 @@ const Company = () => {
 
                 {section1?.detailsDescription && (
                   <div 
-                    className="text-[17px] md:text-[50px] leading-tight text-white max-w-2xl m-0 [&_p]:mb-4 [&_p]:min-h-[1em] last:[&_p]:mb-0"
+                    className="text-[25px] md:text-[45px] leading-tight text-white max-w-2xl m-0 quill-content-title"
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1.detailsDescription) }}
                   />
                 )}
@@ -215,7 +236,7 @@ const Company = () => {
                                 <span className="text-[11px] font-bold uppercase tracking-widest text-black/30">
                                   {cat}
                                 </span>
-                                <div className="flex flex-wrap gap-4">
+                                <div className="flex flex-wrap gap-4"> 
                                   {filtered.map((sub) => (
                                     <div key={sub.id} className="flex items-center gap-3">
                                       {sub.icon?.url && (
@@ -226,7 +247,7 @@ const Company = () => {
                                           href={sub.link}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="text-black hover:text-indigo-600 font-medium transition-colors"
+                                          className="text-text-black hover:text-indigo-600 font-medium transition-colors"
                                         >
                                           {sub.name}
                                         </a>
@@ -245,11 +266,11 @@ const Company = () => {
                           {item.subItems?.map((sub) => (
                             <div key={sub.id} className="flex items-center gap-4">
                               {sub.icon?.url && (
-                                <div className="w-4 h-4 flex items-center justify-center">
+                                <div className="size-3 lg:size-4 flex items-center justify-center">
                                   <img src={sub.icon.url} alt="" className="w-full h-full object-contain" />
                                 </div>
                               )}
-                              <span className="text-black font-medium">{sub.name}</span>
+                              <span className="text-black font-medium text-[16px] lg:text-[22px]">{sub.name}</span>
                             </div>
                           ))}
                         </div>
@@ -264,9 +285,9 @@ const Company = () => {
 
         {/* 4. Privacy Policies Section */}
         {section2?.image?.url && (
-          <section className="mt-15 xl:mt-30 bg-linear-to-b from-[#D9D9D9] to-transparant pt-15">
+          <section className="mt-15 xl:mt-30 bg-linear-to-b from-[#D9D9D9] to-transparant pt-10 lg:pt-15">
             <div className="container mx-auto px-6 md:px-12 xl:px-20">
-              <ScrollReveal className="flex flex-col items-center mb-16">
+              <ScrollReveal className="flex flex-col items-center mb-10 lg:mb-16">
                 <h2 className="text-[32px] md:text-[40px] font-normal tracking-[-0.03em] text-center">
                   {section2.title || "Privacy Policies"}
                 </h2>

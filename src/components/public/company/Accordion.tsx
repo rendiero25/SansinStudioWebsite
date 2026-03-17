@@ -39,12 +39,12 @@ const Accordion = ({
       >
         <div className="flex items-center gap-4">
           {icon && (
-            <div className="w-6 h-6 flex items-center justify-center shrink-0">
+            <div className="size-5 lg:size-6 flex items-center justify-center shrink-0">
               <img src={icon} alt="" className="w-full h-full object-contain" />
             </div>
           )}
           <span
-            className={`text-[21px] font-bold tracking-tight ${isOpen ? "text-black" : "text-black"}`}
+            className={`text-[18px] lg:text-[21px] font-bold tracking-tight ${isOpen ? "text-black" : "text-black"}`}
           >
             {title}
           </span>

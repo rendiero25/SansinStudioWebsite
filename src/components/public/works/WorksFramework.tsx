@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getSection } from "../../../services/sectionApi";
 import Skeleton from "../../Skeleton";
 import ScrollReveal from "../../ScrollReveal";
+import { sanitizeHtml } from "../../../utils/sanitize";
 
 interface FrameworkData {
   sideImageTitle?: string;
@@ -10,10 +11,33 @@ interface FrameworkData {
 
 const renderStyledText = (text: string) => {
   if (!text) return null;
+
+  // If it looks like HTML (from Quill), render it directly
   if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
   }
-  return text;
+
+  const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("_") && part.endsWith("_")) {
+      return (
+        <span
+          key={i}
+          className="italic underline underline-offset-4 decoration-1"
+        >
+          {part.slice(1, -1)}
+        </span>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <span key={i} className="italic">
+          {part.slice(1, -1)}
+        </span>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
 };
 
 const WorksFramework = () => {
@@ -47,7 +71,7 @@ const WorksFramework = () => {
   }
 
   return (
-    <section className="w-full bg-white mt-30 pb-0">
+    <section className="w-full bg-white mt-15 lg:mt-30 pb-0">
       <div className="container mx-auto px-6 md:px-12 xl:px-20">
         {/* Framework Header */}
         <ScrollReveal>
@@ -56,25 +80,25 @@ const WorksFramework = () => {
           </div>
         </ScrollReveal>
 
-        {/* Framework Image Container */}
-        <ScrollReveal delay={0.2} className="relative w-full bg-[#EBEBEB] rounded-xl overflow-hidden border border-black/5 h-[270px] sm:h-[430px] md:h-[510px] shadow-sm">
-          <div className="w-full h-full overflow-y-auto scrollbar-hide py-10 md:py-20 px-8 md:px-15">
-            <div className="w-full flex justify-center">
-              {data.sideImage?.url ? (
-                <img 
-                  src={data.sideImage.url} 
-                  alt="Framework Process" 
-                  className="w-full min-h-full object-cover object-contain"
-                />
-              ) : (
-                <div className="py-20 text-black/20 italic">No framework image found...</div>
-              )}
-            </div>
+        {/* Framework Image Container - Using Section 4 System */}
+        <ScrollReveal delay={0.1} className="relative w-full bg-[#d9d9d9] scrollbar-hide rounded-xl overflow-y-auto overflow-x-auto lg:mb-9 cursor-grab active:cursor-grabbing h-[300px] md:h-[450px]">
+          <div className="w-fit lg:w-full flex flex-col items-center px-4 lg:px-8 pt-4 lg:pt-16 min-w-full">
+            {!loaded ? (
+              <Skeleton className="w-full h-80" dark />
+            ) : data.sideImage?.url ? (
+              <img 
+                src={data.sideImage.url} 
+                alt="Our Framework" 
+                className="w-auto h-auto lg:w-full block min-h-[300px] lg:min-h-[700px] object-contain max-w-none lg:max-w-full"
+              />
+            ) : (
+              <div className="text-black/20 text-sm font-primary flex items-center justify-center p-8">
+                Image not found
+              </div>
+            )}
           </div>
-          
-          {/* Scroll Indicator Gradient at top and bottom */}
-          <div className="absolute top-0 left-0 right-0 h-20 bg-linear-to-b from-[#EBEBEB] to-transparent pointer-events-none z-10 opacity-60" />
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-[#EBEBEB] to-transparent pointer-events-none z-10 opacity-60" />
+          {/* Scroll Indicator Gradient */}
+          <div className="sticky bottom-0 left-0 right-0 h-16 bg-linear-to-t from-[#d9d9d9] to-transparent pointer-events-none opacity-50" />
         </ScrollReveal>
       </div>
 

@@ -68,7 +68,7 @@ const SolutionFAQs = () => {
             </h2>
 
             {data.title && (
-              <p className="font-primary text-[14px] md:text-[18px] text-black/60 max-w-[550px] leading-[1.6]">
+              <p className="hidden lg:block font-primary text-[14px] md:text-[18px] text-black/60 max-w-[550px] leading-[1.6]">
                 {data.title}
               </p>
             )}

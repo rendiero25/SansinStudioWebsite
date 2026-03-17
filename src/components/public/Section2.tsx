@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
+import { sanitizeHtml } from "../../utils/sanitize";
+
 
 interface ProjectCategory {
   id: string;
@@ -26,7 +28,7 @@ const renderStyledText = (text: string) => {
 
   // If it looks like HTML (from Quill), render it directly
   if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
   }
 
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
@@ -140,7 +142,7 @@ const Section2 = ({ showLabel = true, isDark = false, customTitle }: Section2Pro
             {!loaded ? (
               <Skeleton className="w-[100px] h-[30px] rounded-md mb-8" />
             ) : (
-              <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
+              <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[10px] font-bold uppercase rounded-md mb-6 font-primary">
                 {renderStyledText(title)}
               </div>
             )}

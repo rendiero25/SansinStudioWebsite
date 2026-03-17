@@ -3,6 +3,7 @@ import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import { Link } from "react-router-dom";
 import ScrollReveal from "../ScrollReveal";
+import { sanitizeHtml } from "../../utils/sanitize";
 
 interface Section4Data {
   title?: string;
@@ -20,7 +21,7 @@ const renderStyledText = (text: string) => {
 
   // If it looks like HTML (from Quill), render it directly
   if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
   }
 
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
@@ -74,8 +75,8 @@ const Section4 = () => {
       <div className="container mx-auto px-6 md:px-12 xl:px-20 flex flex-col items-center">
         
         {/* Title Section */}
-        <ScrollReveal className="text-center mb-16">
-          <h2 className="font-primary text-[26px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
+        <ScrollReveal className="text-center mb-8">
+          <h2 className="font-primary text-[28px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
             {loaded ? renderStyledText(data.title || "") : <Skeleton className="w-[80%] h-12 mx-auto" />}
           </h2>
         </ScrollReveal>
@@ -118,7 +119,7 @@ const Section4 = () => {
                 <Skeleton dark className="w-[80%] h-4" />
               </div>
             ) : (
-              <div className="font-primary text-white text-[13px] sm:text-[20px] md:text-[23px] leading-normal lg:leading-tight max-w-4xl wrap-break-word description-quill-content">
+              <div className="font-primary text-white text-[14px] sm:text-[20px] md:text-[23px] leading-normal lg:leading-tight max-w-2xl wrap-break-word description-quill-content">
                 {renderStyledText(data.description || "")}
               </div>
             )}
@@ -126,7 +127,7 @@ const Section4 = () => {
         </ScrollReveal>
 
         {/* Action Buttons */}
-        <ScrollReveal delay={0.2} direction="up" className="mt-16 flex flex-wrap items-center justify-center gap-4">
+        <ScrollReveal delay={0.2} direction="up" className="mt-8 lg:mt-16 flex flex-wrap items-center justify-center gap-4">
           {!loaded ? (
             <>
               <Skeleton className="w-32 h-14 rounded-xl" />

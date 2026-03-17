@@ -164,7 +164,7 @@ const SolutionCategories = () => {
 
   return (
     <section
-      className="w-full bg-white text-black mt-30 relative"
+      className="w-full bg-white text-black mt-15 lg:mt-30 relative"
       style={{ overflowX: "clip", overflowY: "visible" }}
     >
       <div
@@ -172,7 +172,7 @@ const SolutionCategories = () => {
         style={{ overflow: "visible" }}
       >
         {/* Top Header & Tabs Area */}
-        <ScrollReveal className="flex flex-col xl:flex-row justify-between items-start gap-12 w-full">
+        <ScrollReveal className="flex flex-col xl:flex-row justify-between items-start gap-6 lg:gap-12 w-full">
           {/* Left Sticky Title "Solutions" */}
           <div className="w-full xl:w-auto shrink-0 xl:sticky xl:top-32 h-auto text-left z-10 mt-4">
             <h2 className="font-primary text-[32px] md:text-[42px] uppercase font-normal tracking-[-0.02em] m-0">
@@ -181,7 +181,7 @@ const SolutionCategories = () => {
           </div>
 
           {/* Right Tabs */}
-          <div className="w-full xl:w-auto pb-4 xl:pb-0 scrollbar-hide">
+          <div className="w-full xl:w-auto lg:pb-4 xl:pb-0 scrollbar-hide">
             <div className="inline-flex w-full flex-col xl:flex-row items-center p-3 m-2 bg-white rounded-xl shadow-md border border-black/5 min-w-max gap-5">
               <span className="uppercase text-black text-sm xl:ml-2 xl:mr-12">
                 Category
@@ -212,12 +212,12 @@ const SolutionCategories = () => {
         </ScrollReveal>
 
         {/* Content Area for Active Category */}
-        <div className="mt-10 flex flex-col xl:flex-row items-start gap-16 w-full animate-[fadeIn_0.5s_ease-out]">
+        <div className="mt-0 lg:mt-10 flex flex-col xl:flex-row items-start gap-8 lg:gap-16 w-full animate-[fadeIn_0.5s_ease-out]">
           {/* Left side: Category Details */}
           <ScrollReveal
             delay={0.2}
             direction="right"
-            className="flex flex-col gap-8 w-full xl:w-[40.5%] shrink-0"
+            className="flex flex-col gap-4 lg:gap-8 w-full xl:w-[40.5%] shrink-0"
           >
             {/* Category Header */}
             <div className="flex items-center gap-4">
@@ -225,10 +225,10 @@ const SolutionCategories = () => {
                 <img
                   src={activeCategory.categoryIcon.url}
                   alt=""
-                  className="w-6 h-6 object-contain"
+                  className="w-5 h-5 object-contain"
                 />
               )}
-              <h3 className="font-primary text-[28px] md:text-[36px] uppercase font-normal tracking-tight m-0">
+              <h3 className="font-primary text-[24px] md:text-[36px] uppercase font-normal tracking-tight m-0">
                 {activeCategory.categoryName}
               </h3>
             </div>
@@ -252,7 +252,7 @@ const SolutionCategories = () => {
           <ScrollReveal
             delay={0.3}
             direction="up"
-            className="flex flex-col gap-8 w-full mt-12 xl:mt-0 min-w-0"
+            className="flex flex-col gap-8 w-full lg:mt-12 xl:mt-0 min-w-0"
           >
             {activeCategory.methods && activeCategory.methods.length > 0 && (
               <div className="flex flex-col gap-4 w-full min-w-0">
@@ -369,7 +369,7 @@ const SolutionCategories = () => {
           </ScrollReveal>
         </div>
 
-        <div className="w-full flex flex-col xl:flex-row justify-between items-start gap-20 mt-10 xl:mt-5">
+        <div className="w-full flex flex-col xl:flex-row justify-between items-start lg:gap-20 lg:mt-10 xl:mt-5">
           {/* Approach / Section Title underneath Image */}
           <ScrollReveal
             delay={0.4}

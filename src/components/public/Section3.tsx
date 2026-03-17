@@ -3,6 +3,8 @@ import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
 import { Link } from "react-router-dom";
+import { sanitizeHtml } from "../../utils/sanitize";
+
 import type { Category } from "../cms/CategorySolutionsEditor";
 
 interface Section3Data {
@@ -27,12 +29,12 @@ const CategoryCard = ({
       className={`relative shrink-0 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-xl overflow-hidden ${
         isExpanded
           ? "w-[300px] md:w-[350px] bg-[#d9d9d9] cursor-pointer"
-          : "w-[300px] md:w-[350px] cursor-pointer hover:shadow-lg bg-white"
+          : "w-[250px] md:w-[350px] cursor-pointer hover:shadow-lg bg-white"
       } h-[450px] flex flex-col p-8`}
       onClick={!isExpanded ? onToggle : undefined}
     >
       {/* Shared Header: Icon + Title - Hidden when expanded to avoid double title */}
-      <div className={`flex items-center gap-3 z-10 transition-all duration-300 ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+      <div className={`mt-5 lg:mt-0 flex items-center gap-3 z-10 transition-all duration-300 ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
         {cat.categoryIcon?.url && (
           <img
             src={cat.categoryIcon.url}
@@ -196,7 +198,7 @@ const renderStyledText = (text: string) => {
 
   // If it looks like HTML (from Quill), render it directly
   if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
   }
 
   const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
@@ -303,7 +305,7 @@ const Section3 = () => {
       style={{ overflowX: "clip" }}
     >
       <div className="bg-[#E1C6FF] p-10 rounded-xl" style={{ overflow: "visible" }}>
-        <div className="flex flex-col xl:flex-row items-stretch justify-between gap-16 xl:gap-24 w-full h-full">
+        <div className="flex flex-col xl:flex-row items-stretch justify-between gap-8 lg:gap-16 xl:gap-24 w-full h-full">
           {/* LEFT PANEL */}
           <ScrollReveal className="flex flex-col justify-between xl:w-[425px] shrink-0 xl:sticky z-10 self-stretch">
             {!loaded ? (
@@ -316,7 +318,7 @@ const Section3 = () => {
             ) : (
               <>
                 <div className="flex flex-col xl:flex-row gap-4 md:gap-10 items-start mb-16 md:mb-24">
-                  <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[12px] font-bold uppercase rounded-md mb-6 font-primary">
+                  <div className="inline-flex items-center px-3 py-1 bg-[#EBEBEB] text-black text-[10px] font-bold uppercase rounded-md mb-6 font-primary">
                     {data.sectionLabel || ""}
                   </div>
                   <p className="font-primary text-[14px] text-[#111] leading-tight max-w-[280px] m-0 font-medium">
@@ -325,8 +327,8 @@ const Section3 = () => {
                   </p>
                 </div>
 
-                <div className="flex flex-col justify-between items-start gap-10">
-                  <h2 className="font-primary text-[26px] lg:text-[42px] font-normal uppercase text-black leading-[1.1] tracking-[-0.02em] m-0">
+                <div className="flex flex-col justify-between items-start gap-5 lg:gap-10 -mt-10 lg:-mt-0">
+                  <h2 className="font-primary text-[28px] lg:text-[42px] font-normal uppercase text-black lg:leading-[1.1] tracking-[-0.02em] m-0">
                     {renderStyledText(
                       data.title || "",
                     )}

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
+import { sanitizeHtml } from "../../utils/sanitize";
+
 
 interface SocialLink {
   id: string;
@@ -30,7 +32,7 @@ const renderStyledText = (text: string) => {
 
   // If it looks like HTML (from Quill), render it directly
   if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
   }
 
   const parts = text.split(/(_[^_]+_)/g);
@@ -55,12 +57,14 @@ const Footer = ({
   email: emailProp,
   showBackgroundImage = true,
   backgroundImageOverride,
+  reachUsClassName,
 }: {
   showCTA?: boolean;
   customCTA?: React.ReactNode;
   email?: string;
   showBackgroundImage?: boolean;
   backgroundImageOverride?: string;
+  reachUsClassName?: string;
 }) => {
   const [data, setData] = useState<FooterData>({});
   const [loaded, setLoaded] = useState(false);
@@ -124,14 +128,14 @@ const Footer = ({
                 )}
 
                 {/* Bottom: Text Area */}
-                <div className="w-full p-8 flex flex-col xl:flex-row justify-between items-center gap-10">
+                <div className="w-full p-8 flex flex-col xl:flex-row justify-between items-center gap-5 lg:gap-10">
                   {!loaded ? (
                     <div className="w-full max-w-[800px] space-y-3">
                       <Skeleton className="w-[90%] h-[30px] md:h-[50px]" />
                       <Skeleton className="w-[70%] h-[30px] md:h-[50px]" />
                     </div>
                   ) : (
-                    <h2 className="text-[16px] sm:text-[30px] md:text-[38px] lg:text-[42px] font-light leading-[1.1] text-black m-0 max-w-[800px]">
+                    <h2 className="text-center lg:text-left text-[18px] sm:text-[30px] lg:text-[40px] font-light leading-normal text-black m-0 max-w-[800px]">
                       {renderStyledText(
                         data.ctaHeading ||
                           "",
@@ -167,12 +171,16 @@ const Footer = ({
           )}
 
           {/* 2. Reach Us Section */}
-          <ScrollReveal delay={0.2} direction="up" className="flex flex-col lg:flex-row justify-between items-start xl:items-end gap-12 lg:gap-8 mb-32">
+          <ScrollReveal 
+            delay={0.2} 
+            direction="up" 
+            className={`flex flex-col lg:flex-row justify-between items-start xl:items-end gap-12 lg:gap-8 mb-32 ${reachUsClassName}`}
+          >
             {/* Left: Contact Info */}
             <div className="flex flex-col gap-6">
               <p className="text-[14px] md:text-[15px] font-medium text-white/80 m-0 leading-tight w-[180px]">
                 {data.contactTitle ||
-                  "Want to discover more with us? please do"}
+                  ""}
               </p>
               <a
                 href={`mailto:${email}`}
@@ -183,17 +191,17 @@ const Footer = ({
             </div>
 
             {/* Right: Nav Links (3 Columns) */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-12 md:gap-20 xl:gap-24">
+            <div className="grid grid-cols-3 gap-12 md:gap-20 xl:gap-24">
               <div className="flex flex-col gap-5">
                 <Link
                   to="/works"
-                  className="text-[20px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
+                  className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
                 >
                   Works
                 </Link>
                 <Link
                   to="/solutions"
-                  className="text-[20px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
+                  className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
                 >
                   Solutions
                 </Link>
@@ -201,13 +209,13 @@ const Footer = ({
               <div className="flex flex-col gap-5">
                 <Link
                   to="/payments"
-                  className="text-[20px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline flex items-center gap-2"
+                  className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline flex items-center gap-2"
                 >
                   Payments
                 </Link>
                 <Link
                   to="/company"
-                  className="text-[20px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
+                  className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
                 >
                   Company
                 </Link>
@@ -215,13 +223,13 @@ const Footer = ({
               <div className="flex flex-col gap-5">
                 <Link
                   to="/insights"
-                  className="text-[20px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
+                  className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
                 >
                   Insights
                 </Link>
                 <Link
                   to="/faqs"
-                  className="text-[20px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
+                  className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
                 >
                   FAQs
                 </Link>

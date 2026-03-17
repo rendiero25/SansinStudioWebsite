@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
+import { sanitizeHtml } from "../../utils/sanitize";
+
 
 interface Section7Data {
   title?: string;
@@ -13,7 +15,7 @@ const renderStyledText = (text: string) => {
 
   // If it looks like HTML (from Quill), render it directly
   if (text.includes("<") && text.includes(">")) {
-    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
   }
 
   const lines = text.split("\n");

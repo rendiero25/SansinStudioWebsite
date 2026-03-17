@@ -149,13 +149,13 @@ const Projects = () => {
     <div className="projects-page font-primary">
       <Header />
 
-      <main className="pt-32 pb-24 min-h-screen bg-white">
+      <main className="pt-21 lg:pt-30 pb-15 lg:pb-24 min-h-screen bg-white">
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
           {/* Row 1: Title */}
           <div className="lg:sticky lg:top-[70px] lg:z-40 mb-8 flex flex-col xl:flex-row justify-between items-center">
             <ScrollReveal className="w-full xl:w-auto overflow-hidden">
               <h1
-                className={`text-[32px] md:text-[42px] font-normal tracking-[-0.02em] text-[#0A0A0A] m-0 leading-none transition-all duration-300 ${
+                className={`text-[32px] md:text-[42px] uppercase font-normal tracking-[-0.02em] text-[#0A0A0A] m-0 leading-none transition-all duration-300 ${
                   isScrolled
                     ? "opacity-0 invisible h-0 w-0 overflow-hidden"
                     : "opacity-100 visible h-auto w-auto"
@@ -168,7 +168,7 @@ const Projects = () => {
             {/* Row 2: Sticky Category Filter Pills */}
             <ScrollReveal delay={0.2} direction="left" className="py-4 sm:mx-0 sm:px-0 w-full xl:w-auto">
               <div className="flex justify-start lg:justify-end">
-                <div className="flex flex-col lg:flex-row w-full lg:w-auto items-center bg-white shadow-md border border-black/5 rounded-xl p-4 m-2 xl:m-0 xl:p-2 gap-2 overflow-x-auto max-w-full hide-scrollbar">
+                <div className="flex flex-col lg:flex-row w-full lg:w-auto items-center bg-white shadow-md border border-black/5 rounded-xl p-3 lg:p-4 m-2 xl:m-0 xl:p-2 gap-2 overflow-x-auto max-w-full hide-scrollbar">
                   <span className="text-sm uppercase text-black/50 px-3 shrink-0 mb-4 lg:mb-0">
                     CATEGORY
                   </span>
@@ -194,7 +194,7 @@ const Projects = () => {
                         setActiveCategory(cat.id);
                         setCurrentPage(1); // Reset page on category change
                       }}
-                      className={`cursor-pointer flex items-center gap-2 mb-3 lg:mb-0 px-9 py-2 rounded-lg text-[14px] md:text-[15px] font-medium transition-colors shrink-0 ${
+                      className={`cursor-pointer flex items-center gap-2 mb-1 lg:mb-3 lg:mb-0 px-9 py-2 rounded-lg text-[14px] md:text-[15px] font-medium transition-colors shrink-0 ${
                         activeCategory === cat.id
                           ? "bg-[#e0e0e0] text-black"
                           : "bg-transparent text-black/50 hover:text-black/80 hover:bg-black/5"
@@ -337,7 +337,7 @@ const Projects = () => {
         </div>
       </main>
 
-      <Footer showCTA={false} backgroundImageOverride={data.footerBg} />
+      <Footer showCTA={false} backgroundImageOverride={data.footerBg} reachUsClassName="mt-30 lg:mt-10"/>
 
       <style>
         {`

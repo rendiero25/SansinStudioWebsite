@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
+import { sanitizeHtml } from "../../utils/sanitize";
+
 
 interface HeroData {
   brandName?: string;
@@ -39,7 +41,7 @@ const HeroSection = () => {
 
     // If it looks like HTML (from Quill), render it directly
     if (text.includes("<") && text.includes(">")) {
-      return <span dangerouslySetInnerHTML={{ __html: text }} />;
+      return <span className="quill-content-title" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
     }
 
     // Legacy parser for *word* and _word_
@@ -123,7 +125,7 @@ const HeroSection = () => {
         {/* Headline */}
         <ScrollReveal delay={0.2} className="w-full relative z-10">
           <div className="text-center w-full mb-6">
-            <p className="font-primary text-center text-[25px] sm:text-[50px] md:text-[60px] lg:text-[50px] xl:text-6xl uppercase font-normal text-black leading-[1.1]">
+            <p className="font-primary text-center text-[38px] sm:text-[50px] md:text-[60px] lg:text-[50px] xl:text-6xl uppercase font-normal text-black leading-[1.1]">
               {renderHeadline(
                 data.headline || ""
               )}
@@ -134,11 +136,12 @@ const HeroSection = () => {
         {/* Description */}
         <ScrollReveal delay={0.3} className="w-full relative z-10">
           <div className="text-center w-full max-w-[600px] mx-auto mb-10">
-            <div className="font-primary text-[12px] md:text-[18px] font-normal text-black leading-[1.6] [&_p]:m-0">
+            <div className="font-primary text-[18px] font-normal text-black leading-[1.6] [&_p]:m-0">
               <span
+                className="quill-content-description"
                 dangerouslySetInnerHTML={{
                   __html:
-                    data.subtitle || ""
+                    sanitizeHtml(data.subtitle || "")
                 }}
               />
             </div>
@@ -147,16 +150,16 @@ const HeroSection = () => {
 
         {/* Buttons */}
         <ScrollReveal delay={0.4} className="w-full relative z-10">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <div className="flex flex-row items-center justify-center gap-8 lg:gap-4 mb-16">
             <Link
               to={ctaButton.link}
-              className="inline-flex items-center justify-center px-6 py-2 bg-[#8E33FF] hover:bg-black text-white rounded-xl font-primary text-[15px] font-semibold transition-all shadow-[0_4px_14px_0_rgba(142,51,255,0.39)] no-underline w-full sm:w-auto"
+              className="inline-flex items-center justify-center px-6 py-2 bg-[#8E33FF] hover:bg-black text-white rounded-xl font-primary text-[15px] font-semibold transition-all shadow-[0_4px_14px_0_rgba(142,51,255,0.39)] no-underline  sm:w-auto"
             >
               {ctaButton.text}
             </Link>
             <Link
               to={secondaryButton.link}
-              className="inline-flex items-center justify-center px-6 py-2 bg-white border border-black/50 hover:bg-black text-black hover:text-white rounded-xl font-primary text-[15px] font-semibold transition-all no-underline w-full sm:w-auto"
+              className="inline-flex items-center justify-center px-6 py-2 bg-white border border-black/50 hover:bg-black text-black hover:text-white rounded-xl font-primary text-[15px] font-semibold transition-all no-underline sm:w-auto"
             >
               {secondaryButton.text}
             </Link>
@@ -166,9 +169,9 @@ const HeroSection = () => {
         {/* Background Video/Image Block */}
         <div className="w-full relative z-10">
           <ScrollReveal delay={0.5} className="w-full">
-            <div className="w-full p-0 rounded-2xl overflow-hidden aspect-video flex items-center justify-center bg-[#0a0a0a]">
+            <div className="rounded-2xl overflow-hidden aspect-3/4 lg:aspect-video">
               {!loaded ? (
-                <Skeleton dark className="w-full h-full m-0 p-0" />
+                <Skeleton dark className="w-full h-full" />
               ) : useBgVideo ? (
                 <video
                   className="w-full h-full object-cover"
@@ -186,7 +189,7 @@ const HeroSection = () => {
                   loading="eager"
                 />
               ) : (
-                <div className="w-full h-full bg-[#0a0a0a] m-0 p-0" />
+                ""
               )}
             </div>
           </ScrollReveal>
