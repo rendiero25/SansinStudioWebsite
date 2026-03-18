@@ -228,7 +228,7 @@ const SolutionCategories = () => {
                   className="w-5 h-5 object-contain"
                 />
               )}
-              <h3 className="font-primary text-[24px] md:text-[36px] uppercase font-normal tracking-tight m-0">
+              <h3 className="font-primary text-[25px] md:text-[36px] uppercase font-normal tracking-tight m-0">
                 {activeCategory.categoryName}
               </h3>
             </div>
@@ -381,7 +381,7 @@ const SolutionCategories = () => {
               {activeCategory.sectionTitle}
             </h4>
             {activeCategory.sectionDesc && (
-              <p className="font-primary text-[35px] text-black leading-tight max-w-[1000px] m-0">
+              <p className="font-primary text-[25px] lg:text-[35px] text-black leading-tight max-w-[1000px] m-0">
                 {activeCategory.sectionDesc}
               </p>
             )}

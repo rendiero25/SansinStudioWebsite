@@ -39,10 +39,10 @@ const CategoryCard = ({
           <img
             src={cat.categoryIcon.url}
             alt=""
-            className="w-8 h-8 object-contain"
+            className="size-5 lg:size-8 object-contain"
           />
         )}
-        <h3 className="font-primary text-[28px] md:text-[32px] font-medium tracking-tight text-[#111] m-0">
+        <h3 className="font-primary text-[23px] md:text-[32px] font-medium tracking-tight text-[#111] m-0">
           {cat.categoryName}
         </h3>
       </div>
@@ -79,7 +79,7 @@ const CategoryCard = ({
           </div>
 
           <div className="mt-auto">
-            <div className="w-10 h-10 bg-black hover:bg-blue-500 rounded-full flex items-center justify-center text-white">
+            <div className="size-8 lg:size-10 bg-black hover:bg-blue-500 rounded-full flex items-center justify-center text-white">
               <svg
                 width="20"
                 height="20"
@@ -328,7 +328,7 @@ const Section3 = () => {
                 </div>
 
                 <div className="flex flex-col justify-between items-start gap-5 lg:gap-10 -mt-10 lg:-mt-0">
-                  <h2 className="font-primary text-[28px] lg:text-[42px] font-normal uppercase text-black lg:leading-[1.1] tracking-[-0.02em] m-0">
+                  <h2 className="font-primary text-[25px] lg:text-[42px] font-normal uppercase text-black lg:leading-[1.1] tracking-[-0.02em] m-0">
                     {renderStyledText(
                       data.title || "",
                     )}

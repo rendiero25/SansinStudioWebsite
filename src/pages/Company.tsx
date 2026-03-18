@@ -157,7 +157,7 @@ const Company = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-15 mb-15 xl:mb-24 items-start">
             <ScrollReveal delay={0.2} className="flex flex-col gap-4 lg:gap-8">
               <h1 
-                className="text-[28px] sm:text-[32px] lg:text-[40px] xl:text-[42px] font-normal quill-content-title"
+                className="text-[25px] sm:text-[32px] lg:text-[40px] xl:text-[42px] font-normal quill-content-title"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.title || "") }}
               />
               <div 
@@ -288,7 +288,7 @@ const Company = () => {
           <section className="mt-15 xl:mt-30 bg-linear-to-b from-[#D9D9D9] to-transparant pt-10 lg:pt-15">
             <div className="container mx-auto px-6 md:px-12 xl:px-20">
               <ScrollReveal className="flex flex-col items-center mb-10 lg:mb-16">
-                <h2 className="text-[32px] md:text-[40px] font-normal tracking-[-0.03em] text-center">
+                <h2 className="text-[25px] md:text-[40px] font-normal tracking-[-0.03em] text-center">
                   {section2.title || "Privacy Policies"}
                 </h2>
               </ScrollReveal>
