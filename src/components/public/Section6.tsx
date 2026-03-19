@@ -120,7 +120,7 @@ const Section6 = () => {
     scrollContainerRef.current.scrollTop = scrollTop - walkY;
   };
 
-  const btn = data.ctaButton || { text: "Works", link: "/works" };
+  const btn = data.ctaButton || { text: "Process", link: "/process" };
   const sideImage = data.sideImage;
 
   return (

@@ -96,7 +96,7 @@ const SectionWrapper = ({
             </span>
           )}
           <button
-            className="py-2.5 px-5 border-none rounded-[10px] text-[13px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+            className="px-6 py-2 border-none rounded-[10px] text-[15px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
             onClick={handleSave}
             disabled={saving}
           >

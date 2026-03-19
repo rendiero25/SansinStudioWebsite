@@ -194,10 +194,10 @@ const Footer = ({
             <div className="grid grid-cols-3 gap-12 md:gap-20 xl:gap-24">
               <div className="flex flex-col gap-5">
                 <Link
-                  to="/works"
+                  to="/process"
                   className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
                 >
-                  Works
+                  Process
                 </Link>
                 <Link
                   to="/solutions"
@@ -208,7 +208,7 @@ const Footer = ({
               </div>
               <div className="flex flex-col gap-5">
                 <Link
-                  to="/payments"
+                  to="/company#CompanyBusiness"
                   className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline flex items-center gap-2"
                 >
                   Payments
@@ -228,7 +228,7 @@ const Footer = ({
                   Insights
                 </Link>
                 <Link
-                  to="/faqs"
+                  to="/solutions#faq"
                   className="text-[18px] md:text-[24px] text-white/40 hover:text-white transition-colors no-underline"
                 >
                   FAQs

@@ -45,3 +45,15 @@ export const deleteFile = async (publicId: string, resourceType?: string) => {
   });
   return response.data;
 };
+
+// Public upload for project briefs
+export const uploadBrief = async (file: File, folder?: string) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  if (folder) formData.append("folder", folder || "sanxinstudio/briefs");
+
+  const response = await api.post("/api/contact/upload", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
+};

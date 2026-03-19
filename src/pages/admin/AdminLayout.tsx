@@ -88,10 +88,9 @@ const AdminLayout = () => {
       ],
     },
     {
-      label: "Works",
+      label: "Process",
       icon: "🖼️",
       subItems: [
-        { label: "Section 1", path: "/admin/works/section1", icon: "🎬" },
         { label: "Section 2", path: "/admin/works/section2", icon: "🚀" },
         { label: "Section 3", path: "/admin/works/section3", icon: "🎯" },
       ],
@@ -446,12 +445,12 @@ const styles: Record<string, React.CSSProperties> = {
     textTransform: "capitalize" as const,
   },
   logoutBtn: {
-    padding: "10px",
+    padding: "8px 24px",
     background: "rgba(239, 68, 68, 0.1)",
     border: "1px solid rgba(239, 68, 68, 0.2)",
     borderRadius: "10px",
     color: "#ef4444",
-    fontSize: "13px",
+    fontSize: "15px",
     fontWeight: 500,
     cursor: "pointer",
     transition: "background 0.15s",

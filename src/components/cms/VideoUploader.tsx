@@ -68,14 +68,14 @@ const VideoUploader = ({
           <div className="flex gap-2 p-3 bg-black/60">
             <button
               type="button"
-              className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/10"
+              className="px-6 py-2 text-[15px] border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/10"
               onClick={() => inputRef.current?.click()}
             >
               Replace
             </button>
             <button
               type="button"
-              className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-red-500/12 text-red-500 border border-red-500/20 hover:bg-red-500/20"
+              className="px-6 py-2 text-[15px] border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer transition-all duration-150 inline-flex items-center gap-1.5 whitespace-nowrap bg-red-500/12 text-red-500 border border-red-500/20 hover:bg-red-500/20"
               onClick={handleDelete}
             >
               Remove

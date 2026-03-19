@@ -194,7 +194,7 @@ const Projects = () => {
                         setActiveCategory(cat.id);
                         setCurrentPage(1); // Reset page on category change
                       }}
-                      className={`cursor-pointer flex items-center gap-2 mb-1 lg:mb-3 lg:mb-0 px-9 py-2 rounded-lg text-[14px] md:text-[15px] font-medium transition-colors shrink-0 ${
+                      className={`cursor-pointer flex items-center gap-2 mb-1 lg:mb-0 px-9 py-2 rounded-lg text-[14px] md:text-[15px] font-medium transition-colors shrink-0 ${
                         activeCategory === cat.id
                           ? "bg-[#e0e0e0] text-black"
                           : "bg-transparent text-black/50 hover:text-black/80 hover:bg-black/5"

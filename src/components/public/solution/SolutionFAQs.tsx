@@ -54,7 +54,7 @@ const SolutionFAQs = () => {
   };
 
   return (
-    <div className="w-full relative mt-30">
+    <div id="faq" className="w-full relative mt-30">
       <div className="w-full z-10">
         {/* FAQ Container Box */}
         <ScrollReveal

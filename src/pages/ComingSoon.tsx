@@ -14,8 +14,8 @@ const ComingSoon = () => {
             Insights Section
           </div>
           
-          <h1 className="text-[48px] md:text-[72px] lg:text-[92px] leading-none font-normal tracking-[-0.04em] text-white">
-            Coming <br /> <span className="text-white italic">Soon</span>
+          <h1 className="text-[48px] md:text-[72px] leading-none font-normal tracking-[-0.04em] text-white quill-content-title">
+            Coming Soon
           </h1>
           
           <div className="w-16 h-[2px] bg-white/10" />
@@ -27,13 +27,13 @@ const ComingSoon = () => {
           <div className="mt-8 flex flex-col md:flex-row gap-4">
             <button 
               onClick={() => window.history.back()}
-              className="cursor-pointer px-10 py-4 bg-black text-white rounded-xl text-[17px] font-medium transition-all hover:scale-105 hover:bg-white hover:text-black active:scale-95"
+              className="cursor-pointer px-6 py-2 bg-black text-white rounded-xl text-[15px] font-medium transition-all hover:scale-105 hover:bg-white hover:text-black active:scale-95"
             >
               Go Back
             </button>
             <a 
               href="/contact"
-              className="cursor-pointer px-10 py-4 bg-transparent border border-white text-black rounded-xl text-[17px] font-medium transition-all hover:bg-white hover:text-black"
+              className="cursor-pointer px-6 py-2 bg-transparent border border-white text-black rounded-xl text-[15px] font-medium transition-all hover:bg-white hover:text-black"
             >
               Contact Us
             </a>

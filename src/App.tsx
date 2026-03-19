@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
+import ScrollToHash from "./components/ScrollToHash";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -7,7 +8,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Home from "./pages/Home";
 import Solution from "./pages/Solution";
-import Works from "./pages/Works";
+import Process from "./pages/Process";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 // import Insights from "./pages/Insights";
@@ -62,11 +63,12 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <ScrollToHash />
         <Routes>
           {/* Public Home Page */}
           <Route path="/" element={<Home />} />
           <Route path="/solutions" element={<Solution />} />
-          <Route path="/works" element={<Works />} />
+          <Route path="/process" element={<Process />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetail />} />
           <Route path="/insights" element={<ComingSoon />} />

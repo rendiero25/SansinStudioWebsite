@@ -179,7 +179,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   button: {
     marginTop: '8px',
-    padding: '14px',
+    padding: '8px 24px',
     background: 'linear-gradient(135deg, #6366f1, #a855f7)',
     border: 'none',
     borderRadius: '12px',

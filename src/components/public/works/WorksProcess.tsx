@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getSection } from "../../../services/sectionApi";
 import Skeleton from "../../Skeleton";
 import ScrollReveal from "../../ScrollReveal";
@@ -15,13 +15,13 @@ interface ProcessDetail {
 interface Process {
   id: string;
   processTitle: string;
+  deliveryTime?: string;
   processIcon?: { url: string } | null;
   details: ProcessDetail[];
 }
 
 interface TimelineData {
   sectionTitle?: string;
-  deliveryTime?: string;
   processes?: Process[];
 }
 
@@ -36,6 +36,7 @@ const WorksProcess = () => {
   const [loaded, setLoaded] = useState(false);
   const [activeProcessId, setActiveProcessId] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleApproach = () => {
     const processes = timeline.processes || [];
@@ -58,9 +59,18 @@ const WorksProcess = () => {
         setTimeline(timelineData);
         setButtons(s3.content || {});
 
-        // Set first process as active
+        // Set active process based on navigation state or default to first
         if (timelineData.processes && timelineData.processes.length > 0) {
-          setActiveProcessId(timelineData.processes[0].id);
+          const targetCategory = location.state?.categoryName;
+          const matchingProcess = targetCategory 
+            ? timelineData.processes.find((p: Process) => p.processTitle.toLowerCase() === targetCategory.toLowerCase())
+            : null;
+
+          if (matchingProcess) {
+            setActiveProcessId(matchingProcess.id);
+          } else {
+            setActiveProcessId(timelineData.processes[0].id);
+          }
         }
       } catch (err) {
         console.error("Failed to load works process:", err);
@@ -69,7 +79,7 @@ const WorksProcess = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [location.state]);
 
   // Wheel → horizontal scroll for process detail cards
   useEffect(() => {
@@ -207,13 +217,13 @@ const WorksProcess = () => {
             </div>
 
             {/* Est. Delivery Time */}
-            {timeline.deliveryTime && (
+            {activeProcess.deliveryTime && (
               <div className="bg-white px-8 py-2 rounded-xl flex flex-col items-center justify-center gap-1 w-full xl:w-[280px] shadow-sm border border-black/8">
                 <span className="text-[9px] md:text-[10px] font-bold text-black/40 uppercase tracking-widest">
                   Est. Delivery Time
                 </span>
                 <span className="text-[18px] md:text-[22px] font-bold text-black tracking-tight">
-                  {timeline.deliveryTime}
+                  {activeProcess.deliveryTime}
                 </span>
               </div>
             )}

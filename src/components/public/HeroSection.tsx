@@ -4,6 +4,7 @@ import { getSection } from "../../services/sectionApi";
 import Skeleton from "../Skeleton";
 import ScrollReveal from "../ScrollReveal";
 import { sanitizeHtml } from "../../utils/sanitize";
+import { getOptimizedVideoUrl } from "../../utils/cloudinary";
 
 
 interface HeroData {
@@ -150,7 +151,7 @@ const HeroSection = () => {
 
         {/* Buttons */}
         <ScrollReveal delay={0.4} className="w-full relative z-10">
-          <div className="flex flex-row items-center justify-center gap-8 lg:gap-4 mb-8 lg:mb-16">
+          <div className="flex flex-row items-center justify-center gap-4 mb-8 lg:mb-16">
             <Link
               to={ctaButton.link}
               className="inline-flex items-center justify-center px-6 py-2 bg-[#8E33FF] hover:bg-black text-white rounded-xl font-primary text-[15px] font-semibold transition-all shadow-[0_4px_14px_0_rgba(142,51,255,0.39)] no-underline  sm:w-auto"
@@ -179,7 +180,8 @@ const HeroSection = () => {
                   muted
                   loop
                   playsInline
-                  src={bgVideoUrl}
+                  preload="auto"
+                  src={getOptimizedVideoUrl(bgVideoUrl)}
                 />
               ) : bgUrl ? (
                 <img

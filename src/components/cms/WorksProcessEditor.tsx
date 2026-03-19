@@ -19,6 +19,7 @@ export interface ProcessDetail {
 export interface Process {
   id: string;
   processTitle: string;
+  deliveryTime: string;
   processIcon: { url: string; publicId: string } | null;
   details: ProcessDetail[];
 }
@@ -38,6 +39,7 @@ const WorksProcessEditor = ({
     const newProcess: Process = {
       id: generateId(),
       processTitle: "",
+      deliveryTime: "",
       processIcon: null,
       details: [],
     };
@@ -75,7 +77,7 @@ const WorksProcessEditor = ({
         </label>
         <button
           type="button"
-          className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer inline-flex items-center gap-1.5 bg-linear-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)]"
+          className="px-6 py-2 text-[15px] border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer inline-flex items-center gap-1.5 bg-linear-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)]"
           onClick={handleAddProcess}
         >
           + Add Process
@@ -146,23 +148,43 @@ const WorksProcessEditor = ({
               {/* Process Details Content */}
               {editingProcessId === proc.id && (
                 <div className="px-4 pb-4 flex flex-col gap-5 border-t border-white/[0.04] pt-4">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-medium text-white/50">
-                      Process Title
-                    </label>
-                    <input
-                      type="text"
-                      className={INPUT_CLASS}
-                      value={proc.processTitle}
-                      onChange={(e) =>
-                        handleUpdateProcess(
-                          proc.id,
-                          "processTitle",
-                          e.target.value,
-                        )
-                      }
-                      placeholder="e.g. Phase 1: Discovery"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-medium text-white/50">
+                        Process Title
+                      </label>
+                      <input
+                        type="text"
+                        className={INPUT_CLASS}
+                        value={proc.processTitle}
+                        onChange={(e) =>
+                          handleUpdateProcess(
+                            proc.id,
+                            "processTitle",
+                            e.target.value,
+                          )
+                        }
+                        placeholder="e.g. Phase 1: Discovery"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-medium text-white/50">
+                        Est. Delivery Time
+                      </label>
+                      <input
+                        type="text"
+                        className={INPUT_CLASS}
+                        value={proc.deliveryTime || ""}
+                        onChange={(e) =>
+                          handleUpdateProcess(
+                            proc.id,
+                            "deliveryTime",
+                            e.target.value,
+                          )
+                        }
+                        placeholder="e.g. 1-2 Weeks"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-2">
@@ -312,7 +334,7 @@ const ProcessDetailsEditor = ({
       ))}
       <button
         type="button"
-        className="w-full py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 rounded-lg text-sm border border-indigo-500/20 transition-colors cursor-pointer"
+        className="w-full px-6 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 rounded-lg text-[15px] font-semibold border border-indigo-500/20 transition-colors cursor-pointer"
         onClick={handleAdd}
       >
         + Add Detail Item

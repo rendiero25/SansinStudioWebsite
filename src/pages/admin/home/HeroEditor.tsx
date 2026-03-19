@@ -51,7 +51,7 @@ const HeroEditor = () => {
                 <div className="flex gap-1 p-1 bg-white/4 rounded-[10px] border border-white/6 mb-4">
                   <button
                     type="button"
-                    className={`flex-1 py-2 px-4 border-none rounded-lg text-[13px] font-medium cursor-pointer transition-all duration-200 font-[IBM_Plex_Sans,sans-serif] ${bgType === "image" ? "bg-indigo-500/20 text-purple-400" : "bg-transparent text-white/50"}`}
+                    className={`flex-1 px-6 py-2 border-none rounded-lg text-[15px] font-medium cursor-pointer transition-all duration-200 font-[IBM_Plex_Sans,sans-serif] ${bgType === "image" ? "bg-indigo-500/20 text-purple-400" : "bg-transparent text-white/50"}`}
                     onClick={() => {
                       setBgType("image");
                       updateContent("bgType", "image");
@@ -61,7 +61,7 @@ const HeroEditor = () => {
                   </button>
                   <button
                     type="button"
-                    className={`flex-1 py-2 px-4 border-none rounded-lg text-[13px] font-medium cursor-pointer transition-all duration-200 font-[IBM_Plex_Sans,sans-serif] ${bgType === "video" ? "bg-indigo-500/20 text-purple-400" : "bg-transparent text-white/50"}`}
+                    className={`flex-1 px-6 py-2 border-none rounded-lg text-[15px] font-medium cursor-pointer transition-all duration-200 font-[IBM_Plex_Sans,sans-serif] ${bgType === "video" ? "bg-indigo-500/20 text-purple-400" : "bg-transparent text-white/50"}`}
                     onClick={() => {
                       setBgType("video");
                       updateContent("bgType", "video");

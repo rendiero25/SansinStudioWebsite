@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Header from "../components/public/Header";
 import Footer from "../components/public/Footer";
-import { getSection } from "../services/sectionApi";
+import { getSection, uploadBrief } from "../services/sectionApi";
+import api from "../services/api";
 import { SuccessModal } from "../components/public/insights/InsightsComponents";
 import Skeleton from "../components/Skeleton";
 import ScrollReveal from "../components/ScrollReveal";
@@ -190,16 +191,73 @@ const Contact = () => {
     );
   };
 
-  const submitButtonStyle = isFormValid()
-    ? "bg-[#7526BF] text-white cursor-pointer"
-    : "bg-black/30 text-white/50 cursor-not-allowed";
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isFormValid()) {
-      setShowModal(true);
-      // In a real app, you would send the formData to an API here
-      console.log("Form submitted:", formData);
+    if (!isFormValid() || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      // 1. Upload files to Cloudinary
+      const uploadedFiles = await Promise.all(
+        formData.attachedFiles.map(async (file) => {
+          const result = await uploadBrief(file);
+          return { name: file.name, url: result.url, publicId: result.publicId };
+        }),
+      );
+
+      // 2. Prepare payload
+      const payload = {
+        name: formData.name,
+        brandName: formData.brandName,
+        email: formData.email,
+        otherContacts: formData.otherContacts,
+        needs: formData.needs,
+        solutions: formData.solutions,
+        timeline: {
+          number: formData.timelineNumber,
+          unit: formData.timelineUnit,
+        },
+        investment: {
+          range: formData.investmentRange,
+          currency: formData.investmentCurrency,
+        },
+        schedule: {
+          date: formData.scheduleDate,
+          time: formData.scheduleTime,
+        },
+        attachedFiles: uploadedFiles,
+      };
+
+      // 3. Send to backend
+      const response = await api.post("/api/contact/submit", payload);
+
+      if (response.data.success) {
+        setShowModal(true);
+        // Reset form
+        setFormData({
+          name: "",
+          brandName: "",
+          email: "",
+          otherContacts: "",
+          needs: "",
+          solutions: [],
+          timelineNumber: 0,
+          timelineUnit: "Weeks",
+          investmentRange: 0,
+          investmentCurrency: "IDR",
+          scheduleDate: "",
+          scheduleTime: "Select time",
+          privacyAccepted: false,
+          attachedFiles: [],
+        });
+      }
+    } catch (err) {
+      console.error("Submission failed:", err);
+      alert("Failed to submit project. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -528,19 +586,19 @@ const Contact = () => {
                         name="timelineUnit"
                         value={formData.timelineUnit}
                         onChange={handleInputChange}
-                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg text-transparent focus:outline-none appearance-none cursor-pointer [&>option]:text-black p-4"
+                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg text-black/70 text-[14px] font-bold focus:outline-none appearance-none cursor-pointer p-4 pr-6"
                       >
                         <option value="Weeks">W</option>
-                        <option>M</option>
+                        <option value="Months">M</option>
                       </select>
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                         <svg
-                          width="12"
-                          height="12"
+                          width="10"
+                          height="10"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="black"
-                          strokeWidth="2.5"
+                          strokeWidth="3"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         >
@@ -558,7 +616,7 @@ const Contact = () => {
                   <div className="flex items-center gap-4 min-h-[54px]">
                     <input
                       name="investmentRange"
-                      value={formData.investmentRange}
+                      value={formData.investmentRange === 0 ? "" : formData.investmentRange}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
@@ -566,26 +624,27 @@ const Contact = () => {
                         }))
                       }
                       type="number"
+                      placeholder="0"
                       className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none placeholder:text-black/30 appearance-none"
                     />
-                    <div className="relative w-[54px] h-[54px] shrink-0">
+                    <div className="relative w-[70px] h-[54px] shrink-0">
                       <select
                         name="investmentCurrency"
                         value={formData.investmentCurrency}
                         onChange={handleInputChange}
-                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg p-2 text-transparent focus:outline-none appearance-none cursor-pointer [&>option]:text-black"
+                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg px-3 py-2 text-black/70 text-[13px] font-bold focus:outline-none appearance-none cursor-pointer pr-6"
                       >
                         <option>IDR</option>
                         <option>USD</option>
                       </select>
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                         <svg
-                          width="12"
-                          height="12"
+                          width="10"
+                          height="10"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="black"
-                          strokeWidth="2.5"
+                          strokeWidth="3"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         >
@@ -745,10 +804,14 @@ const Contact = () => {
               <div className="flex justify-end mt-4">
                 <button
                   type="submit"
-                  disabled={!isFormValid()}
-                  className={`px-12 py-4.5 text-[16px] font-bold rounded-lg transition-all shadow-xl shadow-black/10 hover:shadow-black/20 ${submitButtonStyle}`}
+                  disabled={!isFormValid() || isSubmitting}
+                  className={`px-6 py-2 text-[15px] font-bold rounded-lg transition-all shadow-xl shadow-black/10 hover:shadow-black/20 ${
+                    !isFormValid() || isSubmitting
+                      ? "bg-black/30 text-white/50 cursor-not-allowed"
+                      : "bg-[#7526BF] text-white cursor-pointer"
+                  }`}
                 >
-                  Submit Project
+                  {isSubmitting ? "Submitting..." : "Submit Project"}
                 </button>
               </div>
             </form>

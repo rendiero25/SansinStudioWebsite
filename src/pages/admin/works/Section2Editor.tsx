@@ -16,18 +16,12 @@ const Section2Editor = () => {
             <h3 className="text-[15px] font-semibold text-white/80 m-0 mb-4">
               Global Section Settings
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <TextFieldEditor
                 label="Section Title"
                 value={(content.sectionTitle as string) || ""}
                 onChange={(val) => updateContent("sectionTitle", val)}
                 placeholder="e.g. The Process"
-              />
-              <TextFieldEditor
-                label="Est. Delivery Time"
-                value={(content.deliveryTime as string) || ""}
-                onChange={(val) => updateContent("deliveryTime", val)}
-                placeholder="e.g. 4-6 Weeks"
               />
             </div>
           </div>

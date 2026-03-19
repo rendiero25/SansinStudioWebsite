@@ -100,7 +100,7 @@ const CategorySolutionsEditor = ({
         </label>
         <button
           type="button"
-          className="py-[7px] px-3.5 text-xs border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer inline-flex items-center gap-1.5 bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)]"
+          className="px-6 py-2 text-[15px] border-none rounded-[10px] font-semibold font-[IBM_Plex_Sans,sans-serif] cursor-pointer inline-flex items-center gap-1.5 bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-[0_2px_12px_rgba(99,102,241,0.25)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)]"
           onClick={handleAddCategory}
         >
           + Add Category
@@ -501,7 +501,7 @@ const MethodsEditor = ({
       ))}
       <button
         type="button"
-        className="w-full py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 rounded-lg text-sm border border-indigo-500/20 transition-colors cursor-pointer"
+        className="w-full px-6 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 rounded-lg text-[15px] font-semibold border border-indigo-500/20 transition-colors cursor-pointer"
         onClick={handleAddMethod}
       >
         + Add Method
@@ -582,7 +582,7 @@ const DetailMethodsEditor = ({
       ))}
       <button
         type="button"
-        className="w-max px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white/60 text-xs rounded border border-white/10 transition-colors cursor-pointer mt-1"
+        className="w-max px-6 py-2 bg-white/5 hover:bg-white/10 text-white/60 text-[15px] font-semibold rounded-[10px] border border-white/10 transition-colors cursor-pointer mt-1"
         onClick={handleAdd}
       >
         + Add Detail

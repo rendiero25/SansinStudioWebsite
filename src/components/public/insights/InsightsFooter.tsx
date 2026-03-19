@@ -140,10 +140,10 @@ export const InsightsFooter = ({
           <div className="flex grid-cols-2 sm:grid-cols-3 gap-12 sm:gap-24 lg:gap-32">
             <div className="flex flex-col gap-5">
               <Link
-                to="/works"
+                to="/process"
                 className="font-primary text-[18px] md:text-[20px] text-white/60 hover:text-white transition-colors"
               >
-                Works
+                Process
               </Link>
               <Link
                 to="/solutions"

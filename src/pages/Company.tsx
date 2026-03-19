@@ -7,6 +7,7 @@ import Skeleton from "../components/Skeleton";
 import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/public/Footer";
 import { sanitizeHtml } from "../utils/sanitize";
+import { getOptimizedVideoUrl } from "../utils/cloudinary";
 
 
 interface Section1Data {
@@ -129,12 +130,13 @@ const Company = () => {
           <ScrollReveal delay={0.1} className="aspect-3/4 lg:aspect-video rounded-2xl overflow-hidden mb-16 relative bg-[#EEEEEE]">
             {heroData?.bgType === "video" && heroData?.bgVideo?.url ? (
               <video
-                src={heroData.bgVideo.url}
+                src={getOptimizedVideoUrl(heroData.bgVideo.url)}
                 className="absolute inset-0 w-full h-full object-cover"
                 autoPlay
                 muted
                 loop
                 playsInline
+                preload="auto"
               />
             ) : heroData?.bgImage?.url ? (
               <img
@@ -161,6 +163,7 @@ const Company = () => {
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.title || "") }}
               />
               <div 
+                id="CompanyBusiness" 
                 className="text-[16px] sm:text-[17px] md:text-[18px] font-normal text-black/80 max-w-xl quill-content-description"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(section1?.description1 || "") }}
               />

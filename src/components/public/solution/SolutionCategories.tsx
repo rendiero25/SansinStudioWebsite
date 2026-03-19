@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getSection } from "../../../services/sectionApi";
 import type { Category } from "../../cms/CategorySolutionsEditor";
 import Skeleton from "../../Skeleton";
@@ -386,12 +387,13 @@ const SolutionCategories = () => {
               </p>
             )}
             {activeCategory.buttonText && activeCategory.buttonLink && (
-              <a
-                href={activeCategory.buttonLink}
+              <Link
+                to={activeCategory.buttonLink}
+                state={{ categoryName: activeCategory.categoryName }}
                 className="mt-4 inline-flex items-center justify-center px-6 py-2 border border-black/30 rounded-lg text-[15px] font-primary font-medium hover:bg-black hover:text-white transition-colors w-max"
               >
                 {activeCategory.buttonText}
-              </a>
+              </Link>
             )}
           </ScrollReveal>
 

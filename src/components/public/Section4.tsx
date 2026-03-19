@@ -137,7 +137,7 @@ const Section4 = () => {
             <>
               {data.button1Text && (
                 <Link 
-                  to={data.button1Link || "/works"}
+                  to={data.button1Link || "/process"}
                   className="px-6 py-2 bg-[#111] text-white font-primary font-bold text-[15px] rounded-xl hover:bg-black transition-all hover:scale-[1.02]"
                 >
                   {data.button1Text}
