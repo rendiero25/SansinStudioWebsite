@@ -563,7 +563,7 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col xl:flex-row gap-12 xl:gap-13 items-start mt-4">
+              <div className="flex flex-col xl:flex-row gap-12 xl:gap-4 items-start mt-4">
                 <div className="flex flex-col gap-3 w-full">
                   <label className="text-[17px] font-bold text-black/80">
                     I expect this to be done in..*
@@ -582,12 +582,12 @@ const Contact = () => {
                       className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none placeholder:text-black/30 appearance-none"
                     />
 
-                    <div className="relative w-[70px] h-[54px] shrink-0">
+                    <div className="relative w-[75px] h-[54px] shrink-0">
                       <select
                         name="timelineUnit"
                         value={formData.timelineUnit}
                         onChange={handleInputChange}
-                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg text-black/70 text-[14px] font-bold focus:outline-none appearance-none cursor-pointer p-2 pr-3"
+                        className="w-full h-full border-1 border-[#F2F2F2] rounded-lg text-black/70 text-[14px] font-bold focus:outline-none appearance-none cursor-pointer p-2"
                       >
                         <option value="Weeks">Day</option>
                         <option value="Weeks">Week</option>
@@ -612,7 +612,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="md:col-span-7 flex flex-col gap-3 xl:ml-10 w-full">
+                <div className="flex flex-col gap-3 w-full">
                   <label className="text-[17px] font-bold text-black/80">
                     Investment range
                   </label>
@@ -630,12 +630,12 @@ const Contact = () => {
                       placeholder="0"
                       className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none placeholder:text-black appearance-none"
                     />
-                    <div className="relative w-[70px] h-[54px] shrink-0">
+                    <div className="relative w-[75px] h-[54px] shrink-0">
                       <select
                         name="investmentCurrency"
                         value={formData.investmentCurrency}
                         onChange={handleInputChange}
-                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg px-3 py-2 text-black/70 text-[13px] font-bold focus:outline-none appearance-none cursor-pointer pr-6"
+                        className="w-full h-full border-1 border-[#F2F2F2] rounded-lg px-3 py-2 text-black/70 text-[14px] font-bold focus:outline-none appearance-none cursor-pointer"
                       >
                         <option>IDR</option>
                         <option>USD</option>
@@ -670,13 +670,13 @@ const Contact = () => {
                     onChange={handleInputChange}
                     type="text"
                     placeholder="DD/MM/YYYY"
-                    className="h-[54px] bg-[#F2F2F2] border-none rounded-xl px-5 py-4 text-[15px] focus:outline-none placeholder:text-black/30 transition-all focus:ring-1 focus:ring-black/5"
+                    className="h-[54px] bg-[#F2F2F2] border-none rounded-xl px-5 py-4 text-[15px] focus:outline-none transition-all focus:ring-1 focus:ring-black/5"
                   />
                   <div className="relative min-h-[54px]">
                     <button
                       type="button"
                       onClick={() => setShowCalendar(!showCalendar)}
-                      className="w-full h-full bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium text-left flex items-center justify-between cursor-pointer"
+                      className="w-full h-full border-1 border-[#F2F2F2] rounded-lg px-5 py-3 text-[15px] font-medium text-left flex items-center justify-between cursor-pointer"
                     >
                       <span
                         className={
