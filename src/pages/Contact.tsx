@@ -563,12 +563,12 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mt-4">
-                <div className="md:col-span-5 flex flex-col gap-3">
+              <div className="flex flex-col xl:flex-row gap-12 xl:gap-13 items-start mt-4">
+                <div className="flex flex-col gap-3 w-full">
                   <label className="text-[17px] font-bold text-black/80">
                     I expect this to be done in..*
                   </label>
-                  <div className="flex items-center gap-4 min-h-[54px]">
+                  <div className="flex items-center gap-4 min-h-[54px] w-full">
                     <input
                       name="timelineNumber"
                       value={formData.timelineNumber}
@@ -579,18 +579,21 @@ const Contact = () => {
                         }))
                       }
                       type="number"
-                      className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none appearance-none"
+                      className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none placeholder:text-black/30 appearance-none"
                     />
-                    <div className="relative w-[54px] h-[54px] shrink-0">
+
+                    <div className="relative w-[70px] h-[54px] shrink-0">
                       <select
                         name="timelineUnit"
                         value={formData.timelineUnit}
                         onChange={handleInputChange}
-                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg text-black/70 text-[14px] font-bold focus:outline-none appearance-none cursor-pointer p-4 pr-6"
+                        className="w-full h-full bg-[#F2F2F2] border-none rounded-lg text-black/70 text-[14px] font-bold focus:outline-none appearance-none cursor-pointer p-2 pr-3"
                       >
-                        <option value="Weeks">W</option>
-                        <option value="Months">M</option>
+                        <option value="Weeks">Day</option>
+                        <option value="Weeks">Week</option>
+                        <option value="Months">Month</option>
                       </select>
+                      
                       <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                         <svg
                           width="10"
@@ -609,7 +612,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="md:col-span-7 flex flex-col gap-3 xl:ml-10">
+                <div className="md:col-span-7 flex flex-col gap-3 xl:ml-10 w-full">
                   <label className="text-[17px] font-bold text-black/80">
                     Investment range
                   </label>
@@ -625,7 +628,7 @@ const Contact = () => {
                       }
                       type="number"
                       placeholder="0"
-                      className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none placeholder:text-black/30 appearance-none"
+                      className="flex-1 h-[54px] bg-[#F2F2F2] border-none rounded-lg px-5 py-3 text-[15px] font-medium focus:outline-none placeholder:text-black appearance-none"
                     />
                     <div className="relative w-[70px] h-[54px] shrink-0">
                       <select
