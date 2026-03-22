@@ -319,7 +319,7 @@ const Contact = () => {
           }}
         >
           {/* Container for Content */}
-          <div className="container mx-auto px-6 md:px-12 xl:px-20 z-10 w-full pt-10 lg:pt-30 flex flex-col justify-center">
+          <div className="container mx-auto pl-6 pr-6 md:pl-12 md:pr-6 xl:pl-20 xl:pr-11 z-10 w-full pt-10 lg:pt-30 flex flex-col justify-center">
             <div className="flex flex-col gap-12 lg:gap-16">
               <ScrollReveal delay={0.1}>
                 <h1 className="text-[30px] uppercase md:text-[42px] lg:text-[42px] font-normal tracking-[-0.03em] leading-[1.1] m-0 text-white max-w-2xl">
@@ -328,7 +328,7 @@ const Contact = () => {
                 </h1>
               </ScrollReveal>
 
-              <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12">
+              <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-1 2xl:gap-12">
                 <ScrollReveal
                   delay={0.2}
                   direction="right"
@@ -348,9 +348,9 @@ const Contact = () => {
                       className="w-full flex flex-col items-center gap-6"
                     >
                       {/* Process Card */}
-                      <div className="w-full bg-white rounded-2xl p-8 md:p-10 shadow-2xl shadow-black/15">
-                        <div className="flex flex-col gap-6">
-                          <div className="flex items-center gap-4">
+                      <div className="w-full 2xl:h-[250px] bg-white rounded-2xl p-8 md:p-10 xl:p-6 2xl:p-10 shadow-2xl shadow-black/15">
+                        <div className="flex flex-col justify-between gap-6 h-full">
+                          <div className="flex items-center 2xl:items-start gap-4 h-full">
                             {process.icon?.url && (
                               <img
                                 src={process.icon.url}
@@ -358,7 +358,7 @@ const Contact = () => {
                                 className="w-8 h-8 object-contain"
                               />
                             )}
-                            <h3 className="text-[22px] md:text-[26px] font-medium m-0 tracking-tight text-black leading-tight">
+                            <h3 className="text-[22px] md:text-[26px] 2xl:text-[30px] font-medium m-0 tracking-tight text-black leading-tight">
                               {process.title}
                             </h3>
                           </div>
@@ -394,13 +394,13 @@ const Contact = () => {
         </div>
 
         {/* Right Column: Contact Form */}
-        <div className="w-full lg:flex-1 p-8 md:p-20 xl:p-32 bg-white flex flex-col justify-center">
+        <div className="w-full lg:flex-1 px-8 md:px-10 py-10 md:py-30 bg-white flex flex-col justify-center">
           <ScrollReveal
             delay={0.3}
             className="max-w-3xl lg:max-w-full flex flex-col gap-12"
           >
             <h2 className="text-[28px] md:text-[36px] font-normal tracking-[-0.02em] leading-tight max-w-lg">
-              {data?.formTitle || "Tell us about your project"}
+              {data?.formTitle || ""}
             </h2>
 
             <form
