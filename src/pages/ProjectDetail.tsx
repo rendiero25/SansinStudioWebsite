@@ -51,42 +51,58 @@ const ProjectDetail = () => {
 
   // Helper to get category name by ID
   const getCategoryName = (catId: string) => {
-    return data.categories.find((c) => c.id === catId)?.categoryName || "Uncategorized";
+    return (
+      data.categories.find((c) => c.id === catId)?.categoryName ||
+      "Uncategorized"
+    );
   };
   // Extract categories for the specific project
   const projectCategories = currentProject
-    ? (currentProject.categoryIds || (currentProject.categoryId ? [currentProject.categoryId] : []))
+    ? currentProject.categoryIds ||
+      (currentProject.categoryId ? [currentProject.categoryId] : [])
     : [];
 
   const renderStyledText = (text: string) => {
     if (!text) return null;
 
+    // Aggressively replace all forms of non-breaking spaces with regular spaces
+    const normalizedText = text.replace(/&nbsp;|\u00A0/gi, " ");
+
     // If it looks like HTML (from Quill), render it directly
-    if (text.includes("<") && text.includes(">")) {
-      return <span dangerouslySetInnerHTML={{ __html: text }} />;
+    if (normalizedText.includes("<") && normalizedText.includes(">")) {
+      return (
+        <div 
+          className="break-words quill-content w-full"
+          dangerouslySetInnerHTML={{ __html: normalizedText }} 
+        />
+      );
     }
 
-    const parts = text.split(/(\*[^*]+\*|_[^_]+_)/g);
-    return parts.map((part, i) => {
-      if (part.startsWith("_") && part.endsWith("_")) {
-        return (
-          <span
-            key={i}
-            className="italic underline underline-offset-4 decoration-1"
-          >
-            {part.slice(1, -1)}
-          </span>
-        );
-      }
-      if (part.startsWith("*") && part.endsWith("*")) {
-        return (
-          <span key={i} className="italic">
-            {part.slice(1, -1)}
-          </span>
-        );
-      }
-      return <span key={i}>{part}</span>;
-    });
+    const parts = normalizedText.split(/(\*[^*]+\*|_[^_]+_)/g);
+    return (
+      <span className="break-words overflow-wrap-anywhere">
+        {parts.map((part, i) => {
+          if (part.startsWith("_") && part.endsWith("_")) {
+            return (
+              <span
+                key={i}
+                className="italic underline underline-offset-4 decoration-1"
+              >
+                {part.slice(1, -1)}
+              </span>
+            );
+          }
+          if (part.startsWith("*") && part.endsWith("*")) {
+            return (
+              <span key={i} className="italic">
+                {part.slice(1, -1)}
+              </span>
+            );
+          }
+          return <span key={i}>{part}</span>;
+        })}
+      </span>
+    );
   };
 
   const stripHtml = (html: string) => {
@@ -96,29 +112,30 @@ const ProjectDetail = () => {
     return tmp.textContent || tmp.innerText || "";
   };
 
-
   // Window scroll sync for Secondary Image
   useEffect(() => {
     if (loading || !currentProject?.image2?.url) return;
 
     const handleScroll = () => {
       const parent = document.getElementById("project-detail-image2-parent");
-      const container = document.getElementById("project-detail-image2-container");
+      const container = document.getElementById(
+        "project-detail-image2-container",
+      );
       const img = document.getElementById("project-detail-secondary-img");
-      
+
       if (!parent || !container || !img) return;
 
       const imgNaturalHeight = img.scrollHeight;
       const containerHeight = container.clientHeight;
-      
-      // If the image hasn't loaded or is shorter than the container, 
+
+      // If the image hasn't loaded or is shorter than the container,
       // don't apply the sticky scroll effect.
       if (imgNaturalHeight <= containerHeight) {
-        parent.style.height = 'auto';
+        parent.style.height = "auto";
         img.style.transform = `translateY(0px)`;
         return;
       }
-      
+
       // 1. Set the parent height to the image's full scrollable height
       // This ensures 1px of page scroll = 1px of inner image scroll
       if (parent.style.height !== `${imgNaturalHeight}px`) {
@@ -128,15 +145,15 @@ const ProjectDetail = () => {
       // 2. Calculate the progress of the container sticking
       const parentRect = parent.getBoundingClientRect();
       const stickyTop = 100; // Header height (70px) + Gap (70px)
-      
+
       const scrolledPastStart = stickyTop - parentRect.top;
       const totalStickyScroll = parentRect.height - containerHeight;
-      
+
       let progress = 0;
       if (totalStickyScroll > 0) {
         progress = scrolledPastStart / totalStickyScroll;
       }
-      
+
       // Clamp progress between 0 and 1
       progress = Math.max(0, Math.min(1, progress));
 
@@ -164,15 +181,15 @@ const ProjectDetail = () => {
         <main className="pt-32 pb-24">
           <div className="container mx-auto px-6 md:px-12 xl:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20 md:mb-32 mt-8 md:mt-16">
-               <div className="flex flex-col gap-8">
-                  <Skeleton dark className="w-full h-[60px]" />
-                  <Skeleton dark className="w-full h-[150px]" />
-                  <div className="flex gap-4">
-                     <Skeleton dark className="w-[120px] h-[40px] rounded-lg" />
-                     <Skeleton dark className="w-[120px] h-[40px] rounded-lg" />
-                  </div>
-               </div>
-               <Skeleton dark className="w-full aspect-video rounded-3xl" />
+              <div className="flex flex-col gap-8">
+                <Skeleton dark className="w-full h-[60px]" />
+                <Skeleton dark className="w-full h-[150px]" />
+                <div className="flex gap-4">
+                  <Skeleton dark className="w-[120px] h-[40px] rounded-lg" />
+                  <Skeleton dark className="w-[120px] h-[40px] rounded-lg" />
+                </div>
+              </div>
+              <Skeleton dark className="w-full aspect-video rounded-3xl" />
             </div>
           </div>
         </main>
@@ -184,8 +201,13 @@ const ProjectDetail = () => {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center font-primary text-white">
         <h1 className="text-4xl font-bold mb-4">Project Not Found</h1>
-        <p className="text-white/60 mb-8">The project you are looking for does not exist.</p>
-        <Link to="/projects" className="bg-white text-black px-6 py-3 rounded-lg font-medium">
+        <p className="text-white/60 mb-8">
+          The project you are looking for does not exist.
+        </p>
+        <Link
+          to="/projects"
+          className="bg-white text-black px-6 py-3 rounded-lg font-medium"
+        >
           Back to Projects
         </Link>
       </div>
@@ -198,15 +220,13 @@ const ProjectDetail = () => {
 
       <main className="pt-15 xl:pt-32">
         <div className="container mx-auto px-6 md:px-12 xl:px-20">
-          
           {/* Header Layout: Text Details Left, Image Right */}
           <div className="flex flex-col xl:flex-row justify-between gap-10 mb-20 md:mb-32 mt-8 md:mt-16">
-            
             {/* Left Column: Title, Brand, Summary, Badges */}
-            <div className="flex flex-col justify-between pt-4">
+            <div className="flex flex-col justify-between pt-4 xl:w-[45%] shrink-0">
               <div className="flex flex-col gap-10">
                 {/* Project Title */}
-                <h1 className="text-[32px] md:text-[48px] lg:text-[56px] font-normal leading-[1.1] tracking-[-0.03em] m-0">
+                <h1 className="text-[32px] md:text-[48px] lg:text-[50px] font-normal leading-[1.1] tracking-[-0.03em] m-0 break-words whitespace-normal">
                   {renderStyledText(currentProject.projectName)}
                 </h1>
 
@@ -217,7 +237,7 @@ const ProjectDetail = () => {
                     <span className="text-[10px] md:text-[11px] font-bold text-white uppercase w-24 shrink-0 pt-1.5">
                       Brand
                     </span>
-                    <div className="text-[16px] md:text-[23px] text-white font-medium">
+                    <div className="text-[16px] md:text-[23px] text-white font-medium flex-1 min-w-0 break-words whitespace-normal">
                       {renderStyledText(currentProject.brand || "—")}
                     </div>
                   </div>
@@ -227,7 +247,7 @@ const ProjectDetail = () => {
                     <span className="text-[10px] md:text-[11px] font-bold text-white uppercase w-24 shrink-0 pt-1.5">
                       Project Summary
                     </span>
-                    <div className="text-[16px] md:text-[23px] text-white leading-relaxed max-w-md">
+                    <div className="text-[16px] md:text-[23px] text-white leading-relaxed flex-1 min-w-0 break-words whitespace-normal">
                       {renderStyledText(currentProject.projectSummary || "—")}
                     </div>
                   </div>
@@ -238,24 +258,33 @@ const ProjectDetail = () => {
               <div className="flex flex-wrap items-center gap-3 mt-12 md:mt-20">
                 {/* Static Production Badge */}
                 {projectCategories.map((catId) => (
-                   <div
-                      key={catId}
-                      className="bg-white text-black px-5 py-2.5 rounded-lg flex items-center shadow-lg"
-                    >
-                      <span className="text-[11px] md:text-[12px] font-bold uppercase tracking-widest leading-none mt-px flex items-center gap-2">
-                        <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M0 0H10V1.5L6 6L10 10.5V12H0V10.5L4 6L0 1.5V0Z" fill="currentColor"/>
-                        </svg>
-                        {getCategoryName(catId)}
-                      </span>
-                    </div>
+                  <div
+                    key={catId}
+                    className="bg-white text-black px-5 py-2.5 rounded-lg flex items-center shadow-lg"
+                  >
+                    <span className="text-[11px] md:text-[12px] font-bold uppercase tracking-widest leading-none mt-px flex items-center gap-2">
+                      <svg
+                        width="10"
+                        height="12"
+                        viewBox="0 0 10 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M0 0H10V1.5L6 6L10 10.5V12H0V10.5L4 6L0 1.5V0Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      {getCategoryName(catId)}
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Right Column: Main Image */}
-            <div className="w-full">
-              <div className="aspect-1/1 lg:w-full lg:h-[650px] rounded-xl overflow-hidden relative shadow-2xl border border-white/5">
+            <div className="w-full xl:flex-1">
+              <div className="aspect-square lg:w-full lg:h-[650px] rounded-xl overflow-hidden relative shadow-2xl border border-white/5">
                 {currentProject.mainImage?.url ? (
                   <img
                     src={currentProject.mainImage.url}
@@ -263,17 +292,22 @@ const ProjectDetail = () => {
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-white/20 bg-white/5 italic">No Main Image Available</div>
+                  <div className="absolute inset-0 flex items-center justify-center text-white/20 bg-white/5 italic">
+                    No Main Image Available
+                  </div>
                 )}
               </div>
             </div>
-
           </div>
 
           {/* Row 3: Secondary Image with Window Scroll Sync */}
           {currentProject.image2?.url && (
-            <div id="project-detail-image2-parent" className="w-full mb-16 md:mb-10 relative rounded-2xl" style={{ minHeight: "100vh" }}>
-              <div 
+            <div
+              id="project-detail-image2-parent"
+              className="w-full mb-16 md:mb-10 relative rounded-2xl"
+              style={{ minHeight: "100vh" }}
+            >
+              <div
                 id="project-detail-image2-container"
                 className="w-full mx-auto h-[calc(100vh-140px)] min-h-[400px] rounded-2xl overflow-hidden sticky top-[100px]"
               >
@@ -281,7 +315,7 @@ const ProjectDetail = () => {
                   id="project-detail-secondary-img"
                   src={currentProject.image2.url}
                   alt={`${currentProject.projectName} Details`}
-                  className="w-full h-auto object-cover absolute top-0 left-0 transition-transform duration-75" 
+                  className="w-full h-auto object-cover absolute top-0 left-0 transition-transform duration-75"
                   style={{ display: "block", willChange: "transform" }}
                 />
               </div>
@@ -301,23 +335,18 @@ const ProjectDetail = () => {
               </a>
             </div>
           )}
-
         </div>
       </main>
 
       {/* Row 6: More Projects Module (Reusing Section2) */}
       {moreProjects.length > 0 && (
-        <Section2
-          showLabel={false}
-          isDark={true}
-          customTitle="More Projects"
-        />
+        <Section2 showLabel={false} isDark={true} customTitle="More Projects" />
       )}
 
       <div className="mb-10 lg:mb-0"></div>
 
       {/* Footer with forced black background, overriding default CMS image as requested */}
-      <Footer showCTA={false} showBackgroundImage={false}/>
+      <Footer showCTA={false} showBackgroundImage={false} />
 
       <style>
         {`
@@ -331,6 +360,13 @@ const ProjectDetail = () => {
         
         .project-detail-page {
            background-color: #0d0d0d;
+        }
+
+        .quill-content p {
+          margin: 0;
+        }
+        .quill-content p + p {
+          margin-top: 1rem;
         }
       `}
       </style>
